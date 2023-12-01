@@ -12,6 +12,7 @@ module.exports = {
 					option
 						.setName("channel")
 						.setDescription("The event channel")
+						.setRequired(true)
 				)
 		)
 		.addSubcommand((subcommand) =>
@@ -22,11 +23,16 @@ module.exports = {
 					option
 						.setName("channel")
 						.setDescription("The voice channel")
+						.setRequired(true)
 				)
 		)
 		.addSubcommand(
 			new SlashCommandSubcommandBuilder()
 				.setName("unlock")
 				.setDescription("Unlock the radio when it was previously locked by /radio event or /radio lock")
-		)
+		),
+
+	async execute(interaction) {
+		await interaction.reply("Pong!");
+	}
 };
