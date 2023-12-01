@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const config = require("./config.json");
+const { error, info, log, warn } = require("./console.js");
 
 const commands = [];
 const foldersPath = path.join(__dirname, "commands");
@@ -11,14 +12,14 @@ const commandFolders = fs.readdirSync(foldersPath);
 
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
-	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith(".js"));
+	const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
 
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
 
 		if ("data" in command && "execute" in command) commands.push(command.data.toJSON());
-		else console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
+		else warn(`The command at ${filePath} is missing a required "data" or "execute" property.`);
 	}
 }
 
@@ -27,7 +28,7 @@ const rest = new REST().setToken(config.discord.token);
 (async () => {
 	try {
 		await rest.put(Routes.applicationCommands(config.discord.clientId), { body: commands });
-	} catch (error) {
-		console.error(error);
+	} catch (e) {
+		error(e);
 	}
 })();
