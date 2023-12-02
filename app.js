@@ -1,22 +1,15 @@
-const { ActivityType, Client, Collection, REST, Routes } = require("discord.js");
-const { createAudioPlayer } = require("@discordjs/voice");
+const { Collection, ChannelType } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
-const config = require("./config.json");
-const { error, info, log, warn } = require("./console.js");
-
-const client = new Client({ intents: [] });
-const player = createAudioPlayer();
+const { client, defaultActivity } = require("./client");
+const config = require("./config");
+const { error, info, warn } = require("./console");
 
 client.commands = new Collection();
 
 client.once("ready", () => {
-	client.user.setActivity({
-		name: "Reading Wixonic's website",
-		state: "wixonic.fr",
-		type: ActivityType.Custom
-	});
+	client.user.setActivity(defaultActivity);
 
 	const foldersPath = path.join(__dirname, "commands");
 	const commandFolders = fs.readdirSync(foldersPath);
@@ -43,8 +36,8 @@ client.on("interactionCreate", async (interaction) => {
 
 		if (command) {
 			try {
+				interaction.userLog = `${interaction.user.username} - `;
 				await command.execute(interaction);
-				log(`${interaction.user.username} executed ${interaction.commandName}`);
 			} catch (e) {
 				error(e);
 

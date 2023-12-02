@@ -1,10 +1,9 @@
-
 const { REST, Routes } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
-const config = require("./config.json");
-const { error, info, log, warn } = require("./console.js");
+const config = require("./config");
+const { error, info, log, warn } = require("./console");
 
 const commands = [];
 const foldersPath = path.join(__dirname, "commands");
