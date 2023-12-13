@@ -214,6 +214,8 @@ module.exports = {
 		),
 
 	async execute(interaction) {
+		// await interaction.reply("Radio is not working anymore, see [this](<https://discord.com/channels/1020663521530351627/1179511381649805402/1183026439155634227>) for more information");
+
 		switch (interaction.options.getSubcommandGroup()) {
 			case "queue":
 				switch (interaction.options.getSubcommand()) {
