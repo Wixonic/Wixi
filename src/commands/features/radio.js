@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, SlashCommandSubcommandBuilder, ChannelType, PermissionFlagsBits, EmbedBuilder, Colors, ActivityType } = require("discord.js");
+const { SlashCommandBuilder, ChannelType, PermissionFlagsBits, EmbedBuilder, Colors, ActivityType } = require("discord.js");
 const { createAudioPlayer, createAudioResource, AudioPlayerStatus, joinVoiceChannel, VoiceConnectionStatus } = require("@discordjs/voice");
 const fs = require("fs");
 const path = require("path");
@@ -9,7 +9,7 @@ const ytdl = require("ytdl-core");
 const ytsr = require("ytsr");
 
 const { client, defaultActivity } = require("../../client");
-const { error, log } = require("../../console");
+const { error, info, log } = require("../../console");
 
 class Song {
 	constructor(url) {
@@ -113,7 +113,7 @@ const Radio = {
 						const html = cheerio.load(chunks);
 
 						const playlist = JSON.parse(html("#serialized-server-data").contents()[0].data)[0].data.sections.find((section) => section.id.startsWith("track-list")).items;
-						const song = playlist[Math.floor(Math.random() * playlist.length)];
+						const song = playlist[index ? index : Math.floor(Math.random() * playlist.length)];
 
 						await this.addFromSearch(`${song.title} ${song.artistName}`);
 						resolve();
@@ -166,10 +166,6 @@ const Radio = {
 		}
 	},
 
-	stop() {
-
-	},
-
 	async update() {
 		if (this.player.state.status == AudioPlayerStatus.Idle) await this.next();
 		setTimeout(() => this.update(), 500);
@@ -183,6 +179,11 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("radio")
 		.setDescription("Stuff about the radio")
+		.addSubcommand((subcommand) =>
+			subcommand
+				.setName("current")
+				.setDescription("Display the current song")
+		)
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("move")
@@ -204,17 +205,17 @@ module.exports = {
 						.setName("url")
 						.setDescription("The YouTube song url")
 						.setRequired(true)
+					/* .addStringOption((option) =>
+						option
+							.setName("search")
+							.setDescription("Search keywords")
+					) */
 				)
-		)
-		.addSubcommand(
-			new SlashCommandSubcommandBuilder()
-				.setName("stop")
-				.setDescription("Stop the radio")
 		)
 		.addSubcommand((subcommand) =>
 			subcommand
-				.setName("current")
-				.setDescription("Display the current song")
+				.setName("skip")
+				.setDescription("Skip the current song")
 		)
 		.addSubcommandGroup((subcommandGroup) =>
 			subcommandGroup
@@ -230,6 +231,11 @@ module.exports = {
 								.setDescription("The YouTube song url")
 								.setRequired(true)
 						)
+					/* .addStringOption((option) =>
+						option
+							.setName("search")
+							.setDescription("Search keywords")
+					) */
 				)
 				.addSubcommand((subcommand) =>
 					subcommand
@@ -281,7 +287,11 @@ module.exports = {
 						break;
 
 					case "clear":
-						await interaction.reply({ content: "Not implemented.", ephemeral: true });
+						if (interaction.memberPermissions.has(PermissionFlagsBits.MuteMembers)) {
+							Radio.queue.list = [];
+							await interaction.reply("Radio queue is now empty.");
+							info(interaction.userLog + "Radio: queue cleared");
+						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
 						break;
 
 					case "list":
@@ -292,7 +302,7 @@ module.exports = {
 						if (interaction.memberPermissions.has(PermissionFlagsBits.ManageEvents | PermissionFlagsBits.MuteMembers)) {
 							if (!Radio.queue.locked) {
 								Radio.queue.locked = true;
-								await interaction.reply({ content: "Radio queue is now locked." });
+								await interaction.reply("Radio queue is now locked.");
 								info(interaction.userLog + "Radio: queue locked");
 							} else await interaction.reply({ content: "Radio queue is alreay locked.", ephemeral: true });
 						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
@@ -302,7 +312,7 @@ module.exports = {
 						if (interaction.memberPermissions.has(PermissionFlagsBits.ManageEvents | PermissionFlagsBits.MuteMembers)) {
 							if (Radio.queue.locked) {
 								Radio.queue.locked = false;
-								await interaction.reply({ content: "Radio queue is now unlocked." });
+								await interaction.reply("Radio queue is now unlocked.");
 								info(interaction.userLog + "Radio: queue unlocked");
 							} else await interaction.reply({ content: "Radio queue is already unlocked.", ephemeral: true });
 						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
@@ -316,12 +326,20 @@ module.exports = {
 
 			default:
 				switch (interaction.options.getSubcommand()) {
+					case "clear":
+						if (interaction.memberPermissions.has(PermissionFlagsBits.MuteMembers)) {
+							Radio.queue.list = [];
+							Radio.player.stop(true);
+							await interaction.reply("Player and queue cleared.");
+							info(interaction.userLog + "Radio: player and queue cleared");
+						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
+						break;
+
 					case "current":
 						if (Radio.current) {
 							await interaction.reply({
 								content: "Currently playing:",
-								embeds: [Radio.current.embed()],
-								ephemeral: true
+								embeds: [Radio.current.embed()]
 							});
 						} else await interaction.reply({ content: "There's no current song.", ephemeral: true });
 						break;
@@ -330,6 +348,7 @@ module.exports = {
 						if (interaction.memberPermissions.has(PermissionFlagsBits.ManageEvents | PermissionFlagsBits.MuteMembers | PermissionFlagsBits.MoveMembers)) {
 							await Radio.connect(interaction.options.getChannel("channel", true, [ChannelType.GuildVoice, ChannelType.GuildStageVoice]), interaction.guild.voiceAdapterCreator);
 							await interaction.reply({ content: "Radio moved", ephemeral: true });
+							info(interaction.userLog + "Radio: moved");
 						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
 						break;
 
@@ -337,8 +356,15 @@ module.exports = {
 						await interaction.reply({ content: "Not implemented.", ephemeral: true });
 						break;
 
-					case "stop":
-						await interaction.reply({ content: "Not implemented.", ephemeral: true });
+					case "skip":
+						await interaction.deferReply();
+
+						if (interaction.memberPermissions.has(PermissionFlagsBits.MuteMembers)) {
+							Radio.player.stop(true);
+							await Radio.next();
+							await interaction.followUp("Song skipped.");
+							info(interaction.userLog + "Radio: song skipped");
+						} else await interaction.followUp({ content: "Insufficient permissions.", ephemeral: true });
 						break;
 
 					default:
