@@ -5,6 +5,7 @@ const https = require("https");
 const { guild } = require("./client");
 const config = require("./config");
 const { log } = require("./console");
+const { info } = require("console");
 
 const request = (token, endpoint = "/users/@me", method = "GET", params) => new Promise(async (resolve, reject) => {
 	if (token && token.available) {
@@ -99,6 +100,7 @@ class Token {
 			grant_type: "refresh_token",
 			refresh_token: this.refreshToken
 		}).toString());
+
 		request.end();
 	});
 
@@ -118,6 +120,7 @@ class Token {
 			token: this.refreshToken,
 			token_type_hint: "refresh_token"
 		}).toString());
+
 		request.end();
 	});
 };
@@ -185,31 +188,31 @@ class User {
 
 			if (!member.roles.cache.has(config.discord.roles.developer) && roles.developer) {
 				member.roles.add(config.discord.roles.developer);
-				this.log("Added role Developer");
+				this.info("Added role Developer");
 			} else if (member.roles.cache.has(config.discord.roles.developer) && !roles.developer) {
 				member.roles.remove(config.discord.roles.developer);
-				this.log("Removed role Developer");
+				this.warn("Removed role Developer");
 			}
 
 			if (!member.roles.cache.has(config.discord.roles.gamer) && roles.gamer) {
 				member.roles.add(config.discord.roles.gamer);
-				this.log("Added role Gamer");
+				this.info("Added role Gamer");
 			} else if (member.roles.cache.has(config.discord.roles.gamer) && !roles.gamer) {
 				member.roles.remove(config.discord.roles.gamer);
-				this.log("Removed role Gamer");
+				this.warn("Removed role Gamer");
 			}
 
 			if (!member.roles.cache.has(config.discord.roles.w47k3r5) && roles.w47k3r5) {
 				member.roles.add(config.discord.roles.w47k3r5);
-				this.log("Added role w47k3r5");
+				this.info("Added role w47k3r5");
 			} else if (member.roles.cache.has(config.discord.roles.w47k3r5) && !roles.w47k3r5) {
 				member.roles.remove(config.discord.roles.w47k3r5);
-				this.log("Removed role w47k3r5");
+				this.warn("Removed role w47k3r5");
 			}
 
 			if (config.discord.roles.verified && !member.roles.cache.has(config.discord.roles.verified)) {
 				await member.roles.add(config.discord.roles.verified);
-				this.log("Added role Verified");
+				this.info("Added role Verified");
 			}
 
 			this.checked = Date.now();
@@ -245,7 +248,10 @@ class User {
 		this.log("Saved token");
 	};
 
+	error = (text) => error(`${this.id} - ${text}`);
+	info = (text) => info(`${this.id} - ${text}`);
 	log = (text) => log(`${this.id} - ${text}`);
+	warn = (text) => warn(`${this.id} - ${text}`);
 };
 
 module.exports = {

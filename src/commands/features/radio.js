@@ -1,8 +1,12 @@
-const { SlashCommandBuilder, SlashCommandSubcommandBuilder, ChannelType, PermissionFlagsBits, EmbedBuilder, Colors, ActivityType, StageInstancePrivacyLevel } = require("discord.js");
+const { SlashCommandBuilder, SlashCommandSubcommandBuilder, ChannelType, PermissionFlagsBits, EmbedBuilder, Colors, ActivityType } = require("discord.js");
 const { createAudioPlayer, createAudioResource, AudioPlayerStatus, joinVoiceChannel, VoiceConnectionStatus } = require("@discordjs/voice");
 const fs = require("fs");
 const path = require("path");
+
+const cheerio = require("cheerio");
+const https = require("https");
 const ytdl = require("ytdl-core");
+const ytsr = require("ytsr");
 
 const { client, defaultActivity } = require("../../client");
 const { error, log } = require("../../console");
@@ -81,6 +85,46 @@ const Radio = {
 		if (this.current == null) this.next();
 	},
 
+	async addFromYouTube(url) {
+		const song = new Song(url);
+		await song.load();
+
+		this.add(song);
+	},
+
+	async addFromSearch(text) {
+		const filters = (await ytsr.getFilters(text)).get("Type").get("Video");
+
+		const searchResults = await ytsr(filters.url, {
+			limit: 1
+		});
+
+		await this.addFromYouTube(searchResults.items[0].url);
+	},
+
+	addFromAppleMusicPlaylist(url, index) {
+		return new Promise((resolve, reject) => {
+			try {
+				https.get(url, (res) => {
+					let chunks = "";
+
+					res.on("data", (chunk) => chunks += chunk);
+					res.on("end", async () => {
+						const html = cheerio.load(chunks);
+
+						const playlist = JSON.parse(html("#serialized-server-data").contents()[0].data)[0].data.sections.find((section) => section.id.startsWith("track-list")).items;
+						const song = playlist[Math.floor(Math.random() * playlist.length)];
+
+						await this.addFromSearch(`${song.title} ${song.artistName}`);
+						resolve();
+					});
+				});
+			} catch (e) {
+				reject(e);
+			}
+		});
+	},
+
 	async connect(channel, voiceAdapterCreator) {
 		if (channel && voiceAdapterCreator) {
 			this.connection = joinVoiceChannel({
@@ -96,18 +140,26 @@ const Radio = {
 		}
 	},
 
-	next() {
-		if (this.queue.list.length > 0 && this.connection?.state?.status == VoiceConnectionStatus.Ready) {
-			this.current = this.queue.list.shift();
-			this.player.play(this.current.resource);
+	async next() {
+		if (this.connection?.state?.status == VoiceConnectionStatus.Ready) {
+			if (this.queue.list.length > 0) {
+				this.current = this.queue.list.shift();
+				this.player.play(this.current.resource);
 
-			client.user.setActivity({
-				name: "Listening to the radio",
-				state: `Playing ${this.current.info?.title ?? "Unknown song"} by ${this.current.info?.author?.name ?? "Unknown artist"}`,
-				type: ActivityType.Custom
-			});
+				client.user.setActivity({
+					name: "Listening to the radio",
+					state: `Playing ${this.current.info?.title ?? "Unknown song"} by ${this.current.info?.author?.name ?? "Unknown artist"}`,
+					type: ActivityType.Custom
+				});
 
-			log(`Radio: Playing ${this.current.info?.title ?? "Unknown song"} by ${this.current.info?.author?.name ?? "Unknown artist"}`);
+				log(`Radio: Playing ${this.current.info?.title ?? "Unknown song"} by ${this.current.info?.author?.name ?? "Unknown artist"}`);
+			} else {
+				try {
+					await this.addFromAppleMusicPlaylist("https://music.apple.com/us/playlist/wixiland-radio/pl.u-LdbqDLvF2qp2RN5");
+				} catch (e) {
+					error(`Radio: failed to fill queue - ${e.message}`);
+				}
+			}
 		} else if (this.current != null) {
 			this.current = null;
 			client.user.setActivity(defaultActivity);
@@ -116,14 +168,16 @@ const Radio = {
 
 	stop() {
 
+	},
+
+	async update() {
+		if (this.player.state.status == AudioPlayerStatus.Idle) await this.next();
+		setTimeout(() => this.update(), 500);
 	}
 };
 
 Radio.player.on("stateChange", (oldState, newState) => log(`Radio: Audio player transitioned from ${oldState.status} to ${newState.status}`));
-
-setInterval(() => {
-	if (Radio.player.state.status == AudioPlayerStatus.Idle) Radio.next();
-}, 500);
+Radio.update();
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -215,9 +269,10 @@ module.exports = {
 									content: "Added a new song to the queue",
 									embeds: [song.embed()]
 								});
+
 								Radio.add(song);
 
-								log(interaction.userLog + "New song added to queue: " + song.info?.id);
+								info(interaction.userLog + "New song added to queue: " + song.info?.id);
 							} catch (e) {
 								error(`${interaction.userLog}Failed to load song: ${e}`);
 								await interaction.followUp({ content: "Failed to load song", ephemeral: true });
@@ -238,7 +293,7 @@ module.exports = {
 							if (!Radio.queue.locked) {
 								Radio.queue.locked = true;
 								await interaction.reply({ content: "Radio queue is now locked." });
-								log(interaction.userLog + "Radio: queue locked");
+								info(interaction.userLog + "Radio: queue locked");
 							} else await interaction.reply({ content: "Radio queue is alreay locked.", ephemeral: true });
 						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
 						break;
@@ -248,7 +303,7 @@ module.exports = {
 							if (Radio.queue.locked) {
 								Radio.queue.locked = false;
 								await interaction.reply({ content: "Radio queue is now unlocked." });
-								log(interaction.userLog + "Radio: queue unlocked");
+								info(interaction.userLog + "Radio: queue unlocked");
 							} else await interaction.reply({ content: "Radio queue is already unlocked.", ephemeral: true });
 						} else await interaction.reply({ content: "Insufficient permissions.", ephemeral: true });
 						break;

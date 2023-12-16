@@ -18,6 +18,7 @@ const init = () => {
 		res.writeHead(308, {
 			"location": new URL(req.url, config.website.host).href
 		}).end();
+
 		log(`${res.socket.remoteAddress} - Redirected to https`);
 	}).listen(config.website.http.port, () => info("Redirection server is ready"));
 
@@ -34,7 +35,7 @@ const init = () => {
 
 	router.get("/rules", async (_, res) => {
 		res.setHeader("location", `${guild().rulesChannel.url}`).sendStatus(307);
-		log(`${res.socket.remoteAddress} - Redirected to #${guild().rulesChannel.name}`);
+		info(`${res.socket.remoteAddress} - Redirected to #${guild().rulesChannel.name}`);
 	});
 
 	router.get("/authorize", (_, res) => {
@@ -49,7 +50,7 @@ const init = () => {
 
 		res.setHeader("location", `https://discord.com/oauth2/authorize?${authParams.toString()}`).sendStatus(307);
 
-		log(`${res.socket.remoteAddress} - Redirected to Discord OAuth2`);
+		info(`${res.socket.remoteAddress} - Redirected to Discord OAuth2`);
 	});
 
 	router.get("/oauth2/authorize", (req, res) => {
@@ -100,6 +101,7 @@ const init = () => {
 				grant_type: "authorization_code",
 				redirect_uri: new URL("/oauth2/authorize", config.website.host).href
 			}).toString());
+
 			request.end();
 		} else res.sendStatus(403);
 	});

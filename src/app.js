@@ -60,11 +60,11 @@ client.once("ready", async () => {
 			await guild.rulesChannel.messages.delete(message.id);
 			await guild.rulesChannel.send(content);
 
-			log("Updated rules")
+			info("Updated rules")
 		} else if (!message) {
 			await guild.rulesChannel.send(content);
 
-			log("Added rules")
+			info("Added rules")
 		}
 	}
 
