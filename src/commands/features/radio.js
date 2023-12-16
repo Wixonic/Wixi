@@ -1,13 +1,11 @@
-const { SlashCommandBuilder, SlashCommandSubcommandBuilder, ChannelType, PermissionFlagsBits, EmbedBuilder, Colors, ActivityType, StageInstance, StageInstancePrivacyLevel } = require("discord.js");
-const { createAudioPlayer, createAudioResource, AudioPlayerStatus, joinVoiceChannel, VoiceConnectionStatus, generateDependencyReport } = require("@discordjs/voice");
+const { SlashCommandBuilder, SlashCommandSubcommandBuilder, ChannelType, PermissionFlagsBits, EmbedBuilder, Colors, ActivityType, StageInstancePrivacyLevel } = require("discord.js");
+const { createAudioPlayer, createAudioResource, AudioPlayerStatus, joinVoiceChannel, VoiceConnectionStatus } = require("@discordjs/voice");
 const fs = require("fs");
 const path = require("path");
 const ytdl = require("ytdl-core");
 
 const { client, defaultActivity } = require("../../client");
 const { error, log } = require("../../console");
-
-log(generateDependencyReport());
 
 class Song {
 	constructor(url) {
@@ -95,18 +93,6 @@ const Radio = {
 
 			this.connection.on("stateChange", (oldState, newState) => log(`Radio: Connection transitioned from ${oldState.status} to ${newState.status}`));
 			this.subscription = this.connection.subscribe(this.player);
-
-			if (channel.type == ChannelType.GuildStageVoice) {
-				console.log(channel);
-
-				try {
-					await channel.createStageInstance({
-						privacyLevel: StageInstancePrivacyLevel.Public,
-						sendStartNotification: false,
-						topic: "Radio"
-					});
-				} catch { }
-			}
 		}
 	},
 
@@ -214,8 +200,6 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		// await interaction.reply("Radio is not working anymore, see [this](<https://discord.com/channels/1020663521530351627/1179511381649805402/1183026439155634227>) for more information");
-
 		switch (interaction.options.getSubcommandGroup()) {
 			case "queue":
 				switch (interaction.options.getSubcommand()) {

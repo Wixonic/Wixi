@@ -2,8 +2,9 @@ const { REST, Routes } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
+const { error, warn } = require("./console");
+
 const config = require("./config");
-const { error, info, log, warn } = require("./console");
 
 const commands = [];
 const foldersPath = path.join(__dirname, "commands");
@@ -29,5 +30,7 @@ const rest = new REST().setToken(config.discord.token);
 		await rest.put(Routes.applicationCommands(config.discord.clientId), { body: commands });
 	} catch (e) {
 		error(e);
+	} finally {
+		process.exit(0);
 	}
 })();

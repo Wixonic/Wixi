@@ -1,5 +1,7 @@
 cache/
+database/
 node_modules/
+SSL/
 
 .DS_Store
 package-lock.json
