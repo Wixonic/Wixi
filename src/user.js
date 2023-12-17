@@ -7,14 +7,7 @@ const config = require("./config");
 const { info, log } = require("./console");
 
 const request = (token, endpoint = "/users/@me", method = "GET", params) => new Promise(async (resolve, reject) => {
-	if (token && token.available) {
-		try {
-			if (Date.now() > token.expiresAt) await token.refresh();
-		} catch (e) {
-			token.available = false;
-			reject(`Failed to refresh token: ${e}`);
-		}
-
+	if (token && token.available && token.expiresAt > Date.now()) {
 		const req = https.request(new URL(path.join("/api/v10", endpoint), "https://discord.com"), {
 			headers: {
 				"authorization": `${token.type} ${token.value}`,
@@ -43,26 +36,27 @@ const request = (token, endpoint = "/users/@me", method = "GET", params) => new 
 });
 
 class Token {
-	static fromAccessTokenExchange = (accessTokenExchange) => new Token(accessTokenExchange.token_type, accessTokenExchange.access_token, accessTokenExchange.refresh_token, Date.now() + accessTokenExchange.expires_in, accessTokenExchange.scope.split(" "));
+	static fromAccessTokenExchange = (accessTokenExchange) => new Token(true, accessTokenExchange.token_type, accessTokenExchange.access_token, accessTokenExchange.refresh_token, Date.now() + accessTokenExchange.expires_in, accessTokenExchange.scope.split(" "));
 
 	static fromFile = (userId) => {
 		const file = path.join(User.folder(userId), "token.json");
 
 		if (fs.existsSync(file)) {
 			const token = JSON.parse(fs.readFileSync(file, { encoding: "utf-8" }));
-			if (token) return new Token(token.type, token.value, token.refreshToken, token.expiresAt, token.scopes);
+			if (token) return new Token(token.available, token.type, token.value, token.refreshToken, token.expiresAt, token.scopes);
 			else return null;
 		} else return null;
 	};
 
-	constructor(type, value, refreshToken, expiresAt, scopes) {
-		this.available = true;
-
+	constructor(available, type, value, refreshToken, expiresAt, scopes) {
 		this.type = type;
 		this.value = value;
 		this.refreshToken = refreshToken;
 		this.expiresAt = expiresAt;
+		this.expiresIn = expiresAt - Date.now();
 		this.scopes = scopes;
+
+		this.available = available && this.expiresIn > 0;
 	};
 
 	refresh = () => new Promise((resolve, reject) => {
@@ -86,6 +80,7 @@ class Token {
 						this.value = accessTokenExchange.access_token;
 						this.refreshToken = accessTokenExchange.refresh_token;
 						this.expiresAt = Date.now() + accessTokenExchange.expires_in;
+						this.expiresIn = accessTokenExchange.expires_in;
 						this.scopes = accessTokenExchange.scope.split(" ");
 
 						resolve(this);

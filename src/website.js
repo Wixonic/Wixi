@@ -56,6 +56,16 @@ const init = () => {
 
 	ioHandler.on("connection", async (socket) => {
 		try {
+			const refresh = () => {
+				if (socket.connected) setTimeout(async () => {
+					await socket.user.token.refresh();
+					socket.user.saveToken();
+					refresh();
+				}, (socket.user.token.expiresIn - 10) * 1000);
+			};
+
+			refresh();
+
 			const user = await socket.user.request("/users/@me");
 
 			const data = {
