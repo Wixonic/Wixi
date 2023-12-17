@@ -29,7 +29,7 @@ if (search.has("uid") && search.has("key")) {
 
 		switch (mode) {
 			case "app":
-				html += `<h1>Hi, ${data.displayName}</h1>`;
+				html += `<h1>Hi, ${data.displayName}</h1><p>Soon...</p>`;
 				break;
 
 			case "disconnected":
@@ -53,10 +53,15 @@ if (search.has("uid") && search.has("key")) {
 		display("app");
 	});
 
-	socket.io.on("reconnect", () => display("app"));
+	socket.io.on("reconnect", () => {
+		display("loader");
+		socket.emit("data");
+	});
 
-	socket.on("connect_error", () => display());
-	socket.on("disconnect", () => display());
+	socket.on("connect_error", (code) => {
+		if (code.message == 401) display();
+		else display("disconnected");
+	});
 
 	display("loader");
 }

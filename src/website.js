@@ -51,7 +51,7 @@ const init = () => {
 		}
 
 		log(`${socket.client.conn.remoteAddress} - Unauthorized`);
-		next(new Error("401 Unauthorized"));
+		next(new Error(401));
 	});
 
 	ioHandler.on("connection", async (socket) => {
