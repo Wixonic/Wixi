@@ -3,6 +3,7 @@ const fs = require("fs");
 const http = require("http");
 const https = require("https");
 const path = require("path");
+const io = require("socket.io");
 
 const { guild } = require("./client");
 const { error, info, log, warn } = require("./console");
@@ -22,10 +23,52 @@ const init = () => {
 		log(`${res.socket.remoteAddress} - Redirected to https`);
 	}).listen(config.website.http.port, () => info("Redirection server is ready"));
 
-	https.createServer({
+	const httpsServer = https.createServer({
 		cert: fs.readFileSync("./SSL/wixonic.fr.cer"),
 		key: fs.readFileSync("./SSL/wixonic.fr.private.key")
-	}, app).listen(config.website.port, () => info("Server is ready"));
+	}, app);
+
+	const ioHandler = new io.Server(httpsServer, {
+		serveClient: false
+	});
+
+	ioHandler.use(async (socket, next) => {
+		const id = socket.handshake.auth.id;
+		const key = socket.handshake.auth.key;
+
+		if (id && key) {
+			socket.user = await User.fromKey(id, key);
+
+			if (socket.user) {
+				log(`${socket.client.conn.remoteAddress} - Connected`);
+				next();
+				return;
+			}
+		}
+
+		log(`${socket.client.conn.remoteAddress} - Unauthorized`);
+		next(new Error("401 Unauthorized"));
+	});
+
+	ioHandler.on("connection", async (socket) => {
+		try {
+			const user = await socket.user.request("/users/@me");
+
+			const data = {
+				avatar: user.avatar,
+				displayName: user.global_name ?? user.username,
+				id: user.id,
+				username: user.username
+			};
+
+			socket.emit("data", data);
+			socket.on("data", () => socket.emit("data", data));
+		} catch {
+			socket.disconnect(true);
+		}
+	});
+
+	httpsServer.listen(config.website.port, () => info("Server is ready"));
 
 	app.use(router);
 	app.use((req, res) => {
@@ -78,8 +121,14 @@ const init = () => {
 							res.status(500).send(e);
 						} else {
 							try {
-								await User.fromAccessTokenExchange(accessTokenExchange);
-								res.setHeader("location", `${guild().rulesChannel.url}`).sendStatus(308);
+								const user = await User.fromAccessTokenExchange(accessTokenExchange);
+								const key = crypto.randomUUID();
+
+								if (!fs.existsSync(path.join(User.folder(user.id)))) fs.mkdirSync(path.join(User.folder(user.id)), { recursive: true });
+								fs.writeFileSync(path.join(User.folder(user.id), "key"), key, { encoding: "ascii" });
+								log(`${user.id} - Saved key`);
+
+								res.setHeader("location", `/?uid=${user.id}&key=${key}`).sendStatus(308);
 							} catch (e) {
 								e = "Failed to initialize user - " + e;
 

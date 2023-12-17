@@ -4,8 +4,7 @@ const https = require("https");
 
 const { guild } = require("./client");
 const config = require("./config");
-const { log } = require("./console");
-const { info } = require("console");
+const { info, log } = require("./console");
 
 const request = (token, endpoint = "/users/@me", method = "GET", params) => new Promise(async (resolve, reject) => {
 	if (token && token.available) {
@@ -46,7 +45,7 @@ class Token {
 	static fromAccessTokenExchange = (accessTokenExchange) => new Token(accessTokenExchange.token_type, accessTokenExchange.access_token, accessTokenExchange.refresh_token, Date.now() + accessTokenExchange.expires_in, accessTokenExchange.scope.split(" "));
 
 	static fromFile = (userId) => {
-		const file = `./database/users/${userId}/token.json`;
+		const file = path.join(User.folder(userId), "token.json");
 
 		if (fs.existsSync(file)) {
 			const token = JSON.parse(fs.readFileSync(file, { encoding: "utf-8" }));
@@ -126,6 +125,8 @@ class Token {
 };
 
 class User {
+	static folder = (userId) => `./database/users/${userId}/`;
+
 	static async fromAccessTokenExchange(accessTokenExchange) {
 		const token = Token.fromAccessTokenExchange(accessTokenExchange);
 
@@ -156,6 +157,18 @@ class User {
 		return null;
 	};
 
+	static async fromKey(userId, userKey) {
+		const file = path.join(User.folder(userId), "key");
+
+		if (fs.existsSync(file)) {
+			const dbKey = fs.readFileSync(file, { encoding: "ascii" });
+
+			if (dbKey == userKey) return await User.fromFile(userId);
+		}
+
+		return null;
+	};
+
 	constructor(id, token) {
 		this.id = id;
 
@@ -169,7 +182,7 @@ class User {
 	};
 
 	get folder() {
-		return `./database/users/${this.id}/`;
+		return User.folder(this.id);
 	};
 
 	// Check if checked more than one day ago or if force is true

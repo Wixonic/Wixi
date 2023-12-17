@@ -1,12 +1,9 @@
-const { generateDependencyReport } = require("@discordjs/voice");
-require("./console").info(generateDependencyReport());
-
 const { Collection } = require("discord.js");
 const fs = require("fs");
 
 const { client, defaultActivity } = require("./client");
 const commands = require("./commands");
-const { info, log } = require("./console");
+const { info } = require("./console");
 const { User } = require("./user");
 const website = require("./website");
 

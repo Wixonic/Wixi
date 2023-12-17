@@ -6,6 +6,6 @@ module.exports = {
 		.setDescription("Allows to share big files"),
 
 	async execute(interaction) {
-		
+
 	}
 };
