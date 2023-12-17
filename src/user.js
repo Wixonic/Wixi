@@ -10,8 +10,9 @@ const request = (token, endpoint = "/users/@me", method = "GET", params) => new 
 	if (token && token.available) {
 		try {
 			if (Date.now() > token.expiresAt) await token.refresh();
-		} catch {
-			reject("Failed to refresh token");
+		} catch (e) {
+			token.available = false;
+			reject(`Failed to refresh token: ${e}`);
 		}
 
 		const req = https.request(new URL(path.join("/api/v10", endpoint), "https://discord.com"), {
@@ -66,7 +67,7 @@ class Token {
 
 	refresh = () => new Promise((resolve, reject) => {
 		const request = https.request("https://discord.com/api/v10/oauth2/token", {
-			auth: `${config.discord.clientId}: ${config.discord.clientSecret}`,
+			auth: `${config.discord.clientId}:${config.discord.clientSecret}`,
 			headers: {
 				"content-type": "application/x-www-form-urlencoded"
 			},
@@ -79,7 +80,7 @@ class Token {
 				try {
 					const accessTokenExchange = JSON.parse(chunks);
 
-					if (accessTokenExchange.error) reject(accessTokenExchange.error + " " + accessTokenExchange.error_description);
+					if (accessTokenExchange.error) reject(accessTokenExchange.error);
 					else {
 						this.type = accessTokenExchange.token_type;
 						this.value = accessTokenExchange.access_token;
@@ -105,7 +106,7 @@ class Token {
 
 	revoke = () => new Promise((resolve) => {
 		const request = https.request("https://discord.com/api/v10/oauth2/token/revoke", {
-			auth: `${config.discord.clientId}: ${config.discord.clientSecret}`,
+			auth: `${config.discord.clientId}:${config.discord.clientSecret}`,
 			headers: {
 				"content-type": "application/x-www-form-urlencoded"
 			},

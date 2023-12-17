@@ -32,6 +32,10 @@ if (search.has("uid") && search.has("key")) {
 				html += `<h1>Hi, ${data.displayName}</h1>`;
 				break;
 
+			case "disconnected":
+				html += `<h1>Uh</h1><p>You got disconnected, but don't worry, it'll reconnected as soon as possible.</p><p>Are you stuck? Ask help <a href="https://discord.wixonic.fr/help">here</a>!</p>`;
+				break;
+
 			case "loader":
 				html += "Loading...";
 				break;

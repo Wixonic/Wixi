@@ -37,12 +37,16 @@ const init = () => {
 		const key = socket.handshake.auth.key;
 
 		if (id && key) {
-			socket.user = await User.fromKey(id, key);
+			try {
+				socket.user = await User.fromKey(id, key);
 
-			if (socket.user) {
-				log(`${socket.client.conn.remoteAddress} - Connected`);
-				next();
-				return;
+				if (socket.user) {
+					log(`${socket.client.conn.remoteAddress} - Connected`);
+					next();
+					return;
+				}
+			} catch (e) {
+				error(`${socket.client.conn.remoteAddress} - ${e}`);
 			}
 		}
 
@@ -63,8 +67,9 @@ const init = () => {
 
 			socket.emit("data", data);
 			socket.on("data", () => socket.emit("data", data));
-		} catch {
-			socket.disconnect(true);
+		} catch (e) {
+			error(`${socket.client.conn.remoteAddress} - ${e}`);
+			socket.disconnect();
 		}
 	});
 
@@ -77,8 +82,14 @@ const init = () => {
 	});
 
 	router.get("/rules", async (_, res) => {
-		res.setHeader("location", `${guild().rulesChannel.url}`).sendStatus(307);
+		res.setHeader("location", guild().rulesChannel.url).sendStatus(307);
 		info(`${res.socket.remoteAddress} - Redirected to #${guild().rulesChannel.name}`);
+	});
+
+	router.get("/help", async (_, res) => {
+		const channel = guild().channels.cache.get(config.discord.channels.help);
+		res.setHeader("location", channel.url).sendStatus(307);
+		info(`${res.socket.remoteAddress} - Redirected to #${channel.name}`);
 	});
 
 	router.get("/authorize", (_, res) => {
