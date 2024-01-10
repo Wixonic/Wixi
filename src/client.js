@@ -1,6 +1,7 @@
 const { ActivityType, Client, GatewayIntentBits } = require("discord.js");
 
 const config = require("./config");
+const settings = require("./settings");
 
 const client = new Client({
 	intents: [
@@ -19,6 +20,6 @@ module.exports = {
 		type: ActivityType.Custom
 	},
 	guild() {
-		return client.guilds.cache.get(config.discord.guild);
+		return client.guilds.cache.get(settings.guild);
 	}
 };

@@ -1,4 +1,4 @@
-const { Collection } = require("discord.js");
+const { Collection, MessageFlags } = require("discord.js");
 const fs = require("fs");
 
 const { client, defaultActivity } = require("./client");
@@ -7,12 +7,12 @@ const { info } = require("./console");
 const { User } = require("./user");
 const website = require("./website");
 
-const config = require("./config");
+const settings = require("./settings");
 
 client.commands = new Collection();
 
 client.once("ready", async () => {
-	const guild = await client.guilds.fetch(config.discord.guild);
+	const guild = await client.guilds.fetch(settings.guild);
 
 	let after = null;
 
@@ -30,7 +30,7 @@ client.once("ready", async () => {
 	}
 
 	if (fs.existsSync("./files/rules.md")) {
-		const rules = fs.readFileSync("./files/rules.md", { encoding: "utf-8" });
+		const rules = fs.readFileSync("./files/rules.md", "utf-8");
 
 		const message = (await guild.rulesChannel.messages.fetch({
 			limit: 1
@@ -45,20 +45,21 @@ client.once("ready", async () => {
 						{
 							type: 2,
 							label: `Verify your account`,
-							url: `https://discord.wixonic.fr/authorize`,
+							url: settings.rules.url,
 							style: 5
 						}
 					]
 				}
-			]
+			],
+			flags: settings.rules.silent ? MessageFlags.SuppressNotifications : null
 		};
 
-		if (message && message.content != rules) {
+		if (message && (message.content != rules || settings.rules.force)) {
 			await guild.rulesChannel.messages.delete(message.id);
 			await guild.rulesChannel.send(content);
 
 			info("Updated rules")
-		} else if (!message) {
+		} else if (!message || settings.rules.force) {
 			await guild.rulesChannel.send(content);
 
 			info("Added rules")

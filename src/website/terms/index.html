@@ -19,7 +19,7 @@
 	<meta name="description" content="Terms of service for WixiLand" />
 	<meta property="og:description" content="Terms of service for WixiLand" />
 
-	<meta name="robots" content="noindex,follow" />
+	<meta name="robots" content="noindex, follow" />
 
 	<meta property="og:locale" content="en_US" />
 	<meta property="og:type" content="website" />
@@ -81,12 +81,16 @@
 
 			font-family: var(--font-family);
 
-			cursor: default;
+			cursor: inherit;
+			pointer-events: inherit;
 		}
 
 		:root {
 			background: var(--background);
 			color: var(--text-color);
+
+			cursor: default;
+			pointer-events: none;
 		}
 	</style>
 

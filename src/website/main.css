@@ -1,0 +1,55 @@
+@import url("https://rsms.me/inter/inter.css");
+
+:root {
+	--secondary-background: #EEE;
+}
+
+a {
+	color: unset;
+	text-decoration: unset;
+}
+
+.button {
+	background: var(--text-color);
+
+	color: var(--background);
+	font-size: inherit;
+	font-weight: 600;
+
+	border: none;
+	border-radius: 1rem;
+
+	padding: 0.2rem 0.5rem;
+
+	cursor: pointer;
+	pointer-events: fill;
+}
+
+.link {
+	color: #06F;
+
+	cursor: pointer;
+	pointer-events: fill;
+}
+
+.link:hover {
+	text-decoration: underline;
+}
+
+[dark] {
+	display: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--secondary-background: #111;
+	}
+
+	[light] {
+		display: none !important;
+	}
+
+	[dark] {
+		display: block !important;
+	}
+}

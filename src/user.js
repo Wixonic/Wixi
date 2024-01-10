@@ -3,8 +3,9 @@ const path = require("path");
 const https = require("https");
 
 const { guild } = require("./client");
-const config = require("./config");
 const { info, log } = require("./console");
+
+const settings = require("./settings");
 
 const request = (token, endpoint = "/users/@me", method = "GET", params) => new Promise(async (resolve, reject) => {
 	if (token && token.available && token.expiresAt > Date.now()) {
@@ -42,7 +43,7 @@ class Token {
 		const file = path.join(User.folder(userId), "token.json");
 
 		if (fs.existsSync(file)) {
-			const token = JSON.parse(fs.readFileSync(file, { encoding: "utf-8" }));
+			const token = JSON.parse(fs.readFileSync(file, "utf-8"));
 			if (token) return new Token(token.available, token.type, token.value, token.refreshToken, token.expiresAt, token.scopes);
 			else return null;
 		} else return null;
@@ -58,66 +59,6 @@ class Token {
 
 		this.available = available && this.expiresIn > 0;
 	};
-
-	refresh = () => new Promise((resolve, reject) => {
-		const request = https.request("https://discord.com/api/v10/oauth2/token", {
-			auth: `${config.discord.clientId}:${config.discord.clientSecret}`,
-			headers: {
-				"content-type": "application/x-www-form-urlencoded"
-			},
-			method: "POST"
-		}, (response) => {
-			let chunks = "";
-
-			response.on("data", (chunk) => chunks += chunk);
-			response.on("end", () => {
-				try {
-					const accessTokenExchange = JSON.parse(chunks);
-
-					if (accessTokenExchange.error) reject(accessTokenExchange.error);
-					else {
-						this.type = accessTokenExchange.token_type;
-						this.value = accessTokenExchange.access_token;
-						this.refreshToken = accessTokenExchange.refresh_token;
-						this.expiresAt = Date.now() + accessTokenExchange.expires_in;
-						this.expiresIn = accessTokenExchange.expires_in;
-						this.scopes = accessTokenExchange.scope.split(" ");
-
-						resolve(this);
-					}
-				} catch {
-					reject("Failed to parse accessTokenExchange");
-				}
-			});
-		});
-
-		request.write(new URLSearchParams({
-			grant_type: "refresh_token",
-			refresh_token: this.refreshToken
-		}).toString());
-
-		request.end();
-	});
-
-	revoke = () => new Promise((resolve) => {
-		const request = https.request("https://discord.com/api/v10/oauth2/token/revoke", {
-			auth: `${config.discord.clientId}:${config.discord.clientSecret}`,
-			headers: {
-				"content-type": "application/x-www-form-urlencoded"
-			},
-			method: "POST"
-		}, () => {
-			this.available = false;
-			resolve();
-		});
-
-		request.write(new URLSearchParams({
-			token: this.refreshToken,
-			token_type_hint: "refresh_token"
-		}).toString());
-
-		request.end();
-	});
 };
 
 class User {
@@ -157,7 +98,7 @@ class User {
 		const file = path.join(User.folder(userId), "key");
 
 		if (fs.existsSync(file)) {
-			const dbKey = fs.readFileSync(file, { encoding: "ascii" });
+			const dbKey = fs.readFileSync(file, "ascii");
 
 			if (dbKey == userKey) return await User.fromFile(userId);
 		}
@@ -184,55 +125,63 @@ class User {
 	// Check if checked more than one day ago or if force is true
 	async check(force = false) {
 		if (this.checked < Date.now() - 1000 * 60 * 60 * 12 || force) {
-			const member = await guild().members.fetch(this.id);
+			const member = await guild().members.fetch(this.id, { force: true });
 
 			const connections = await this.request("/users/@me/connections");
 			const guilds = await this.request("/users/@me/guilds");
 
 			const roles = {
+				cc: connections.find((connection) => ["twitch", "youtube"].includes(connection.type) && connection.verified),
 				developer: connections.find((connection) => connection.type == "github" && connection.verified),
-				gamer: connections.find((connection) => ["battlenet", "epicgames", "leagueoflegends", "playstation", "riotgames", "steam", "xbox"].includes(connection.type) && connection.verified),
-				w47k3r5: guilds.find((guild) => guild.id == config.discord.guilds.wow)
+				gamer: (connections.find((connection) => ["battlenet", "epicgames", "leagueoflegends", "playstation", "riotgames", "steam", "xbox"].includes(connection.type) && connection.verified) || member.roles.cache.hasAny([settings.roles.minecraft, settings.roles.roblox])),
+				w47k3r5: guilds.find((guild) => guild.id == settings.guilds.wow)
 			};
 
-			if (!member.roles.cache.has(config.discord.roles.developer) && roles.developer) {
-				member.roles.add(config.discord.roles.developer);
+			if (!member.roles.cache.has(settings.roles.developer) && roles.developer) {
+				await member.roles.add(settings.roles.developer);
 				this.info("Added role Developer");
-			} else if (member.roles.cache.has(config.discord.roles.developer) && !roles.developer) {
-				member.roles.remove(config.discord.roles.developer);
+			} else if (member.roles.cache.has(settings.roles.developer) && !roles.developer) {
+				await member.roles.remove(settings.roles.developer);
 				this.warn("Removed role Developer");
 			}
 
-			if (!member.roles.cache.has(config.discord.roles.gamer) && roles.gamer) {
-				member.roles.add(config.discord.roles.gamer);
+			if (!member.roles.cache.has(settings.roles.gamer) && roles.gamer) {
+				await member.roles.add(settings.roles.gamer);
 				this.info("Added role Gamer");
-			} else if (member.roles.cache.has(config.discord.roles.gamer) && !roles.gamer) {
-				member.roles.remove(config.discord.roles.gamer);
+			} else if (member.roles.cache.has(settings.roles.gamer) && !roles.gamer) {
+				await member.roles.remove(settings.roles.gamer);
 				this.warn("Removed role Gamer");
 			}
 
-			if (!member.roles.cache.has(config.discord.roles.w47k3r5) && roles.w47k3r5) {
-				member.roles.add(config.discord.roles.w47k3r5);
+			if (!member.roles.cache.has(settings.roles.w47k3r5) && roles.w47k3r5) {
+				await member.roles.add(csettings.roles.w47k3r5);
 				this.info("Added role w47k3r5");
-			} else if (member.roles.cache.has(config.discord.roles.w47k3r5) && !roles.w47k3r5) {
-				member.roles.remove(config.discord.roles.w47k3r5);
+			} else if (member.roles.cache.has(settings.roles.w47k3r5) && !roles.w47k3r5) {
+				await member.roles.remove(settings.roles.w47k3r5);
 				this.warn("Removed role w47k3r5");
 			}
 
-			if (config.discord.roles.verified && !member.roles.cache.has(config.discord.roles.verified)) {
-				await member.roles.add(config.discord.roles.verified);
+			if (!member.roles.cache.has(settings.roles.cc) && !member.roles.cache.has(settings.roles.verified) && roles.cc) {
+				await member.roles.add(settings.roles.cc);
+				this.info("Added role Content Creator");
+			}
+
+			if (settings.roles.verified && !member.roles.cache.has(settings.roles.verified)) {
+				await member.roles.add(settings.roles.verified);
 				this.info("Added role Verified");
 			}
 
 			this.checked = Date.now();
 			this.saveData();
+
+			return connections;
 		}
 	};
 
 	recoverData() {
 		const file = path.join(this.folder, "user.json");
 
-		if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, { encoding: "utf-8" }));
+		if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, "utf-8"));
 		else return {};
 	};
 

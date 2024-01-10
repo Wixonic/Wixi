@@ -1,0 +1,150 @@
+@import url("/main.css");
+
+:root {
+	text-align: center;
+}
+
+body {
+	margin: 0 initial;
+}
+
+main[mode="app"] .role {
+	display: grid;
+	grid-template-columns: 1rem auto 1.5rem;
+	grid-template-rows: auto;
+	gap: 0.5rem;
+
+	width: fit-content;
+
+	background: var(--secondary-background);
+
+	border: 0.1rem solid #0003;
+	border-radius: 1rem;
+
+	margin: auto;
+	padding: 0.8rem;
+
+	cursor: pointer;
+	pointer-events: fill;
+}
+
+main[mode="app"] .role .color {
+	--size: 0.7rem;
+
+	width: var(--size);
+	height: var(--size);
+
+	background: var(--color);
+
+	border: 0.1rem solid #0003;
+	border-radius: var(--size);
+
+	margin: auto;
+}
+
+main[mode="app"] .role .name {
+	font-size: 1.2rem;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+main[mode="app"] .role .check {
+	--size: 1.2rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: var(--size);
+	height: var(--size);
+
+	border: 0.1rem solid #0003;
+	border-radius: var(--size);
+
+	margin: auto;
+
+	transition: background 0.3s linear, color 0.3s linear;
+}
+
+main[mode="app"] .role .check .icon {
+	opacity: 0;
+
+	transition: opacity 0.3s linear;
+}
+
+main[mode="app"] .role[disabled] {
+	background: #CCC;
+
+	color: #666;
+
+	cursor: default;
+}
+
+/* main[mode="app"] .role[value="true"] {} */
+
+main[mode="app"] .role[value="true"] .check {
+	background: #090;
+
+	color: #FFF;
+
+	border-color: #0A0;
+}
+
+main[mode="app"] .role[value="true"] .check .icon {
+	opacity: 1;
+}
+
+/* main[mode="app"] .role[value="false"] {} */
+
+main[mode="app"] .booster .role {
+	--gradient-size: 500%;
+	background: linear-gradient(90deg, #4C6DD7, #7C4ABE, #A0608A, #4C6DD7);
+	background-size: var(--gradient-size) 100%;
+
+	color: #FFF;
+
+	cursor: default;
+
+	animation: 12s booster linear infinite;
+}
+
+@keyframes booster {
+	to {
+		background-position: var(--gradient-size) 0;
+	}
+}
+
+main[mode="app"] .roles {
+	display: grid;
+	grid-auto-flow: row dense;
+
+	width: 100%;
+
+	margin: auto;
+}
+
+main[mode="app"] .roles .list {
+	display: grid;
+	grid-auto-flow: column;
+	gap: 0.5rem;
+
+	width: fit-content;
+	max-width: calc(100vw - 0.5rem);
+
+	margin: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+	main[mode="app"] .role {
+		border-color: #FFF5;
+	}
+
+	main[mode="app"] .role[disabled] {
+		color: #CCC;
+		background: #666;
+	}
+
+	main[mode="app"] .role .color {
+		border-color: #FFF5;
+	}
+}
