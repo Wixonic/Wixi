@@ -12,6 +12,12 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-
+		await interaction.reply({
+			content: "This feature doesn't work for now",
+			ephemeral: true,
+			allowedMentions: {
+				repliedUser: false
+			}
+		});
 	}
 };

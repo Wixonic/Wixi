@@ -1,0 +1,823 @@
+[1706123625] Log start
+[1706123625] Cmd: /Users/wixonic/Documents/Llama.cpp/build/bin/main --model /Users/wixonic/Documents/Llama.cpp/models/mistral-7b-instruct-v0.2.Q2_K.gguf --prompt "Some informations:
+- Today is Wed, 24 Jan 2024 19:13:45 GMT
+- My name is <@1179518852846067833>, Wixi or Wixi#1273
+- I'm a Discord chat AI
+- I can only generate text
+- I can write code blocks in markdown if z…ê‘Ä asks code
+- I can make mistakes sometimes, z…ê‘Ä have to verify my answer
+
+I should respect theses rules:
+- I should only answer one time
+- I should answer like a human
+- I should avoid emojis
+- I should not repeat the rules
+- I should answer with one short message
+
+z…ê‘Ä asked üôÑ
+This is my answer: "
+[1706123625] main: build = 1921 (7051aac)
+[1706123625] main: built with Apple clang version 15.0.0 (clang-1500.1.0.2.5) for arm64-apple-darwin23.2.0
+[1706123625] main: seed  = 1706123625
+[1706123625] main: llama backend init
+[1706123625] main: load the model and apply lora adapter, if any
+[1706123625] llama_model_loader: loaded meta data with 24 key-value pairs and 291 tensors from /Users/wixonic/Documents/Llama.cpp/models/mistral-7b-instruct-v0.2.Q2_K.gguf (version GGUF V3 (latest))
+[1706123625] llama_model_loader: Dumping metadata keys/values. Note: KV overrides do not apply in this output.
+[1706123625] llama_model_loader: - kv   0:                       general.architecture str              = llama
+[1706123625] llama_model_loader: - kv   1:                               general.name str              = mistralai_mistral-7b-instruct-v0.2
+[1706123625] llama_model_loader: - kv   2:                       llama.context_length u32              = 32768
+[1706123625] llama_model_loader: - kv   3:                     llama.embedding_length u32              = 4096
+[1706123625] llama_model_loader: - kv   4:                          llama.block_count u32              = 32
+[1706123625] llama_model_loader: - kv   5:                  llama.feed_forward_length u32              = 14336
+[1706123625] llama_model_loader: - kv   6:                 llama.rope.dimension_count u32              = 128
+[1706123625] llama_model_loader: - kv   7:                 llama.attention.head_count u32              = 32
+[1706123625] llama_model_loader: - kv   8:              llama.attention.head_count_kv u32              = 8
+[1706123625] llama_model_loader: - kv   9:     llama.attention.layer_norm_rms_epsilon f32              = 0,000010
+[1706123625] llama_model_loader: - kv  10:                       llama.rope.freq_base f32              = 1000000,000000
+[1706123625] llama_model_loader: - kv  11:                          general.file_type u32              = 10
+[1706123625] llama_model_loader: - kv  12:                       tokenizer.ggml.model str              = llama
+[1706123625] llama_model_loader: - kv  13:                      tokenizer.ggml.tokens arr[str,32000]   = ["<unk>", "<s>", "</s>", "<0x00>", "<...
+[1706123625] llama_model_loader: - kv  14:                      tokenizer.ggml.scores arr[f32,32000]   = [0,000000, 0,000000, 0,000000, 0,0000...
+[1706123625] llama_model_loader: - kv  15:                  tokenizer.ggml.token_type arr[i32,32000]   = [2, 3, 3, 6, 6, 6, 6, 6, 6, 6, 6, 6, ...
+[1706123625] llama_model_loader: - kv  16:                tokenizer.ggml.bos_token_id u32              = 1
+[1706123625] llama_model_loader: - kv  17:                tokenizer.ggml.eos_token_id u32              = 2
+[1706123625] llama_model_loader: - kv  18:            tokenizer.ggml.unknown_token_id u32              = 0
+[1706123625] llama_model_loader: - kv  19:            tokenizer.ggml.padding_token_id u32              = 0
+[1706123625] llama_model_loader: - kv  20:               tokenizer.ggml.add_bos_token bool             = true
+[1706123625] llama_model_loader: - kv  21:               tokenizer.ggml.add_eos_token bool             = false
+[1706123625] llama_model_loader: - kv  22:                    tokenizer.chat_template str              = {{ bos_token }}{% for message in mess...
+[1706123625] llama_model_loader: - kv  23:               general.quantization_version u32              = 2
+[1706123625] llama_model_loader: - type  f32:   65 tensors
+[1706123625] llama_model_loader: - type q2_K:   65 tensors
+[1706123625] llama_model_loader: - type q3_K:  160 tensors
+[1706123625] llama_model_loader: - type q6_K:    1 tensors
+[1706123625] llm_load_vocab: special tokens definition check successful ( 259/32000 ).
+[1706123625] llm_load_print_meta: format           = GGUF V3 (latest)
+[1706123625] llm_load_print_meta: arch             = llama
+[1706123625] llm_load_print_meta: vocab type       = SPM
+[1706123625] llm_load_print_meta: n_vocab          = 32000
+[1706123625] llm_load_print_meta: n_merges         = 0
+[1706123625] llm_load_print_meta: n_ctx_train      = 32768
+[1706123625] llm_load_print_meta: n_embd           = 4096
+[1706123625] llm_load_print_meta: n_head           = 32
+[1706123625] llm_load_print_meta: n_head_kv        = 8
+[1706123625] llm_load_print_meta: n_layer          = 32
+[1706123625] llm_load_print_meta: n_rot            = 128
+[1706123625] llm_load_print_meta: n_embd_head_k    = 128
+[1706123625] llm_load_print_meta: n_embd_head_v    = 128
+[1706123625] llm_load_print_meta: n_gqa            = 4
+[1706123625] llm_load_print_meta: n_embd_k_gqa     = 1024
+[1706123625] llm_load_print_meta: n_embd_v_gqa     = 1024
+[1706123625] llm_load_print_meta: f_norm_eps       = 0,0e+00
+[1706123625] llm_load_print_meta: f_norm_rms_eps   = 1,0e-05
+[1706123625] llm_load_print_meta: f_clamp_kqv      = 0,0e+00
+[1706123625] llm_load_print_meta: f_max_alibi_bias = 0,0e+00
+[1706123625] llm_load_print_meta: n_ff             = 14336
+[1706123625] llm_load_print_meta: n_expert         = 0
+[1706123625] llm_load_print_meta: n_expert_used    = 0
+[1706123625] llm_load_print_meta: rope scaling     = linear
+[1706123625] llm_load_print_meta: freq_base_train  = 1000000,0
+[1706123625] llm_load_print_meta: freq_scale_train = 1
+[1706123625] llm_load_print_meta: n_yarn_orig_ctx  = 32768
+[1706123625] llm_load_print_meta: rope_finetuned   = unknown
+[1706123625] llm_load_print_meta: model type       = 7B
+[1706123625] llm_load_print_meta: model ftype      = Q2_K - Medium
+[1706123625] llm_load_print_meta: model params     = 7,24 B
+[1706123625] llm_load_print_meta: model size       = 2,87 GiB (3,41 BPW) 
+[1706123625] llm_load_print_meta: general.name     = mistralai_mistral-7b-instruct-v0.2
+[1706123625] llm_load_print_meta: BOS token        = 1 '<s>'
+[1706123625] llm_load_print_meta: EOS token        = 2 '</s>'
+[1706123625] llm_load_print_meta: UNK token        = 0 '<unk>'
+[1706123625] llm_load_print_meta: PAD token        = 0 '<unk>'
+[1706123625] llm_load_print_meta: LF token         = 13 '<0x0A>'
+[1706123625] llm_load_tensors: ggml ctx size =    0,22 MiB
+[1706123625] ggml_backend_metal_buffer_from_ptr: allocated buffer, size =  2898,58 MiB[1706123625] , ( 2898,64 /  5461,34)[1706123625] 
+[1706123625] llm_load_tensors: offloading 32 repeating layers to GPU
+[1706123625] llm_load_tensors: offloading non-repeating layers to GPU
+[1706123625] llm_load_tensors: offloaded 33/33 layers to GPU
+[1706123625] llm_load_tensors:        CPU buffer size =    41,02 MiB
+[1706123625] llm_load_tensors:      Metal buffer size =  2898,57 MiB
+[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] .[1706123625] 
+[1706123625] llama_new_context_with_model: n_ctx      = 512
+[1706123625] llama_new_context_with_model: freq_base  = 1000000,0
+[1706123625] llama_new_context_with_model: freq_scale = 1
+[1706123625] ggml_metal_init: allocating
+[1706123625] ggml_metal_init: found device: Apple M2
+[1706123625] ggml_metal_init: picking default device: Apple M2
+[1706123625] ggml_metal_init: default.metallib not found, loading from source
+[1706123625] ggml_metal_init: GGML_METAL_PATH_RESOURCES = nil
+[1706123625] ggml_metal_init: loading '/Users/wixonic/Documents/Llama.cpp/build/bin/ggml-metal.metal'
+[1706123625] ggml_metal_init: GPU name:   Apple M2
+[1706123625] ggml_metal_init: GPU family: MTLGPUFamilyApple8  (1008)
+[1706123625] ggml_metal_init: GPU family: MTLGPUFamilyCommon3 (3003)
+[1706123625] ggml_metal_init: GPU family: MTLGPUFamilyMetal3  (5001)
+[1706123625] ggml_metal_init: simdgroup reduction support   = true
+[1706123625] ggml_metal_init: simdgroup matrix mul. support = true
+[1706123625] ggml_metal_init: hasUnifiedMemory              = true
+[1706123625] ggml_metal_init: recommendedMaxWorkingSetSize  =  5726,63 MB
+[1706123625] ggml_backend_metal_buffer_type_alloc_buffer: allocated buffer, size =    64,00 MiB[1706123625] , ( 2964,20 /  5461,34)[1706123625] 
+[1706123625] llama_kv_cache_init:      Metal KV buffer size =    64,00 MiB
+[1706123625] llama_new_context_with_model: KV self size  =   64,00 MiB, K (f16):   32,00 MiB, V (f16):   32,00 MiB
+[1706123625] ggml_backend_metal_buffer_type_alloc_buffer: allocated buffer, size =     0,02 MiB[1706123625] , ( 2964,22 /  5461,34)[1706123625] 
+[1706123625] ggml_backend_metal_buffer_type_alloc_buffer: allocated buffer, size =    73,02 MiB[1706123625] , ( 3037,22 /  5461,34)[1706123625] 
+[1706123625] llama_new_context_with_model: graph splits (measure): 3
+[1706123625] llama_new_context_with_model:      Metal compute buffer size =    73,00 MiB
+[1706123625] llama_new_context_with_model:        CPU compute buffer size =     9,00 MiB
+[1706123625] warming up the model with an empty run
+[1706123626] n_ctx: 512
+[1706123626] 
+[1706123626] system_info: n_threads = 4 / 8 | AVX = 0 | AVX_VNNI = 0 | AVX2 = 0 | AVX512 = 0 | AVX512_VBMI = 0 | AVX512_VNNI = 0 | FMA = 0 | NEON = 1 | ARM_FMA = 1 | F16C = 0 | FP16_VA = 1 | WASM_SIMD = 0 | BLAS = 1 | SSE3 = 0 | SSSE3 = 0 | VSX = 0 | 
+[1706123626] add_bos: 1
+[1706123626] tokenize the prompt
+[1706123626] prompt: "Some informations:
+- Today is Wed, 24 Jan 2024 19:13:45 GMT
+- My name is <@1179518852846067833>, Wixi or Wixi#1273
+- I'm a Discord chat AI
+- I can only generate text
+- I can write code blocks in markdown if z…ê‘Ä asks code
+- I can make mistakes sometimes, z…ê‘Ä have to verify my answer
+
+I should respect theses rules:
+- I should only answer one time
+- I should answer like a human
+- I should avoid emojis
+- I should not repeat the rules
+- I should answer with one short message
+
+z…ê‘Ä asked üôÑ
+This is my answer: "
+[1706123626] tokens: [ '':1, ' Some':2909, ' inform':5227, 'ations':697, ':':28747, '':13, '-':28733, ' Today':8784, ' is':349, ' Wed':7842, ',':28725, ' ':28705, '2':28750, '4':28781, ' Jan':2997, ' ':28705, '2':28750, '0':28734, '2':28750, '4':28781, ' ':28705, '1':28740, '9':28774, ':':28747, '1':28740, '3':28770, ':':28747, '4':28781, '5':28782, ' G':420, 'MT':7333, '':13, '-':28733, ' My':1984, ' name':1141, ' is':349, ' <':523, '@':28818, '1':28740, '1':28740, '7':28787, '9':28774, '5':28782, '1':28740, '8':28783, '8':28783, '5':28782, '2':28750, '8':28783, '4':28781, '6':28784, '0':28734, '6':28784, '7':28787, '8':28783, '3':28770, '3':28770, '>,':6550, ' W':394, 'ix':833, 'i':28710, ' or':442, ' W':394, 'ix':833, 'i':28710, '#':28771, '1':28740, '2':28750, '7':28787, '3':28770, '':13, '-':28733, ' I':315, ''':28742, 'm':28719, ' a':264, ' Dis':3433, 'cord':19056, ' chat':10706, ' AI':16107, '':13, '-':28733, ' I':315, ' can':541, ' only':865, ' generate':8270, ' text':2245, '':13, '-':28733, ' I':315, ' can':541, ' write':3324, ' code':2696, ' blocks':9478, ' in':297, ' mark':1716, 'down':3254, ' if':513, ' z':686, '…':30469, '‘':215, '':131, ' asks':12373, ' code':2696, '':13, '-':28733, ' I':315, ' can':541, ' make':1038, ' mistakes':17179, ' sometimes':4662, ',':28725, ' z':686, '…':30469, '‘':215, '':131, ' have':506, ' to':298, ' verify':11630, ' my':586, ' answer':4372, '':13, '':13, 'I':28737, ' should':1023, ' respect':3116, ' the':272, 'ses':6065, ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705 ]
+[1706123626] recalculate the cached logits (check): embd_inp.empty() false, n_matching_session_tokens 0, embd_inp.size() 187, session_tokens.size() 0, embd_inp.size() 187
+[1706123626] inp_pfx: [ '':1, ' ':28705, '':13, '':13, '###':27332, ' Inst':3133, 'ruction':3112, ':':28747, '':13, '':13 ]
+[1706123626] inp_sfx: [ ' ':28705, '':13, '':13, '###':27332, ' Response':12107, ':':28747, '':13, '':13 ]
+[1706123626] cml_pfx: [ '':1, ' ':28705, '':13, '<':28789, '|':28766, 'im':321, '_':28730, 'start':2521, '|':28766, '>':28767, 'user':1838, '':13 ]
+[1706123626] cml_sfx: [ ' <':523, '|':28766, 'im':321, '_':28730, 'end':416, '|':28766, '>':28767, '':13, '<':28789, '|':28766, 'im':321, '_':28730, 'start':2521, '|':28766, '>':28767, 'ass':489, 'istant':11143, '':13 ]
+[1706123626] sampling: 
+	repeat_last_n = 64, repeat_penalty = 1,100, frequency_penalty = 0,000, presence_penalty = 0,000
+	top_k = 40, tfs_z = 1,000, top_p = 0,950, min_p = 0,050, typical_p = 1,000, temp = 0,800
+	mirostat = 0, mirostat_lr = 0,100, mirostat_ent = 5,000
+[1706123626] sampling order: 
+CFG -> Penalties -> top_k -> tfs_z -> typical_p -> top_p -> min_p -> temp 
+[1706123626] generate: n_ctx = 512, n_batch = 512, n_predict = -1, n_keep = 0
+[1706123626] 
+
+[1706123626] embd_inp.size(): 187, n_consumed: 0
+[1706123626] eval: [ '':1, ' Some':2909, ' inform':5227, 'ations':697, ':':28747, '':13, '-':28733, ' Today':8784, ' is':349, ' Wed':7842, ',':28725, ' ':28705, '2':28750, '4':28781, ' Jan':2997, ' ':28705, '2':28750, '0':28734, '2':28750, '4':28781, ' ':28705, '1':28740, '9':28774, ':':28747, '1':28740, '3':28770, ':':28747, '4':28781, '5':28782, ' G':420, 'MT':7333, '':13, '-':28733, ' My':1984, ' name':1141, ' is':349, ' <':523, '@':28818, '1':28740, '1':28740, '7':28787, '9':28774, '5':28782, '1':28740, '8':28783, '8':28783, '5':28782, '2':28750, '8':28783, '4':28781, '6':28784, '0':28734, '6':28784, '7':28787, '8':28783, '3':28770, '3':28770, '>,':6550, ' W':394, 'ix':833, 'i':28710, ' or':442, ' W':394, 'ix':833, 'i':28710, '#':28771, '1':28740, '2':28750, '7':28787, '3':28770, '':13, '-':28733, ' I':315, ''':28742, 'm':28719, ' a':264, ' Dis':3433, 'cord':19056, ' chat':10706, ' AI':16107, '':13, '-':28733, ' I':315, ' can':541, ' only':865, ' generate':8270, ' text':2245, '':13, '-':28733, ' I':315, ' can':541, ' write':3324, ' code':2696, ' blocks':9478, ' in':297, ' mark':1716, 'down':3254, ' if':513, ' z':686, '…':30469, '‘':215, '':131, ' asks':12373, ' code':2696, '':13, '-':28733, ' I':315, ' can':541, ' make':1038, ' mistakes':17179, ' sometimes':4662, ',':28725, ' z':686, '…':30469, '‘':215, '':131, ' have':506, ' to':298, ' verify':11630, ' my':586, ' answer':4372, '':13, '':13, 'I':28737, ' should':1023, ' respect':3116, ' the':272, 'ses':6065, ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705 ]
+[1706123628] n_past = 187
+[1706123628] sampled token:    13: '
+'
+[1706123628] last: [ ' should':1023, ' respect':3116, ' the':272, 'ses':6065, ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13 ]
+[1706123628] n_remain: -2
+[1706123628] eval: [ '':13 ]
+[1706123628] n_past = 188
+[1706123628] sampled token:    13: '
+'
+[1706123628] last: [ ' respect':3116, ' the':272, 'ses':6065, ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13 ]
+[1706123628] n_remain: -3
+[1706123628] eval: [ '':13 ]
+[1706123628] n_past = 189
+[1706123628] sampled token: 28739: '"'
+[1706123628] last: [ ' the':272, 'ses':6065, ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739 ]
+[1706123628] n_remain: -4
+[1706123628] eval: [ '"':28739 ]
+[1706123628] n_past = 190
+[1706123628] sampled token:  1014: 'The'
+[1706123628] last: [ 'ses':6065, ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014 ]
+[1706123628] n_remain: -5
+[1706123628] eval: [ 'The':1014 ]
+[1706123628] n_past = 191
+[1706123628] sampled token:  1474: ' number'
+[1706123628] last: [ ' rules':5879, ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474 ]
+[1706123628] n_remain: -6
+[1706123628] eval: [ ' number':1474 ]
+[1706123628] n_past = 192
+[1706123628] sampled token:   302: ' of'
+[1706123628] last: [ ':':28747, '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302 ]
+[1706123628] n_remain: -7
+[1706123628] eval: [ ' of':302 ]
+[1706123628] n_past = 193
+[1706123628] sampled token:  8139: ' prime'
+[1706123628] last: [ '':13, '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139 ]
+[1706123628] n_remain: -8
+[1706123628] eval: [ ' prime':8139 ]
+[1706123628] n_past = 194
+[1706123628] sampled token:  5551: ' numbers'
+[1706123628] last: [ '-':28733, ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551 ]
+[1706123628] n_remain: -9
+[1706123628] eval: [ ' numbers':5551 ]
+[1706123628] n_past = 195
+[1706123628] sampled token:  2108: ' less'
+[1706123628] last: [ ' I':315, ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108 ]
+[1706123628] n_remain: -10
+[1706123628] eval: [ ' less':2108 ]
+[1706123628] n_past = 196
+[1706123628] sampled token:   821: ' than'
+[1706123628] last: [ ' should':1023, ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821 ]
+[1706123628] n_remain: -11
+[1706123628] eval: [ ' than':821 ]
+[1706123628] n_past = 197
+[1706123628] sampled token: 28705: ' '
+[1706123628] last: [ ' only':865, ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705 ]
+[1706123628] n_remain: -12
+[1706123628] eval: [ ' ':28705 ]
+[1706123628] n_past = 198
+[1706123628] sampled token: 28740: '1'
+[1706123628] last: [ ' answer':4372, ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740 ]
+[1706123628] n_remain: -13
+[1706123628] eval: [ '1':28740 ]
+[1706123628] n_past = 199
+[1706123628] sampled token: 28734: '0'
+[1706123628] last: [ ' one':624, ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734 ]
+[1706123628] n_remain: -14
+[1706123628] eval: [ '0':28734 ]
+[1706123628] n_past = 200
+[1706123628] sampled token:   349: ' is'
+[1706123628] last: [ ' time':727, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349 ]
+[1706123628] n_remain: -15
+[1706123628] eval: [ ' is':349 ]
+[1706123628] n_past = 201
+[1706123628] sampled token: 28705: ' '
+[1706123628] last: [ '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705 ]
+[1706123628] n_remain: -16
+[1706123628] eval: [ ' ':28705 ]
+[1706123629] n_past = 202
+[1706123629] sampled token: 28781: '4'
+[1706123629] last: [ '-':28733, ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781 ]
+[1706123629] n_remain: -17
+[1706123629] eval: [ '4':28781 ]
+[1706123629] n_past = 203
+[1706123629] sampled token: 28747: ':'
+[1706123629] last: [ ' I':315, ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747 ]
+[1706123629] n_remain: -18
+[1706123629] eval: [ ':':28747 ]
+[1706123629] n_past = 204
+[1706123629] sampled token: 28705: ' '
+[1706123629] last: [ ' should':1023, ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705 ]
+[1706123629] n_remain: -19
+[1706123629] eval: [ ' ':28705 ]
+[1706123629] n_past = 205
+[1706123629] sampled token: 28750: '2'
+[1706123629] last: [ ' answer':4372, ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750 ]
+[1706123629] n_remain: -20
+[1706123629] eval: [ '2':28750 ]
+[1706123629] n_past = 206
+[1706123629] sampled token: 28725: ','
+[1706123629] last: [ ' like':737, ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725 ]
+[1706123629] n_remain: -21
+[1706123629] eval: [ ',':28725 ]
+[1706123629] n_past = 207
+[1706123629] sampled token: 28705: ' '
+[1706123629] last: [ ' a':264, ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705 ]
+[1706123629] n_remain: -22
+[1706123629] eval: [ ' ':28705 ]
+[1706123629] n_past = 208
+[1706123629] sampled token: 28770: '3'
+[1706123629] last: [ ' human':2930, '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770 ]
+[1706123629] n_remain: -23
+[1706123629] eval: [ '3':28770 ]
+[1706123629] n_past = 209
+[1706123629] sampled token: 28725: ','
+[1706123629] last: [ '':13, '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725 ]
+[1706123629] n_remain: -24
+[1706123629] eval: [ ',':28725 ]
+[1706123629] n_past = 210
+[1706123629] sampled token: 28705: ' '
+[1706123629] last: [ '-':28733, ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705 ]
+[1706123629] n_remain: -25
+[1706123629] eval: [ ' ':28705 ]
+[1706123629] n_past = 211
+[1706123629] sampled token: 28782: '5'
+[1706123629] last: [ ' I':315, ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782 ]
+[1706123629] n_remain: -26
+[1706123629] eval: [ '5':28782 ]
+[1706123629] n_past = 212
+[1706123629] sampled token: 28725: ','
+[1706123629] last: [ ' should':1023, ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725 ]
+[1706123629] n_remain: -27
+[1706123629] eval: [ ',':28725 ]
+[1706123629] n_past = 213
+[1706123629] sampled token:   304: ' and'
+[1706123629] last: [ ' avoid':4461, ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304 ]
+[1706123629] n_remain: -28
+[1706123629] eval: [ ' and':304 ]
+[1706123629] n_past = 214
+[1706123629] sampled token: 28705: ' '
+[1706123629] last: [ ' em':877, 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705 ]
+[1706123629] n_remain: -29
+[1706123629] eval: [ ' ':28705 ]
+[1706123629] n_past = 215
+[1706123629] sampled token: 28787: '7'
+[1706123629] last: [ 'oj':6054, 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787 ]
+[1706123629] n_remain: -30
+[1706123629] eval: [ '7':28787 ]
+[1706123629] n_past = 216
+[1706123629] sampled token:   611: '."'
+[1706123629] last: [ 'is':278, '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611 ]
+[1706123629] n_remain: -31
+[1706123629] eval: [ '."':611 ]
+[1706123629] n_past = 217
+[1706123629] sampled token:    13: '
+'
+[1706123629] last: [ '':13, '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13 ]
+[1706123629] n_remain: -32
+[1706123629] eval: [ '':13 ]
+[1706123629] n_past = 218
+[1706123629] sampled token:    13: '
+'
+[1706123629] last: [ '-':28733, ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13 ]
+[1706123629] n_remain: -33
+[1706123629] eval: [ '':13 ]
+[1706123630] n_past = 219
+[1706123630] sampled token:  3381: 'If'
+[1706123630] last: [ ' I':315, ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381 ]
+[1706123630] n_remain: -34
+[1706123630] eval: [ 'If':3381 ]
+[1706123630] n_past = 220
+[1706123630] sampled token:   368: ' you'
+[1706123630] last: [ ' should':1023, ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368 ]
+[1706123630] n_remain: -35
+[1706123630] eval: [ ' you':368 ]
+[1706123630] n_past = 221
+[1706123630] sampled token:   506: ' have'
+[1706123630] last: [ ' not':459, ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506 ]
+[1706123630] n_remain: -36
+[1706123630] eval: [ ' have':506 ]
+[1706123630] n_past = 222
+[1706123630] sampled token:   264: ' a'
+[1706123630] last: [ ' repeat':13750, ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264 ]
+[1706123630] n_remain: -37
+[1706123630] eval: [ ' a':264 ]
+[1706123630] n_past = 223
+[1706123630] sampled token:  2996: ' question'
+[1706123630] last: [ ' the':272, ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996 ]
+[1706123630] n_remain: -38
+[1706123630] eval: [ ' question':2996 ]
+[1706123630] n_past = 224
+[1706123630] sampled token: 28725: ','
+[1706123630] last: [ ' rules':5879, '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725 ]
+[1706123630] n_remain: -39
+[1706123630] eval: [ ',':28725 ]
+[1706123630] n_past = 225
+[1706123630] sampled token:  4665: ' please'
+[1706123630] last: [ '':13, '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665 ]
+[1706123630] n_remain: -40
+[1706123630] eval: [ ' please':4665 ]
+[1706123630] n_past = 226
+[1706123630] sampled token:  1212: ' type'
+[1706123630] last: [ '-':28733, ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212 ]
+[1706123630] n_remain: -41
+[1706123630] eval: [ ' type':1212 ]
+[1706123630] n_past = 227
+[1706123630] sampled token:   378: ' it'
+[1706123630] last: [ ' I':315, ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378 ]
+[1706123630] n_remain: -42
+[1706123630] eval: [ ' it':378 ]
+[1706123630] n_past = 228
+[1706123630] sampled token:   390: ' as'
+[1706123630] last: [ ' should':1023, ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390 ]
+[1706123630] n_remain: -43
+[1706123630] eval: [ ' as':390 ]
+[1706123630] n_past = 229
+[1706123630] sampled token:   264: ' a'
+[1706123630] last: [ ' answer':4372, ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264 ]
+[1706123630] n_remain: -44
+[1706123630] eval: [ ' a':264 ]
+[1706123630] n_past = 230
+[1706123630] sampled token:   633: ' new'
+[1706123630] last: [ ' with':395, ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633 ]
+[1706123630] n_remain: -45
+[1706123630] eval: [ ' new':633 ]
+[1706123630] n_past = 231
+[1706123630] sampled token:  2928: ' message'
+[1706123630] last: [ ' one':624, ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928 ]
+[1706123630] n_remain: -46
+[1706123630] eval: [ ' message':2928 ]
+[1706123630] n_past = 232
+[1706123630] sampled token: 28725: ','
+[1706123630] last: [ ' short':2485, ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725 ]
+[1706123630] n_remain: -47
+[1706123630] eval: [ ',':28725 ]
+[1706123630] n_past = 233
+[1706123630] sampled token:   304: ' and'
+[1706123630] last: [ ' message':2928, '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304 ]
+[1706123630] n_remain: -48
+[1706123630] eval: [ ' and':304 ]
+[1706123630] n_past = 234
+[1706123630] sampled token:   315: ' I'
+[1706123630] last: [ '':13, '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315 ]
+[1706123630] n_remain: -49
+[1706123630] eval: [ ' I':315 ]
+[1706123630] n_past = 235
+[1706123630] sampled token:   622: ' will'
+[1706123630] last: [ '':13, 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622 ]
+[1706123630] n_remain: -50
+[1706123630] eval: [ ' will':622 ]
+[1706123631] n_past = 236
+[1706123631] sampled token:   511: ' do'
+[1706123631] last: [ 'z':28764, '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511 ]
+[1706123631] n_remain: -51
+[1706123631] eval: [ ' do':511 ]
+[1706123631] n_past = 237
+[1706123631] sampled token:   586: ' my'
+[1706123631] last: [ '…':30469, '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586 ]
+[1706123631] n_remain: -52
+[1706123631] eval: [ ' my':586 ]
+[1706123631] n_past = 238
+[1706123631] sampled token:  1489: ' best'
+[1706123631] last: [ '‘':215, '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489 ]
+[1706123631] n_remain: -53
+[1706123631] eval: [ ' best':1489 ]
+[1706123631] n_past = 239
+[1706123631] sampled token:   298: ' to'
+[1706123631] last: [ '':131, ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298 ]
+[1706123631] n_remain: -54
+[1706123631] eval: [ ' to':298 ]
+[1706123631] n_past = 240
+[1706123631] sampled token:  1316: ' help'
+[1706123631] last: [ ' asked':2261, ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316 ]
+[1706123631] n_remain: -55
+[1706123631] eval: [ ' help':1316 ]
+[1706123631] n_past = 241
+[1706123631] sampled token:  4372: ' answer'
+[1706123631] last: [ ' ':28705, '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372 ]
+[1706123631] n_remain: -56
+[1706123631] eval: [ ' answer':4372 ]
+[1706123631] n_past = 242
+[1706123631] sampled token:   378: ' it'
+[1706123631] last: [ '':30323, '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378 ]
+[1706123631] n_remain: -57
+[1706123631] eval: [ ' it':378 ]
+[1706123631] n_past = 243
+[1706123631] sampled token: 28723: '.'
+[1706123631] last: [ '':13, 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723 ]
+[1706123631] n_remain: -58
+[1706123631] eval: [ '.':28723 ]
+[1706123631] n_past = 244
+[1706123631] sampled token:  1047: ' If'
+[1706123631] last: [ 'This':3260, ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047 ]
+[1706123631] n_remain: -59
+[1706123631] eval: [ ' If':1047 ]
+[1706123631] n_past = 245
+[1706123631] sampled token:   272: ' the'
+[1706123631] last: [ ' is':349, ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272 ]
+[1706123631] n_remain: -60
+[1706123631] eval: [ ' the':272 ]
+[1706123631] n_past = 246
+[1706123631] sampled token:  2928: ' message'
+[1706123631] last: [ ' my':586, ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928 ]
+[1706123631] n_remain: -61
+[1706123631] eval: [ ' message':2928 ]
+[1706123631] n_past = 247
+[1706123631] sampled token:  5532: ' includes'
+[1706123631] last: [ ' answer':4372, ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532 ]
+[1706123631] n_remain: -62
+[1706123631] eval: [ ' includes':5532 ]
+[1706123631] n_past = 248
+[1706123631] sampled token:   396: ' an'
+[1706123631] last: [ ':':28747, ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396 ]
+[1706123631] n_remain: -63
+[1706123631] eval: [ ' an':396 ]
+[1706123631] n_past = 249
+[1706123631] sampled token:  3469: ' image'
+[1706123631] last: [ ' ':28705, '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469 ]
+[1706123631] n_remain: -64
+[1706123631] eval: [ ' image':3469 ]
+[1706123631] n_past = 250
+[1706123631] sampled token:   442: ' or'
+[1706123631] last: [ '':13, '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442 ]
+[1706123631] n_remain: -65
+[1706123631] eval: [ ' or':442 ]
+[1706123631] n_past = 251
+[1706123631] sampled token:   264: ' a'
+[1706123631] last: [ '':13, '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264 ]
+[1706123631] n_remain: -66
+[1706123631] eval: [ ' a':264 ]
+[1706123631] n_past = 252
+[1706123631] sampled token:  1043: ' long'
+[1706123631] last: [ '"':28739, 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043 ]
+[1706123631] n_remain: -67
+[1706123631] eval: [ ' long':1043 ]
+[1706123632] n_past = 253
+[1706123632] sampled token:  2245: ' text'
+[1706123632] last: [ 'The':1014, ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245 ]
+[1706123632] n_remain: -68
+[1706123632] eval: [ ' text':2245 ]
+[1706123632] n_past = 254
+[1706123632] sampled token: 28725: ','
+[1706123632] last: [ ' number':1474, ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725 ]
+[1706123632] n_remain: -69
+[1706123632] eval: [ ',':28725 ]
+[1706123632] n_past = 255
+[1706123632] sampled token:  4665: ' please'
+[1706123632] last: [ ' of':302, ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665 ]
+[1706123632] n_remain: -70
+[1706123632] eval: [ ' please':4665 ]
+[1706123632] n_past = 256
+[1706123632] sampled token:  4080: ' send'
+[1706123632] last: [ ' prime':8139, ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080 ]
+[1706123632] n_remain: -71
+[1706123632] eval: [ ' send':4080 ]
+[1706123632] n_past = 257
+[1706123632] sampled token:   378: ' it'
+[1706123632] last: [ ' numbers':5551, ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378 ]
+[1706123632] n_remain: -72
+[1706123632] eval: [ ' it':378 ]
+[1706123632] n_past = 258
+[1706123632] sampled token:   390: ' as'
+[1706123632] last: [ ' less':2108, ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390 ]
+[1706123632] n_remain: -73
+[1706123632] eval: [ ' as':390 ]
+[1706123632] n_past = 259
+[1706123632] sampled token:   264: ' a'
+[1706123632] last: [ ' than':821, ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264 ]
+[1706123632] n_remain: -74
+[1706123632] eval: [ ' a':264 ]
+[1706123632] n_past = 260
+[1706123632] sampled token:  7681: ' separate'
+[1706123632] last: [ ' ':28705, '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681 ]
+[1706123632] n_remain: -75
+[1706123632] eval: [ ' separate':7681 ]
+[1706123632] n_past = 261
+[1706123632] sampled token:  2928: ' message'
+[1706123632] last: [ '1':28740, '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928 ]
+[1706123632] n_remain: -76
+[1706123632] eval: [ ' message':2928 ]
+[1706123632] n_past = 262
+[1706123632] sampled token:  3519: ' instead'
+[1706123632] last: [ '0':28734, ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519 ]
+[1706123632] n_remain: -77
+[1706123632] eval: [ ' instead':3519 ]
+[1706123632] n_past = 263
+[1706123632] sampled token:   579: ' so'
+[1706123632] last: [ ' is':349, ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579 ]
+[1706123632] n_remain: -78
+[1706123632] eval: [ ' so':579 ]
+[1706123632] n_past = 264
+[1706123632] sampled token:   369: ' that'
+[1706123632] last: [ ' ':28705, '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369 ]
+[1706123632] n_remain: -79
+[1706123632] eval: [ ' that':369 ]
+[1706123632] n_past = 265
+[1706123632] sampled token:   315: ' I'
+[1706123632] last: [ '4':28781, ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315 ]
+[1706123632] n_remain: -80
+[1706123632] eval: [ ' I':315 ]
+[1706123632] n_past = 266
+[1706123632] sampled token:   541: ' can'
+[1706123632] last: [ ':':28747, ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541 ]
+[1706123632] n_remain: -81
+[1706123632] eval: [ ' can':541 ]
+[1706123632] n_past = 267
+[1706123632] sampled token:  3232: ' focus'
+[1706123632] last: [ ' ':28705, '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232 ]
+[1706123632] n_remain: -82
+[1706123632] eval: [ ' focus':3232 ]
+[1706123632] n_past = 268
+[1706123632] sampled token:   356: ' on'
+[1706123632] last: [ '2':28750, ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356 ]
+[1706123632] n_remain: -83
+[1706123632] eval: [ ' on':356 ]
+[1706123632] n_past = 269
+[1706123632] sampled token:  5239: ' giving'
+[1706123632] last: [ ',':28725, ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239 ]
+[1706123632] n_remain: -84
+[1706123632] eval: [ ' giving':5239 ]
+[1706123633] n_past = 270
+[1706123633] sampled token:   264: ' a'
+[1706123633] last: [ ' ':28705, '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264 ]
+[1706123633] n_remain: -85
+[1706123633] eval: [ ' a':264 ]
+[1706123633] n_past = 271
+[1706123633] sampled token:  3081: ' clear'
+[1706123633] last: [ '3':28770, ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081 ]
+[1706123633] n_remain: -86
+[1706123633] eval: [ ' clear':3081 ]
+[1706123633] n_past = 272
+[1706123633] sampled token:   304: ' and'
+[1706123633] last: [ ',':28725, ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304 ]
+[1706123633] n_remain: -87
+[1706123633] eval: [ ' and':304 ]
+[1706123633] n_past = 273
+[1706123633] sampled token:  3078: ' conc'
+[1706123633] last: [ ' ':28705, '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078 ]
+[1706123633] n_remain: -88
+[1706123633] eval: [ ' conc':3078 ]
+[1706123633] n_past = 274
+[1706123633] sampled token:   864: 'ise'
+[1706123633] last: [ '5':28782, ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864 ]
+[1706123633] n_remain: -89
+[1706123633] eval: [ 'ise':864 ]
+[1706123633] n_past = 275
+[1706123633] sampled token:  4372: ' answer'
+[1706123633] last: [ ',':28725, ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372 ]
+[1706123633] n_remain: -90
+[1706123633] eval: [ ' answer':4372 ]
+[1706123633] n_past = 276
+[1706123633] sampled token: 28723: '.'
+[1706123633] last: [ ' and':304, ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723 ]
+[1706123633] n_remain: -91
+[1706123633] eval: [ '.':28723 ]
+[1706123633] n_past = 277
+[1706123633] sampled token:   315: ' I'
+[1706123633] last: [ ' ':28705, '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315 ]
+[1706123633] n_remain: -92
+[1706123633] eval: [ ' I':315 ]
+[1706123633] n_past = 278
+[1706123633] sampled token:   837: ' am'
+[1706123633] last: [ '7':28787, '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837 ]
+[1706123633] n_remain: -93
+[1706123633] eval: [ ' am':837 ]
+[1706123633] n_past = 279
+[1706123633] sampled token:  5682: ' designed'
+[1706123633] last: [ '."':611, '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682 ]
+[1706123633] n_remain: -94
+[1706123633] eval: [ ' designed':5682 ]
+[1706123633] n_past = 280
+[1706123633] sampled token:   298: ' to'
+[1706123633] last: [ '':13, '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298 ]
+[1706123633] n_remain: -95
+[1706123633] eval: [ ' to':298 ]
+[1706123633] n_past = 281
+[1706123633] sampled token:  1316: ' help'
+[1706123633] last: [ '':13, 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316 ]
+[1706123633] n_remain: -96
+[1706123633] eval: [ ' help':1316 ]
+[1706123633] n_past = 282
+[1706123633] sampled token:  4372: ' answer'
+[1706123633] last: [ 'If':3381, ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372 ]
+[1706123633] n_remain: -97
+[1706123633] eval: [ ' answer':4372 ]
+[1706123633] n_past = 283
+[1706123633] sampled token: 11049: ' math'
+[1706123633] last: [ ' you':368, ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049 ]
+[1706123633] n_remain: -98
+[1706123633] eval: [ ' math':11049 ]
+[1706123633] n_past = 284
+[1706123633] sampled token: 28725: ','
+[1706123633] last: [ ' have':506, ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725 ]
+[1706123633] n_remain: -99
+[1706123633] eval: [ ',':28725 ]
+[1706123633] n_past = 285
+[1706123633] sampled token:  6691: ' science'
+[1706123633] last: [ ' a':264, ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691 ]
+[1706123633] n_remain: -100
+[1706123633] eval: [ ' science':6691 ]
+[1706123633] n_past = 286
+[1706123633] sampled token: 28725: ','
+[1706123633] last: [ ' question':2996, ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725 ]
+[1706123633] n_remain: -101
+[1706123633] eval: [ ',':28725 ]
+[1706123634] n_past = 287
+[1706123634] sampled token:   304: ' and'
+[1706123634] last: [ ',':28725, ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304 ]
+[1706123634] n_remain: -102
+[1706123634] eval: [ ' and':304 ]
+[1706123634] n_past = 288
+[1706123634] sampled token: 16292: ' programming'
+[1706123634] last: [ ' please':4665, ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292 ]
+[1706123634] n_remain: -103
+[1706123634] eval: [ ' programming':16292 ]
+[1706123634] n_past = 289
+[1706123634] sampled token:  5202: ' related'
+[1706123634] last: [ ' type':1212, ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202 ]
+[1706123634] n_remain: -104
+[1706123634] eval: [ ' related':5202 ]
+[1706123634] n_past = 290
+[1706123634] sampled token:  4224: ' questions'
+[1706123634] last: [ ' it':378, ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224 ]
+[1706123634] n_remain: -105
+[1706123634] eval: [ ' questions':4224 ]
+[1706123634] n_past = 291
+[1706123634] sampled token: 28725: ','
+[1706123634] last: [ ' as':390, ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725 ]
+[1706123634] n_remain: -106
+[1706123634] eval: [ ',':28725 ]
+[1706123634] n_past = 292
+[1706123634] sampled token:   562: ' but'
+[1706123634] last: [ ' a':264, ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562 ]
+[1706123634] n_remain: -107
+[1706123634] eval: [ ' but':562 ]
+[1706123634] n_past = 293
+[1706123634] sampled token:   315: ' I'
+[1706123634] last: [ ' new':633, ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315 ]
+[1706123634] n_remain: -108
+[1706123634] eval: [ ' I':315 ]
+[1706123634] n_past = 294
+[1706123634] sampled token:   541: ' can'
+[1706123634] last: [ ' message':2928, ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541 ]
+[1706123634] n_remain: -109
+[1706123634] eval: [ ' can':541 ]
+[1706123634] n_past = 295
+[1706123634] sampled token:   835: ' also'
+[1706123634] last: [ ',':28725, ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835 ]
+[1706123634] n_remain: -110
+[1706123634] eval: [ ' also':835 ]
+[1706123634] n_past = 296
+[1706123634] sampled token:  1464: ' try'
+[1706123634] last: [ ' and':304, ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464 ]
+[1706123634] n_remain: -111
+[1706123634] eval: [ ' try':1464 ]
+[1706123634] n_past = 297
+[1706123634] sampled token:   298: ' to'
+[1706123634] last: [ ' I':315, ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298 ]
+[1706123634] n_remain: -112
+[1706123634] eval: [ ' to':298 ]
+[1706123634] n_past = 298
+[1706123634] sampled token:  1316: ' help'
+[1706123634] last: [ ' will':622, ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316 ]
+[1706123634] n_remain: -113
+[1706123634] eval: [ ' help':1316 ]
+[1706123634] n_past = 299
+[1706123634] sampled token:   395: ' with'
+[1706123634] last: [ ' do':511, ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395 ]
+[1706123634] n_remain: -114
+[1706123634] eval: [ ' with':395 ]
+[1706123634] n_past = 300
+[1706123634] sampled token:  2952: ' general'
+[1706123634] last: [ ' my':586, ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952 ]
+[1706123634] n_remain: -115
+[1706123634] eval: [ ' general':2952 ]
+[1706123634] n_past = 301
+[1706123634] sampled token:  4788: ' knowledge'
+[1706123634] last: [ ' best':1489, ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788 ]
+[1706123634] n_remain: -116
+[1706123634] eval: [ ' knowledge':4788 ]
+[1706123634] n_past = 302
+[1706123634] sampled token:  4224: ' questions'
+[1706123634] last: [ ' to':298, ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224 ]
+[1706123634] n_remain: -117
+[1706123634] eval: [ ' questions':4224 ]
+[1706123635] n_past = 303
+[1706123635] sampled token: 28723: '.'
+[1706123635] last: [ ' help':1316, ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723 ]
+[1706123635] n_remain: -118
+[1706123635] eval: [ '.':28723 ]
+[1706123635] n_past = 304
+[1706123635] sampled token: 22823: ' Enjoy'
+[1706123635] last: [ ' answer':4372, ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823 ]
+[1706123635] n_remain: -119
+[1706123635] eval: [ ' Enjoy':22823 ]
+[1706123635] n_past = 305
+[1706123635] sampled token:   574: ' your'
+[1706123635] last: [ ' it':378, '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574 ]
+[1706123635] n_remain: -120
+[1706123635] eval: [ ' your':574 ]
+[1706123635] n_past = 306
+[1706123635] sampled token:   727: ' time'
+[1706123635] last: [ '.':28723, ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727 ]
+[1706123635] n_remain: -121
+[1706123635] eval: [ ' time':727 ]
+[1706123635] n_past = 307
+[1706123635] sampled token:   297: ' in'
+[1706123635] last: [ ' If':1047, ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297 ]
+[1706123635] n_remain: -122
+[1706123635] eval: [ ' in':297 ]
+[1706123635] n_past = 308
+[1706123635] sampled token:   456: ' this'
+[1706123635] last: [ ' the':272, ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456 ]
+[1706123635] n_remain: -123
+[1706123635] eval: [ ' this':456 ]
+[1706123635] n_past = 309
+[1706123635] sampled token:  3433: ' Dis'
+[1706123635] last: [ ' message':2928, ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433 ]
+[1706123635] n_remain: -124
+[1706123635] eval: [ ' Dis':3433 ]
+[1706123635] n_past = 310
+[1706123635] sampled token: 19056: 'cord'
+[1706123635] last: [ ' includes':5532, ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433, 'cord':19056 ]
+[1706123635] n_remain: -125
+[1706123635] eval: [ 'cord':19056 ]
+[1706123635] n_past = 311
+[1706123635] sampled token:  5116: ' server'
+[1706123635] last: [ ' an':396, ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433, 'cord':19056, ' server':5116 ]
+[1706123635] n_remain: -126
+[1706123635] eval: [ ' server':5116 ]
+[1706123635] n_past = 312
+[1706123635] sampled token: 28808: '!'
+[1706123635] last: [ ' image':3469, ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433, 'cord':19056, ' server':5116, '!':28808 ]
+[1706123635] n_remain: -127
+[1706123635] eval: [ '!':28808 ]
+[1706123635] n_past = 313
+[1706123635] sampled token: 28705: ' '
+[1706123635] last: [ ' or':442, ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433, 'cord':19056, ' server':5116, '!':28808, ' ':28705 ]
+[1706123635] n_remain: -128
+[1706123635] eval: [ ' ':28705 ]
+[1706123635] n_past = 314
+[1706123635] sampled token: 30464: 'üòä'
+[1706123635] last: [ ' a':264, ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433, 'cord':19056, ' server':5116, '!':28808, ' ':28705, '':30464 ]
+[1706123635] n_remain: -129
+[1706123635] eval: [ '':30464 ]
+[1706123635] n_past = 315
+[1706123635] sampled token:     2: ''
+[1706123635] last: [ ' long':1043, ' text':2245, ',':28725, ' please':4665, ' send':4080, ' it':378, ' as':390, ' a':264, ' separate':7681, ' message':2928, ' instead':3519, ' so':579, ' that':369, ' I':315, ' can':541, ' focus':3232, ' on':356, ' giving':5239, ' a':264, ' clear':3081, ' and':304, ' conc':3078, 'ise':864, ' answer':4372, '.':28723, ' I':315, ' am':837, ' designed':5682, ' to':298, ' help':1316, ' answer':4372, ' math':11049, ',':28725, ' science':6691, ',':28725, ' and':304, ' programming':16292, ' related':5202, ' questions':4224, ',':28725, ' but':562, ' I':315, ' can':541, ' also':835, ' try':1464, ' to':298, ' help':1316, ' with':395, ' general':2952, ' knowledge':4788, ' questions':4224, '.':28723, ' Enjoy':22823, ' your':574, ' time':727, ' in':297, ' this':456, ' Dis':3433, 'cord':19056, ' server':5116, '!':28808, ' ':28705, '':30464, '':2 ]
+[1706123635] n_remain: -130
+[1706123635] found EOS token
+[1706123635]  [end of text]
+[1706123635] 
+[1706123635] llama_print_timings:        load time =    1448,22 ms
+[1706123635] llama_print_timings:      sample time =      11,40 ms /   129 runs   (    0,09 ms per token, 11311,82 tokens per second)
+[1706123635] llama_print_timings: prompt eval time =    1268,33 ms /   187 tokens (    6,78 ms per token,   147,44 tokens per second)
+[1706123635] llama_print_timings:        eval time =    7561,52 ms /   128 runs   (   59,07 ms per token,    16,93 tokens per second)
+[1706123635] llama_print_timings:       total time =    8860,08 ms /   315 tokens
+[1706123635] ggml_metal_free: deallocating
+[1706123635] Log end

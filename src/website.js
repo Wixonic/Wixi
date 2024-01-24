@@ -130,7 +130,7 @@ const init = () => {
 				socket.disconnect(true);
 			});
 		} catch (e) {
-			error(`${socket?.client?.conn?.remoteAddress ?? "Unknow IP"} - ${e}`);
+			error(`${socket?.client?.conn?.remoteAddress ?? "Unknow IP"} - Failed to connect: ${e}`);
 			socket.disconnect(true);
 		}
 	});
@@ -191,23 +191,28 @@ const init = () => {
 						} else {
 							try {
 								const user = await User.fromAccessTokenExchange(accessTokenExchange);
-								const key = crypto.randomUUID();
 
-								if (!fs.existsSync(path.join(User.folder(user.id)))) fs.mkdirSync(path.join(User.folder(user.id)), { recursive: true });
-								fs.writeFileSync(path.join(User.folder(user.id), "key"), key, "ascii");
-								log(`${user.id} - Saved key`);
+								if (user?.token?.available) {
+									const key = crypto.randomUUID();
 
-								res.setHeader("location", `/?uid=${user.id}&key=${key}`).sendStatus(308);
+									if (!fs.existsSync(path.join(User.folder(user.id)))) fs.mkdirSync(path.join(User.folder(user.id)), { recursive: true });
+									fs.writeFileSync(path.join(User.folder(user.id), "key"), key, "ascii");
+
+									res.setHeader("location", `/?uid=${user.id}&key=${key}`).sendStatus(308);
+								} else {
+									user.warn("Not in WixiLand, or the token is not available for some reason");
+									res.setHeader("location", "https://go.wixonic.fr/discord").sendStatus(308);
+								}
 							} catch (e) {
 								e = "Failed to initialize user - " + e;
 								error(e);
 								res.status(500).send(e);
 							}
 						}
-					} catch {
-						const e = "Failed to parse accessTokenExchange";
-						error(e);
-						res.status(500).send(e);
+					} catch (e) {
+						const message = "Failed to parse accessTokenExchange";
+						error(`${message}: ${e}`);
+						res.status(500).send(message);
 					}
 				});
 			});

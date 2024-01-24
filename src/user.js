@@ -3,7 +3,7 @@ const path = require("path");
 const https = require("https");
 
 const { guild } = require("./client");
-const { info, log } = require("./console");
+const { error, info, log, warn } = require("./console");
 
 const settings = require("./settings");
 
@@ -86,8 +86,6 @@ class User {
 
 		if (token) {
 			const user = new User(userId, token);
-			await user.check(true);
-
 			return user;
 		}
 
@@ -99,7 +97,6 @@ class User {
 
 		if (fs.existsSync(file)) {
 			const dbKey = fs.readFileSync(file, "ascii");
-
 			if (dbKey == userKey) return await User.fromFile(userId);
 		}
 
@@ -125,56 +122,63 @@ class User {
 	// Check if checked more than one day ago or if force is true
 	async check(force = false) {
 		if (this.checked < Date.now() - 1000 * 60 * 60 * 12 || force) {
-			const member = await guild().members.fetch(this.id, { force: true });
+			try {
+				const member = await guild().members.fetch(this.id, { force: true });
 
-			const connections = await this.request("/users/@me/connections");
-			const guilds = await this.request("/users/@me/guilds");
+				const connections = await this.request("/users/@me/connections");
+				const guilds = await this.request("/users/@me/guilds");
 
-			const roles = {
-				cc: connections.find((connection) => ["twitch", "youtube"].includes(connection.type) && connection.verified),
-				developer: connections.find((connection) => connection.type == "github" && connection.verified),
-				gamer: (connections.find((connection) => ["battlenet", "epicgames", "leagueoflegends", "playstation", "riotgames", "steam", "xbox"].includes(connection.type) && connection.verified) || member.roles.cache.hasAny([settings.roles.minecraft, settings.roles.roblox])),
-				w47k3r5: guilds.find((guild) => guild.id == settings.guilds.wow)
-			};
+				const roles = {
+					cc: connections.find((connection) => ["twitch", "youtube"].includes(connection.type) && connection.verified),
+					developer: connections.find((connection) => connection.type == "github" && connection.verified),
+					gamer: (connections.find((connection) => ["battlenet", "epicgames", "leagueoflegends", "playstation", "riotgames", "steam", "xbox"].includes(connection.type) && connection.verified) || member.roles.cache.hasAny([settings.roles.minecraft, settings.roles.roblox])),
+					w47k3r5: guilds.find((guild) => guild.id == settings.guilds.wow)
+				};
 
-			if (!member.roles.cache.has(settings.roles.developer) && roles.developer) {
-				await member.roles.add(settings.roles.developer);
-				this.info("Added role Developer");
-			} else if (member.roles.cache.has(settings.roles.developer) && !roles.developer) {
-				await member.roles.remove(settings.roles.developer);
-				this.warn("Removed role Developer");
+				if (!member.roles.cache.has(settings.roles.developer) && roles.developer) {
+					await member.roles.add(settings.roles.developer);
+					this.info("Added role Developer");
+				} else if (member.roles.cache.has(settings.roles.developer) && !roles.developer) {
+					await member.roles.remove(settings.roles.developer);
+					this.warn("Removed role Developer");
+				}
+
+				if (!member.roles.cache.has(settings.roles.gamer) && roles.gamer) {
+					await member.roles.add(settings.roles.gamer);
+					this.info("Added role Gamer");
+				} else if (member.roles.cache.has(settings.roles.gamer) && !roles.gamer) {
+					await member.roles.remove(settings.roles.gamer);
+					this.warn("Removed role Gamer");
+				}
+
+				if (!member.roles.cache.has(settings.roles.w47k3r5) && roles.w47k3r5) {
+					await member.roles.add(csettings.roles.w47k3r5);
+					this.info("Added role w47k3r5");
+				} else if (member.roles.cache.has(settings.roles.w47k3r5) && !roles.w47k3r5) {
+					await member.roles.remove(settings.roles.w47k3r5);
+					this.warn("Removed role w47k3r5");
+				}
+
+				if (!member.roles.cache.has(settings.roles.cc) && !member.roles.cache.has(settings.roles.verified) && roles.cc) {
+					await member.roles.add(settings.roles.cc);
+					this.info("Added role Content Creator");
+				}
+
+				if (settings.roles.verified && !member.roles.cache.has(settings.roles.verified)) {
+					await member.roles.add(settings.roles.verified);
+					this.info("Added role Verified");
+				}
+
+				this.checked = Date.now();
+				this.saveData();
+
+				return connections;
+			} catch (e) {
+				this.error(`Failed to check member: ${e}`);
+				this.token.available = false;
+				this.saveToken();
+				return;
 			}
-
-			if (!member.roles.cache.has(settings.roles.gamer) && roles.gamer) {
-				await member.roles.add(settings.roles.gamer);
-				this.info("Added role Gamer");
-			} else if (member.roles.cache.has(settings.roles.gamer) && !roles.gamer) {
-				await member.roles.remove(settings.roles.gamer);
-				this.warn("Removed role Gamer");
-			}
-
-			if (!member.roles.cache.has(settings.roles.w47k3r5) && roles.w47k3r5) {
-				await member.roles.add(csettings.roles.w47k3r5);
-				this.info("Added role w47k3r5");
-			} else if (member.roles.cache.has(settings.roles.w47k3r5) && !roles.w47k3r5) {
-				await member.roles.remove(settings.roles.w47k3r5);
-				this.warn("Removed role w47k3r5");
-			}
-
-			if (!member.roles.cache.has(settings.roles.cc) && !member.roles.cache.has(settings.roles.verified) && roles.cc) {
-				await member.roles.add(settings.roles.cc);
-				this.info("Added role Content Creator");
-			}
-
-			if (settings.roles.verified && !member.roles.cache.has(settings.roles.verified)) {
-				await member.roles.add(settings.roles.verified);
-				this.info("Added role Verified");
-			}
-
-			this.checked = Date.now();
-			this.saveData();
-
-			return connections;
 		}
 	};
 
@@ -195,15 +199,11 @@ class User {
 		delete data.token;
 
 		fs.writeFileSync(path.join(this.folder, "user.json"), JSON.stringify(data));
-
-		this.log("Saved datas");
 	};
 
 	saveToken() {
 		if (!fs.existsSync(this.folder)) fs.mkdirSync(this.folder, { recursive: true });
 		fs.writeFileSync(path.join(this.folder, "token.json"), JSON.stringify(this.token));
-
-		this.log("Saved token");
 	};
 
 	error = (text) => error(`${this.id} - ${text}`);

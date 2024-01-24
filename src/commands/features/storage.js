@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("storage")
-		.setDescription("Allows to share big files")
+		.setDescription("Share big files on Discord")
 		.addSubcommand((subcommand) =>
 			subcommand
 				.setName("upload")
@@ -21,6 +21,12 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-
+		await interaction.reply({
+			content: "This feature doesn't work for now",
+			ephemeral: true,
+			allowedMentions: {
+				repliedUser: false
+			}
+		});
 	}
 };

@@ -1,12 +1,17 @@
-const { ActivityType, Client, GatewayIntentBits } = require("discord.js");
+const { ActivityType, Client, GatewayIntentBits, Partials } = require("discord.js");
 
 const config = require("./config");
 const settings = require("./settings");
 
 const client = new Client({
 	intents: [
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.DirectMessageTyping,
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildVoiceStates
+	],
+	partials: [
+		Partials.Channel
 	]
 });
 
