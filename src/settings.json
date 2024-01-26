@@ -1,6 +1,6 @@
 {
 	"ai": {
-		"enabled": true
+		"enabled": false
 	},
 	"guild": "1020663521530351627",
 	"guilds": {
@@ -21,7 +21,7 @@
 	},
 	"rules": {
 		"force": false,
-		"silent": true,
+		"silent": false,
 		"url": "https://discord.wixonic.fr/authorize"
 	}
 }

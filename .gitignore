@@ -1,9 +1,11 @@
 cache/
 database/
 node_modules/
+private/
 SSL/
 
 .DS_Store
 package-lock.json
 
 config.json
+main.log
