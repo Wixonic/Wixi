@@ -150,7 +150,7 @@ const init = () => {
 			prompt: "none",
 			redirect_uri: new URL("/oauth2/authorize", config.website.host).href,
 			response_type: "code",
-			scope: config.discord.oauth2.scopes,
+			scope: config.discord.oauth2.scopes.join(" "),
 			state: config.discord.oauth2.state
 		});
 
