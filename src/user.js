@@ -152,7 +152,7 @@ class User {
 				}
 
 				if (!member.roles.cache.has(settings.roles.w47k3r5) && roles.w47k3r5) {
-					await member.roles.add(csettings.roles.w47k3r5);
+					await member.roles.add(settings.roles.w47k3r5);
 					this.info("Added role w47k3r5");
 				} else if (member.roles.cache.has(settings.roles.w47k3r5) && !roles.w47k3r5) {
 					await member.roles.remove(settings.roles.w47k3r5);
