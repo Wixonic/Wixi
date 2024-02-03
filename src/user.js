@@ -62,6 +62,13 @@ class Token {
 };
 
 class User {
+	static getName = (userId) => {
+		const member = guild().members.cache.get(userId);
+
+		if (member) return member.displayName;
+		else return userId;
+	};
+
 	static folder = (userId) => `./database/users/${userId}/`;
 
 	static async fromAccessTokenExchange(accessTokenExchange) {
@@ -206,10 +213,10 @@ class User {
 		fs.writeFileSync(path.join(this.folder, "token.json"), JSON.stringify(this.token));
 	};
 
-	error = (text) => error(`${this.id} - ${text}`);
-	info = (text) => info(`${this.id} - ${text}`);
-	log = (text) => log(`${this.id} - ${text}`);
-	warn = (text) => warn(`${this.id} - ${text}`);
+	error = (text) => error(`${User.getName(this.id)} - ${text}`);
+	info = (text) => info(`${User.getName(this.id)} - ${text}`);
+	log = (text) => log(`${User.getName(this.id)} - ${text}`);
+	warn = (text) => warn(`${User.getName(this.id)} - ${text}`);
 };
 
 module.exports = {

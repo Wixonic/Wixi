@@ -21,7 +21,9 @@ module.exports = {
 		),
 
 	async execute(interaction) {
-		await interaction.reply({
+		interaction.warn("This feature doesn't work for now");
+
+		await interaction.safeReply({
 			content: "This feature doesn't work for now",
 			ephemeral: true,
 			allowedMentions: {

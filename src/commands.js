@@ -28,19 +28,32 @@ const init = () => {
 
 	client.on("interactionCreate", async (interaction) => {
 		if (interaction.isChatInputCommand()) {
+			interaction.error = (text) => error(`${interaction.user.displayName} - ${text}`);
+			interaction.log = (text) => log(`${interaction.user.displayName} - ${text}`);
+			interaction.info = (text) => info(`${interaction.user.displayName} - ${text}`);
+			interaction.warn = (text) => warn(`${interaction.user.displayName} - ${text}`);
+
+			interaction.safeReply = async (reply) => {
+				if (interaction.replied || interaction.deferred) await interaction.followUp(reply);
+				else await interaction.reply(reply);
+			};
+
 			const command = interaction.client.commands.get(interaction.commandName);
 
 			if (command) {
 				try {
-					interaction.userLog = `${interaction.user.username} - `;
+					interaction.info(interaction.toString());
 					await command.execute(interaction);
 				} catch (e) {
-					error(e);
+					interaction.error(e);
 
-					if (interaction.replied || interaction.deferred) await interaction.followUp({ content: "There was an error while executing this command.", ephemeral: true, allowedMentions: { repliedUser: false } });
-					else await interaction.reply({ content: "There was an error while executing this command.", ephemeral: true, allowedMentions: { repliedUser: false } });
+					await interaction.safeReply({ content: "There was an error while executing this command.", ephemeral: true, allowedMentions: { repliedUser: false } });
 				}
-			} else error(`No command matching ${interaction.commandName} was found.`);
+			} else {
+				const e = `No command matching "${interaction.commandName}" was found.`;
+				interaction.error(e);
+				await interaction.safeReply({ content: e, ephemeral: true, allowedMentions: { repliedUser: false } });
+			}
 		}
 	});
 

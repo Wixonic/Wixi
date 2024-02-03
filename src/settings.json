@@ -23,5 +23,9 @@
 		"force": false,
 		"silent": false,
 		"url": "https://discord.wixonic.fr/authorize"
+	},
+	"storage": {
+		"limit": true,
+		"needed": 30
 	}
 }
