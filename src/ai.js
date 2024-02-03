@@ -3,7 +3,7 @@ const cp = require("child_process");
 const AI = {
 	running: false,
 
-	model: ["mistral-7b-instruct-v0.2.Q2_K.gguf"][0],
+	model: null,
 
 	answer: (user, message) => {
 		const prompt = `Some informations:
