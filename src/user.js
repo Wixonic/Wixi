@@ -62,11 +62,32 @@ class Token {
 };
 
 class User {
-	static getName = (userId) => {
-		const member = guild().members.cache.get(userId);
+	static getName = async (userId) => {
+		let member = guild().members.cache.get(userId);
 
-		if (member) return member.displayName;
-		else return userId;
+		try {
+			member = await guild().members.fetch(userId);
+		} catch { }
+
+		if (member) {
+			if (member.nickname) return `${member.nickname} (${member.user.username})`;
+			else {
+				if (member.user.displayName != member.user.username) return `${member.displayName} (${member.user.username})`;
+				else return member.displayName;
+			}
+		} else return userId;
+	};
+
+	static getCachedName = (userId) => {
+		let member = guild().members.cache.get(userId);
+
+		if (member) {
+			if (member.nickname) return `${member.nickname} (${member.user.username})`;
+			else {
+				if (member.user.displayName != member.user.username) return `${member.displayName} (${member.user.username})`;
+				else return member.displayName;
+			}
+		} else return userId;
 	};
 
 	static folder = (userId) => `./database/users/${userId}/`;
@@ -213,10 +234,10 @@ class User {
 		fs.writeFileSync(path.join(this.folder, "token.json"), JSON.stringify(this.token));
 	};
 
-	error = (text) => error(`${User.getName(this.id)} - ${text}`);
-	info = (text) => info(`${User.getName(this.id)} - ${text}`);
-	log = (text) => log(`${User.getName(this.id)} - ${text}`);
-	warn = (text) => warn(`${User.getName(this.id)} - ${text}`);
+	error = (text) => error(`${User.getCachedName(this.id)} - ${text}`);
+	info = (text) => info(`${User.getCachedName(this.id)} - ${text}`);
+	log = (text) => log(`${User.getCachedName(this.id)} - ${text}`);
+	warn = (text) => warn(`${User.getCachedName(this.id)} - ${text}`);
 };
 
 module.exports = {

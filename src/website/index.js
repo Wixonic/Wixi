@@ -1,31 +1,6 @@
-import { io } from "https://cdn.socket.io/4.7.2/socket.io.esm.min.js";
+import { display, execute } from "/main.js";
 
-const search = new URLSearchParams(location.search);
-
-if (search.has("uid") && search.has("key")) {
-	const uid = search.get("uid");
-	const key = search.get("key");
-
-	localStorage?.setItem("uid", uid) ?? sessionStorage?.setItem("uid", uid);
-	localStorage?.setItem("uid", uid) ?? sessionStorage?.setItem("uid", uid);
-	localStorage?.setItem("key", key) ?? sessionStorage?.setItem("key", key);
-	localStorage?.setItem("key", key) ?? sessionStorage?.setItem("key", key);
-
-	search.delete("uid");
-	search.delete("key");
-
-	if (search.size > 0) location.search = "?" + search.toString();
-	else location.search = "";
-} else {
-	const socket = io({
-		auth: {
-			id: localStorage?.getItem("uid") ?? sessionStorage?.getItem("uid"),
-			key: localStorage?.getItem("key") ?? sessionStorage?.getItem("key")
-		}
-	});
-
-	const display = async (mode, data, roles) => {
-		const roleDisplay = (role, description = null) => `<div id="role-${role.id}" class="role"${roles.checked.includes(role.id) ? "" : " disabled"} value="${data.roles.includes(role.id) ? "true" : "false"}" title="${description ?? (roles.checked.includes(role.id) ? "" : "You can't get this role.")}">
+const roleDisplay = (role, description = null) => `<div id="role-${role.id}" class="role"${roles.checked.includes(role.id) ? "" : " disabled"} value="${data.roles.includes(role.id) ? "true" : "false"}" title="${description ?? (roles.checked.includes(role.id) ? "" : "You can't get this role.")}">
 	<div class="color" style="--color: ${role.color}"></div>
 	<div class="name">${role.name}</div>
 	<div class="check">
@@ -35,50 +10,47 @@ if (search.has("uid") && search.has("key")) {
 	</div>
 </div>`;
 
-		let html = "";
+display.app = (socket) => {
+	let rolesHTML = {
+		booster: "",
+		customization: "",
+		notification: "",
+		colors: "",
+		special: "",
+		other: ""
+	};
 
-		switch (mode) {
-			case "app":
-				let rolesHTML = {
-					booster: "",
-					customization: "",
-					notification: "",
-					colors: "",
-					special: "",
-					other: ""
-				};
+	for (let x in roles.all) {
+		const role = roles.all[x];
 
-				for (let x in roles.all) {
-					const role = roles.all[x];
+		switch (true) {
+			case roles.booster.id == role.id:
+				rolesHTML.booster += roleDisplay(role, roles.booster.description);
+				break;
 
-					switch (true) {
-						case roles.booster.id == role.id:
-							rolesHTML.booster += roleDisplay(role, roles.booster.description);
-							break;
+			case roles.customization.find((customizationRole) => customizationRole.id == role.id) != undefined:
+				rolesHTML.customization += roleDisplay(role, roles.customization.find((customizationRole) => customizationRole.id == role.id).description);
+				break;
 
-						case roles.customization.find((customizationRole) => customizationRole.id == role.id) != undefined:
-							rolesHTML.customization += roleDisplay(role, roles.customization.find((customizationRole) => customizationRole.id == role.id).description);
-							break;
+			case roles.notification.find((notificationRole) => notificationRole.id == role.id) != undefined:
+				rolesHTML.notification += roleDisplay(role, roles.notification.find((notificationRole) => notificationRole.id == role.id).description);
+				break;
 
-						case roles.notification.find((notificationRole) => notificationRole.id == role.id) != undefined:
-							rolesHTML.notification += roleDisplay(role, roles.notification.find((notificationRole) => notificationRole.id == role.id).description);
-							break;
+			case roles.colors.includes(role.id):
+				rolesHTML.colors += roleDisplay(role);
+				break;
 
-						case roles.colors.includes(role.id):
-							rolesHTML.colors += roleDisplay(role);
-							break;
+			case roles.special.find((specialRole) => specialRole.id == role.id) != undefined:
+				rolesHTML.special += roleDisplay(role, roles.special.find((specialRole) => specialRole.id == role.id).description);
+				break;
 
-						case roles.special.find((specialRole) => specialRole.id == role.id) != undefined:
-							rolesHTML.special += roleDisplay(role, roles.special.find((specialRole) => specialRole.id == role.id).description);
-							break;
+			default:
+				rolesHTML.other += roleDisplay(role);
+				break;
+		}
+	}
 
-						default:
-							rolesHTML.other += roleDisplay(role);
-							break;
-					}
-				}
-
-				html += `<header>
+	return `<header>
 	<button id="unauthorize" class="button">Disconnect</button>
 </header>
 
@@ -113,70 +85,25 @@ if (search.has("uid") && search.has("key")) {
 		<section class="list">${rolesHTML.other}</section>
 	</section>
 </section>`;
-				break;
+};
 
-			case "disconnected":
-				html += `<h1>Uh</h1>
-<p>You got disconnected, but don't worry, it'll reconnected as soon as possible.</p>
-<p>Are you stuck? Ask help <a href="https://discord.wixonic.fr/help" class="link">here</a>!</p>`;
-				break;
+execute.app = (socket) => {
+	document.getElementById("unauthorize").addEventListener("click", () => socket.emit("unauthorize"));
 
-			case "loader":
-				html += "Loading...";
-				break;
-
-			default:
-				mode = "default";
-				html += `<a href="https://discord.wixonic.fr/authorize" class="button">Authorize</a>
-		<p>The authorization will have to be renewed in one hour for security reasons, because this application has access to sensitive data.</p>`;
-				break;
-		}
-
-		document.body.innerHTML = `<main mode="${mode}">${html}</main>`;
-
-		switch (mode) {
-			case "app":
-				document.getElementById("unauthorize").addEventListener("click", () => socket.emit("unauthorize"));
-
-				document.getElementById("refresh").addEventListener("click", () => {
-					display("loader");
-					socket.emit("check");
-				});
-
-				for (let x in roles.all) {
-					const role = roles.all[x];
-					const tag = document.getElementById(`role-${role.id}`);
-
-					tag.addEventListener("click", () => {
-						if (roles.checked.includes(role.id)) {
-							display("loader");
-							socket.emit("role", role.id, tag.getAttribute("value") == "false");
-						} else alert(tag.title ?? "Error");
-					});
-				}
-				break;
-		}
-	};
-
-	socket.on("disconnect", (reason) => {
-		if (reason == "io server disconnect") display();
+	document.getElementById("refresh").addEventListener("click", () => {
+		display("loader", socket);
+		socket.emit("check");
 	});
 
-	socket.on("data", (data, roles) => {
-		window.data = data;
-		window.roles = roles;
-		display("app", data, roles);
-	});
+	for (let x in roles.all) {
+		const role = roles.all[x];
+		const tag = document.getElementById(`role-${role.id}`);
 
-	socket.io.on("reconnect", () => {
-		display("loader");
-		socket.emit("data");
-	});
-
-	socket.on("connect_error", (code) => {
-		if (code.message == 401) display();
-		else display("disconnected");
-	});
-
-	display("loader");
-}
+		tag.addEventListener("click", () => {
+			if (roles.checked.includes(role.id)) {
+				display("loader", socket);
+				socket.emit("role", role.id, tag.getAttribute("value") == "false");
+			} else alert(tag.title ?? "Error");
+		});
+	}
+};

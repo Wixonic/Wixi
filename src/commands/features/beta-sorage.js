@@ -1,6 +1,9 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const fs = require("fs");
+const path = require("path");
 
+const config = require("../../config");
+const { Format } = require("../../format");
 const settings = require("../../settings");
 
 module.exports = {
@@ -17,8 +20,8 @@ module.exports = {
 				.setDescription("[BETA] Download a big file")
 				.addStringOption((option) =>
 					option
-						.setName("upload-id")
-						.setDescription("The upload ID of the file")
+						.setName("token")
+						.setDescription("The token of the file")
 						.setRequired(true)
 				)
 		),
@@ -28,8 +31,32 @@ module.exports = {
 
 		switch (subcommand) {
 			case "download":
+				const downloadToken = interaction.options.getString("token", true);
+
 				await interaction.safeReply({
-					content: `Uh. Not sure I can do that right now...`,
+					components: [
+						{
+							type: 1,
+							components: [
+								{
+									style: 5,
+									label: "Download",
+									url: `https://discord.wixonic.fr/storage/download?token=${downloadToken}`,
+									type: 2
+								}
+							]
+						}
+					],
+					embeds: [
+						{
+							color: 0x0077FF,
+							description: "Click on the button below to download.",
+							footer: {
+								text: `Token: ${downloadToken}`
+							},
+							title: "Download request",
+						}
+					],
 					ephemeral: true,
 					allowedMentions: {
 						repliedUser: false
@@ -38,14 +65,40 @@ module.exports = {
 				break;
 
 			case "upload":
+				const uploadToken = "test";
+
 				const rootStats = fs.statfsSync("/");
 				const available = rootStats.bfree * rootStats.bsize - settings.storage.needed * (10 ** 9);
 
-				if (!settings.storage.limit || available > 0) {
-					console.log(available);
-				} else {
-					console.log("Not enough space");
-				}
+				await interaction.safeReply({
+					components: [
+						{
+							type: 1,
+							components: [
+								{
+									style: 5,
+									label: "Upload",
+									url: `https://discord.wixonic.fr/storage/upload?token=${uploadToken}`,
+									type: 2
+								}
+							]
+						}
+					],
+					embeds: [
+						{
+							color: 0xFF00FF,
+							description: "Click on the button below to upload a file.",
+							footer: {
+								text: `Storage available: ${Format.size(available)} • Token: ${uploadToken}`
+							},
+							title: "Upload request"
+						}
+					],
+					ephemeral: true,
+					allowedMentions: {
+						repliedUser: false
+					}
+				});
 				break;
 
 			default:
@@ -61,5 +114,39 @@ module.exports = {
 				});
 				break;
 		}
+	},
+
+	plugin: (_, router) => {
+		router.get("/storage/download", (req, res) => {
+			const url = new URL(req.url, config.website.host);
+
+			const token = url.searchParams.get("token");
+
+			if (token) {
+				const folderPath = path.join(settings.storage.path, token);
+				const dataPath = path.join(folderPath, "data.json");
+
+				if (fs.existsSync(dataPath)) res.setHeader("location", `/download/${url.search}`).sendStatus(307);
+				else res.setHeader("location", "/download/").sendStatus(307);
+			} else res.setHeader("location", "/download/").sendStatus(307);
+		});
+
+		router.get("/storage/upload", (req, res) => {
+			const url = new URL(req.url, config.website.host);
+
+			const token = url.searchParams.get("token");
+
+			if (token) {
+				const folderPath = path.join(settings.storage.path, token);
+				const dataPath = path.join(folderPath, "data.json");
+
+				if (!fs.existsSync(dataPath)) res.setHeader("location", `/upload/${url.search}`).sendStatus(307);
+				else res.setHeader("location", "/upload/").sendStatus(307);
+			} else res.setHeader("location", "/upload/").sendStatus(307);
+		});
+	},
+
+	socket: (socket) => {
+
 	}
 };

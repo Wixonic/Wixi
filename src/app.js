@@ -4,6 +4,7 @@ const fs = require("fs");
 const { client, defaultActivity } = require("./client");
 const commands = require("./commands");
 const { info } = require("./console");
+const plugins = require("./plugins");
 const { User } = require("./user");
 const website = require("./website");
 
@@ -66,10 +67,11 @@ client.once("ready", async () => {
 		}
 	}
 
-	commands.init();
 	website.init();
+	plugins.init();
+	commands.init();
 
 	client.user.setActivity(defaultActivity);
 
-	info(client.user.displayName + " connected");
+	info(`Bot ${client.user.displayName} is now online`);
 });

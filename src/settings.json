@@ -1,7 +1,4 @@
 {
-	"ai": {
-		"enabled": false
-	},
 	"guild": "1020663521530351627",
 	"guilds": {
 		"wow": "827254215717814282"
@@ -26,6 +23,7 @@
 	},
 	"storage": {
 		"limit": true,
-		"needed": 30
+		"needed": 30,
+		"path": "./database/storage"
 	}
 }

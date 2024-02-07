@@ -54,28 +54,27 @@ const init = () => {
 	});
 
 	ioHandler.use(async (socket, next) => {
-		if (socket) {
-			const id = socket.handshake.auth.id;
-			const key = socket.handshake.auth.key;
+		const id = socket.handshake.auth?.id;
+		const key = socket.handshake.auth?.key;
 
-			if (id && key) {
-				try {
-					socket.user = await User.fromKey(id, key);
+		if (id && key) {
+			try {
+				socket.username = await User.getName(id);
+				socket.user = await User.fromKey(id, key);
 
+				if (socket.user) {
 					setTimeout(() => {
 						if (socket.connected) socket.disconnect(true);
-					}, (socket.user?.token?.expiresIn ?? 0) * 1000);
+					}, (socket.user.token.expiresIn ?? 0) * 1000);
 
-					if (socket.user) {
-						info(`${socket.client?.conn?.remoteAddress ?? "Unknow IP"} - Connected as ${socket.user.id}`);
-						next();
-						return;
-					}
-				} catch (e) {
-					error(`${socket.client?.conn?.remoteAddress ?? "Unknow IP"} - ${e}`);
+					log(`${socket.username} - Try to connect from ${socket.client?.conn?.remoteAddress ?? "unknow IP"}`);
+					next();
+					return;
 				}
-			} else error(`${socket.client?.conn?.remoteAddress ?? "Unknow IP"} - Unauthorized`);
-		} else error("Unknow IP - Socket is invalid, failed to connect");
+			} catch (e) {
+				error(`${socket.username ?? socket.client?.conn?.remoteAddress ?? "Unknow IP"} - ${e}`);
+			}
+		} else error(`${socket.client?.conn?.remoteAddress ?? "Unknow IP"} - Unauthorized`);
 
 		next(new Error(401));
 	});
@@ -98,17 +97,28 @@ const init = () => {
 				data.roles = Array.from(member.roles.cache.keys());
 			};
 
-			socket.on("disconnect", () => info(`${socket.client?.conn?.remoteAddress ?? "Unknow IP"} - Disconnected`));
+			info(`${socket?.username ?? "Unknow"} - Connected from "${socket.handshake.auth?.page ?? "unknown page"}"`);
+
+			socket.on("disconnect", async () => info(`${socket?.username ?? "Unknow"} - Disconnected from "${socket.handshake.auth?.page ?? "unknown page"}"`));
 
 			socket.emit("data", data, roles);
 			socket.on("data", () => socket.emit("data", data, roles));
 
 			socket.on("role", async (id, bool) => {
+				if (bool && roles.colors.includes(id)) {
+					for (const colorRole of roles.colors) {
+						if (id != colorRole && data.roles.includes(colorRole)) {
+							await member.roles.remove(colorRole);
+							socket.user.info(`Removed role ${roles.all.find((role) => role.id == colorRole).name}`);
+						}
+					}
+				}
+
 				if (roles.check(id)) {
-					if (!bool && member.roles.cache.has(id)) {
+					if (!bool && data.roles.includes(id)) {
 						await member.roles.remove(id);
 						socket.user.info(`Removed role ${roles.all.find((role) => role.id == id).name}`);
-					} else if (bool && !member.roles.cache.has(id)) {
+					} else if (bool && !data.roles.includes(id)) {
 						await member.roles.add(id);
 						socket.user.info(`Added role ${roles.all.find((role) => role.id == id).name}`);
 					}
@@ -130,7 +140,7 @@ const init = () => {
 				socket.disconnect(true);
 			});
 		} catch (e) {
-			error(`${socket?.client?.conn?.remoteAddress ?? "Unknow IP"} - Failed to connect: ${e}`);
+			error(`${socket?.username ?? "Unknow"} - Failed to connect from "${socket.handshake.auth?.page ?? "unknown page"}": ${e}`);
 			socket.disconnect(true);
 		}
 	});
@@ -143,100 +153,13 @@ const init = () => {
 		warn(`${res.socket?.remoteAddress ?? "Unknow IP"} - 404: ${req.url}`);
 	});
 
-
-	router.get("/authorize", (_, res) => {
-		const authParams = new URLSearchParams({
-			client_id: config.discord.clientId,
-			prompt: "none",
-			redirect_uri: new URL("/oauth2/authorize", config.website.host).href,
-			response_type: "code",
-			scope: config.discord.oauth2.scopes.join(" "),
-			state: config.discord.oauth2.state
-		});
-
-		res.setHeader("location", `https://discord.com/oauth2/authorize?${authParams.toString()}`).sendStatus(307);
-
-		info(`${res.socket?.remoteAddress ?? "Unknow IP"} - Redirected to Discord OAuth2`);
-	});
-
-	router.get("/help", async (_, res) => {
-		const channel = guild().channels.cache.get(settings.channels.help);
-		res.setHeader("location", channel.url).sendStatus(307);
-		info(`${res.socket?.remoteAddress ?? "Unknow IP"} - Redirected to #${channel.name}`);
-	});
-
-	router.get("/oauth2/authorize", (req, res) => {
-		const url = new URL(req.url, config.website.host);
-
-		if (url.searchParams.has("code") && url.searchParams.has("state") && url.searchParams.get("state") == config.discord.oauth2.state) {
-			const request = https.request("https://discord.com/api/v10/oauth2/token", {
-				auth: `${config.discord.clientId}:${config.discord.clientSecret}`,
-				headers: {
-					"content-type": "application/x-www-form-urlencoded"
-				},
-				method: "POST"
-			}, (response) => {
-				let chunks = "";
-
-				response.on("data", (chunk) => chunks += chunk);
-				response.on("end", async () => {
-					try {
-						const accessTokenExchange = JSON.parse(chunks);
-
-						if (accessTokenExchange.error) {
-							const e = accessTokenExchange.error + " " + accessTokenExchange.error_description;
-
-							error(e);
-							res.status(500).send(e);
-						} else {
-							try {
-								const user = await User.fromAccessTokenExchange(accessTokenExchange);
-
-								if (user?.token?.available) {
-									const key = crypto.randomUUID();
-
-									if (!fs.existsSync(path.join(User.folder(user.id)))) fs.mkdirSync(path.join(User.folder(user.id)), { recursive: true });
-									fs.writeFileSync(path.join(User.folder(user.id), "key"), key, "ascii");
-
-									res.setHeader("location", `/?uid=${user.id}&key=${key}`).sendStatus(308);
-								} else {
-									user.warn("Not in WixiLand, or the token is not available for some reason");
-									res.setHeader("location", "https://go.wixonic.fr/discord").sendStatus(308);
-								}
-							} catch (e) {
-								e = "Failed to initialize user - " + e;
-								error(e);
-								res.status(500).send(e);
-							}
-						}
-					} catch (e) {
-						const message = "Failed to parse accessTokenExchange";
-						error(`${message}: ${e}`);
-						res.status(500).send(message);
-					}
-				});
-			});
-
-			request.write(new URLSearchParams({
-				code: url.searchParams.get("code"),
-				grant_type: "authorization_code",
-				redirect_uri: new URL("/oauth2/authorize", config.website.host).href
-			}).toString());
-
-			request.end();
-		} else res.sendStatus(403);
-	});
-
-	router.get("/rules", async (_, res) => {
-		res.setHeader("location", guild().rulesChannel.url).sendStatus(307);
-		info(`${res.socket?.remoteAddress ?? "Unknow IP"} - Redirected to #${guild().rulesChannel.name}`);
-	});
-
 	router.use(express.static(config.website.path, {
 		setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join(config.website.path, path.relative(config.website.path, filePath))} `)
 	}));
 };
 
 module.exports = {
-	init
+	app,
+	init,
+	router
 };
