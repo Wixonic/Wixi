@@ -7,4 +7,4 @@ SSL/
 .DS_Store
 package-lock.json
 
-config.json
+config.js

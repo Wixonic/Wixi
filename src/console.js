@@ -1,4 +1,5 @@
 const blessed = require("blessed");
+const Command = require("./command");
 const fs = require("fs");
 const path = require("path");
 
@@ -15,18 +16,13 @@ const box = blessed.box({
 	content: "",
 	tags: true,
 
-	top: 0,
-	left: 0,
-
 	align: "left",
 	valign: "bottom",
 
-	height: "100%-1",
+	height: "100%-2",
 	width: "100%",
 
-	style: {
-		fg: "#ffffff"
-	},
+	fg: "#FFFFFF",
 
 	scrollable: true,
 
@@ -43,24 +39,28 @@ const input = blessed.textbox({
 
 	inputOnFocus: true,
 
-	top: "100%",
-	left: "center",
+	top: "100%-2",
 
-	align: "left",
-	valign: "middle",
-
-	height: 1,
+	height: 3,
 	width: "100%",
 
-	style: {
-		fg: "#000000"
-	}
+	border: {
+		fg: "#222222",
+		type: "line"
+	},
+
+	fg: "#FFFFFF"
 });
 
 input.on("submit", () => {
-	console.write(`> ${input.value}`);
+	const value = input.value;
+
 	input.focus();
 	input.clearValue("");
+
+	console.write(`> ${value}`);
+
+	Command.run(value);
 });
 
 input.on("cancel", () => process.exit(0));
