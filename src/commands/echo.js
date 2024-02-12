@@ -1,21 +1,21 @@
-const { ApplicationCommandType } = require("discord.js");
+const { ApplicationCommandType, ChatInputCommandInteraction } = require("discord.js");
 
 const Command = require("../command");
 const console = require("../console");
 
 module.exports = new Command({
-	name: "ping",
-	description: "Sends a ping request to the bot.",
+	name: "echo",
+	description: "Reply with the same message as provided.",
 	type: ApplicationCommandType.ChatInput,
 
-	log: () => console.log("Pong"),
+	log: (arguments) => console.log(arguments),
 
 	/**
 	 * @param {ChatInputCommandInteraction} interaction
 	 */
 	run: async (interaction) => {
 		await interaction.safeReply({
-			content: "Pong!",
+			content: interaction.options.getString("message", true),
 			ephemeral: true
 		});
 	}

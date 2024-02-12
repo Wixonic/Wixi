@@ -1,5 +1,4 @@
 const blessed = require("blessed");
-const Command = require("./command");
 const fs = require("fs");
 const path = require("path");
 
@@ -52,44 +51,82 @@ const input = blessed.textbox({
 	fg: "#FFFFFF"
 });
 
-input.on("submit", () => {
-	const value = input.value;
-
-	input.focus();
-	input.clearValue("");
-
-	console.write(`> ${value}`);
-
-	Command.run(value);
-});
-
 input.on("cancel", () => process.exit(0));
 screen.key("escape", () => process.exit(0));
 
+/**
+ * Console manager
+ */
 const console = {
+	/**
+	 * Returns a Blessed textbox
+	 */
+	input,
+
+	/**
+	 * Returns a formatted timestamp
+	 * @type {string}
+	 */
 	get timestamp() {
 		return `${new Date().getDate().toString().padStart(2, "0")}/${(new Date().getMonth() + 1).toString().padStart(2, "0")}/${new Date().getFullYear()} ${new Date().getHours().toString().padStart(2, "0")}:${new Date().getMinutes().toString().padStart(2, "0")}:${new Date().getSeconds().toString().padStart(2, "0")}.${new Date().getMilliseconds().toString().padStart(3, "0")}`;
 	},
 
-	write: (text) => {
+	/**
+	 * Writes raw text in logs
+	 * @param {string} text
+	 * @param {string?} rawText - Text without Blessed tags, uses `text` if `rawText` is null
+	 */
+	write: (text, rawText) => {
 		if (box.content == "") box.content = text;
-		else box.content += `\n${text}`;
+		else box.content += `\n${text}{/}`;
 
 		if (!fs.existsSync(settings.log.path)) fs.mkdirSync(settings.log.path, { recursive: true });
-		fs.appendFileSync(path.join(settings.log.path, "main.log"), `${console.timestamp}: ${text}\n`, { encoding: "utf-8" });
+		fs.appendFileSync(path.join(settings.log.path, "main.log"), `${console.timestamp}: ${rawText ?? text}\n`, { encoding: "utf-8" });
 
 		box.scrollTo(box.getScrollHeight());
 
 		screen.render();
+	},
+
+	/**
+	 * Writes error in logs
+	 * @param {...string} error
+	 */
+	error: (...error) => {
+		for (const part of error) console.write(`{#ff0000-fg}${part}`, `[ERR] - ${part}`);
+	},
+
+	/**
+	 * Writes info in logs
+	 * @param {...string} info
+	 */
+	info: (...info) => {
+		for (const part of info) console.write(`{#0077ff-fg}${part}`, `[INF] - ${part}`);
+	},
+
+	/**
+	 * Writes text in logs
+	 * @param {...string} text
+	 */
+	log: (...text) => {
+		for (const part of text) console.write(`{#888888-fg}${part} `, `[LOG] - ${part}`);
+	},
+
+	/**
+	 * Writes warn in logs
+	 * @param {...string} warn
+	 */
+	warn: (...warn) => {
+		for (const part of warn) console.write(`{#ffaa00-fg}${part} `, `[WRN] - ${part}`);
 	}
 };
 
 if (!fs.existsSync(settings.log.path)) fs.mkdirSync(settings.log.path, { recursive: true });
-fs.appendFileSync(path.join(settings.log.path, "main.log"), `${console.timestamp}: ---------- STARTED ----------\n`, { encoding: "utf-8" });
+fs.appendFileSync(path.join(settings.log.path, "main.log"), `${console.timestamp}: ----------STARTED ----------\n`, { encoding: "utf-8" });
 
 const exitHandler = () => {
 	if (!fs.existsSync(settings.log.path)) fs.mkdirSync(settings.log.path, { recursive: true });
-	fs.appendFileSync(path.join(settings.log.path, "main.log"), `${console.timestamp}: ---------- STOPPED ----------\n`, { encoding: "utf-8" });
+	fs.appendFileSync(path.join(settings.log.path, "main.log"), `${console.timestamp}: ----------STOPPED ----------\n`, { encoding: "utf-8" });
 };
 
 process.on("exit", () => exitHandler());
