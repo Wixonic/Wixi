@@ -20,5 +20,3 @@ module.exports = new Command({
 		});
 	}
 });
-
-// TEST
