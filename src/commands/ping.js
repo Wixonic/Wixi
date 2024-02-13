@@ -1,6 +1,7 @@
-const { ApplicationCommandType } = require("discord.js");
+const { ApplicationCommandType, ChatInputCommandInteraction } = require("discord.js");
 
 const Command = require("../command");
+const { ExtendedInteraction } = require("../command");
 const console = require("../console");
 
 module.exports = new Command({
@@ -11,7 +12,7 @@ module.exports = new Command({
 	log: () => console.log("Pong"),
 
 	/**
-	 * @param {ChatInputCommandInteraction} interaction
+	 * @param {ChatInputCommandInteraction & ExtendedInteraction} interaction
 	 */
 	run: async (interaction) => {
 		await interaction.safeReply({

@@ -2,12 +2,12 @@ const Command = require("../command");
 const console = require("../console");
 
 module.exports = new Command({
-	name: "register",
+	name: "deploy",
 	description: "Registers all commands in the local list to Discord.",
 	type: 0,
 
 	log: () => {
 		console.info("Registering commands");
-		Command.register();
+		Command.deploy();
 	}
 });

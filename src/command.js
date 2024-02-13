@@ -1,15 +1,18 @@
-const { ApplicationCommandType, BaseInteraction } = require("discord.js");
+const { ApplicationCommandType, BaseInteraction, MessagePayload, MessageReplyOptions, PresenceUpdateStatus, Routes, SlashCommandAttachmentOption, SlashCommandBooleanOption, SlashCommandChannelOption, SlashCommandIntegerOption, SlashCommandMentionableOption, SlashCommandNumberOption, SlashCommandOptionsOnlyBuilder, SlashCommandRoleOption, SlashCommandStringOption, SlashCommandSubcommandBuilder, SlashCommandSubcommandGroupBuilder, SlashCommandSubcommandsOnlyBuilder, SlashCommandUserOption } = require("discord.js");
 const fs = require("fs");
 const path = require("path");
 
+const client = require("./client");
 const console = require("./console");
 const REST = require("./rest");
 
 const config = require("./config");
 const settings = require("./settings");
+const stats = require("./stats");
 
 /**
  * @typedef {Object} CommandOptions
+ * @property {(SlashCommandAttachmentOption | SlashCommandBooleanOption | SlashCommandChannelOption | SlashCommandIntegerOption | SlashCommandMentionableOption | SlashCommandNumberOption | SlashCommandOptionsOnlyBuilder | SlashCommandRoleOption | SlashCommandStringOption | SlashCommandSubcommandBuilder | SlashCommandSubcommandGroupBuilder | SlashCommandSubcommandsOnlyBuilder | SlashCommandUserOption)[]?} options Only if the command is `ApplicationCommandType.ChatInput`
  * @property {string} name
  * @property {string} description
  * @property {0|ApplicationCommandType} type
@@ -21,7 +24,41 @@ const settings = require("./settings");
  * @returns {void}
  * 
  * @callback CommandOptionsRun
- * @param {BaseInteraction} interaction
+ * @param {ExtendedInteraction} interaction
+ * @returns {Promise<void>}
+ */
+
+/**
+ * @typedef {Object} ExtendedInteraction
+ * @property {ExtendedInteractionSafeReply} safeReply
+ * @property {ExtendedInteractionError} error
+ * @property {ExtendedInteractionInfo} info
+ * @property {ExtendedInteractionLog} log
+ * @property {ExtendedInteractionWarn} warn
+ * @property {ExtendedInteractionWrite} write
+ * 
+ * @callback ExtendedInteractionSafeReply
+ * @param {string | MessagePayload | MessageReplyOptions} payload
+ * @returns {Promise<void>}
+ * 
+ * @callback ExtendedInteractionError
+ * @param {string} error
+ * @returns {void}
+ * 
+ * @callback ExtendedInteractionInfo
+ * @param {string} info
+ * @returns {void}
+ * 
+ * @callback ExtendedInteractionLog
+ * @param {string} text
+ * @returns {void}
+ * 
+ * @callback ExtendedInteractionWarn
+ * @param {string} warn
+ * @returns {void}
+ * 
+ * @callback ExtendedInteractionWrite
+ * @param {string} text
  * @returns {void}
  */
 
@@ -38,7 +75,7 @@ class Command {
 	/**
 	 * Gets a command by its name and its type
 	 * @param {string} name
-	 * @param {ApplicationCommandType|0|Array<ApplicationCommandType|0>?} type
+	 * @param {ApplicationCommandType | 0 | Array<ApplicationCommandType | 0>?} type
 	 * @returns {Command?} A command if found, otherwise null
 	 */
 	static get(name, type) {
@@ -56,14 +93,19 @@ class Command {
 	/**
 	 * Registers all commands in the local list to Discord
 	 */
-	static register() {
+	static async deploy() {
 		const list = this.list.filter((command) => command.type != 0);
 
-		for (const command of this.list) {
-			/* REST.post(`/applications/${config.discord.applicationId}/commands`, {
-				
-			}); */
-		}
+		const APIList = [];
+		for (const command of list) APIList.push({
+			name: command.name,
+			description: command.description,
+			type: command.type,
+
+			options: command.options
+		});
+		await REST.put(Routes.applicationCommands(config.discord.applicationId), { body: APIList });
+		console.info(`${APIList.length} command${APIList.length > 1 ? "s" : ""} registered`);
 	};
 
 	/**
@@ -99,20 +141,22 @@ class Command {
 
 	/**
 	 * Creates a command
-	 * @param {CommandOptions} options
+	 * @param {CommandOptions} commandOptions
 	 */
-	constructor(options) {
-		if (!options) console.error("Options are required to create a command.");
+	constructor(commandOptions) {
+		if (!commandOptions) console.error("Settings are required to create a command.");
 
-		this.name = options.name;
-		this.description = options.description;
-		this.type = options.type;
-		this.log = options.log;
+		this.name = commandOptions.name;
+		this.description = commandOptions.description;
+		this.type = commandOptions.type;
+		this.log = commandOptions.log;
+
+		if (this.type == ApplicationCommandType.ChatInput) this.options = commandOptions.options ?? [];
 
 		/**
 		 * @type {CommandOptionsRun}
 		 */
-		this.run = options.run ?? (async (interaction) => {
+		this.run = commandOptions.run ?? (async (interaction) => {
 			console.error("This command is a console-only command.");
 
 			await interaction.safeReply({
@@ -131,7 +175,7 @@ console.input.on("submit", () => {
 	console.input.focus();
 	console.input.clearValue("");
 
-	console.write(`> ${value}`, `[INP] - ${value}`);
+	console.write(`> ${value} `, `[INP] - ${value} `);
 
 	const args = [];
 
@@ -164,7 +208,52 @@ console.input.on("submit", () => {
 
 	const command = Command.get(name, [0, ApplicationCommandType.ChatInput]);
 	if (command) command.log(args);
-	else console.error(`Command "${name}" does not exist.`);
+	else console.error(`Command /${name} does not exist.`);
+});
+
+client.on("interactionCreate", async (interaction) => {
+	stats.interactionCount++;
+
+	if (stats.currentProcessingInteractionCount == 0) client.user.setStatus(PresenceUpdateStatus.Online);
+	stats.currentProcessingInteractionCount++;
+
+	interaction.error = (text) => console.error(`${interaction.user.username} - ${text} `);
+	interaction.info = (text) => console.info(`${interaction.user.username} - ${text} `);
+	interaction.log = (text) => console.log(`${interaction.user.username} - ${text} `);
+	interaction.warn = (text) => console.warn(`${interaction.user.username} - ${text} `);
+	interaction.write = (text) => console.write(`${interaction.user.username} - ${text} `);
+
+	interaction.safeReply = async (options) => {
+		if (interaction.deferred || interaction.replied) interaction.editReply(options);
+		else interaction.reply(options);
+	};
+
+	try {
+		await interaction.deferReply();
+
+		const command = Command.get(interaction.commandName, interaction.commandType);
+
+		if (command) {
+			interaction.log(interaction.message ?? interaction.commandName);
+			await command.run(interaction);
+		} else {
+			interaction.warn(`${interaction.message ?? interaction.commandName} - Not found`);
+			await interaction.safeReply({
+				content: "This command doesn't exist.",
+				ephemeral: true
+			});
+		}
+	} catch (e) {
+		interaction.error(`${interaction.message ?? interaction.commandName} - ${e.message}`);
+
+		await interaction.safeReply({
+			content: `An error occured.\n\nError ID: \`${console.timestamp}\``,
+			ephemeral: true
+		});
+	}
+
+	stats.currentProcessingInteractionCount--;
+	if (stats.currentProcessingInteractionCount == 0) client.user.setStatus(PresenceUpdateStatus.Idle);
 });
 
 module.exports = Command;
