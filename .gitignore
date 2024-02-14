@@ -1,10 +1,7 @@
-cache/
-database/
+dist/
 node_modules/
-private/
 SSL/
 
 .DS_Store
-package-lock.json
-
 config.js
+package-lock.json
