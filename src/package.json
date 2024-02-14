@@ -7,7 +7,7 @@
 	},
 	"homepage": "https://github.com/Wixonic/Bot#readme",
 	"license": "MIT",
-	"version": "0.1.2",
+	"version": "0.1.42",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/Wixonic/Bot.git"
@@ -15,7 +15,7 @@
 	"main": "app.js",
 	"scripts": {
 		"pre": "clear; node increment.js",
-		"start": "npm run pre; electron .",
+		"start": "npm run pre; electron ./",
 		"build": "npm run pre; electron-builder build --mac --arm64 -c.mac.identity=null"
 	},
 	"engines": {
