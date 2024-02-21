@@ -1,1 +1,2 @@
-console.log("This is a server");
+const fs = require("fs");
+const path = require("path");

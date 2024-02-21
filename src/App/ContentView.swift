@@ -5,26 +5,28 @@ struct ContentView: View {
     @State var state = false
     @State var process = Process()
     
-    var paths: [String: String] {
+    var paths: [String: Any] {
         #if arch(arm64)
         let nodeDirectory = "Node_arm64"
         #else
         let nodeDirectory = "Node_x64"
         #endif
         
-        let p = [
-            "node": Bundle.main.url(forResource: "node", withExtension: "", subdirectory: "\(nodeDirectory)/bin")!.path,
+        return [
+            "node": Bundle.main.url(forResource: "node", withExtension: nil, subdirectory: "\(nodeDirectory)/bin")!.path,
+            "plugins": [
+                "folder": Bundle.main.url(forResource: "Plugins", withExtension: nil)!,
+                "list": Bundle.main.url(forResource: "list", withExtension: "json", subdirectory: "Plugins")!.path,
+            ],
             "server": Bundle.main.url(forResource: "main", withExtension: "js", subdirectory: "Server")!.path
         ]
-        
-        return p
     }
     
     func changeState() {
         if (state && !process.isRunning) {
             process = Process()
-            process.executableURL = URL(filePath: paths["node"]!)
-            process.arguments = [paths["server"]!]
+            process.executableURL = URL(filePath: paths["node"] as! String)
+            process.arguments = [paths["server"] as! String]
             
             NotificationCenter.default.addObserver(forName: Process.didTerminateNotification, object: process, queue: nil) { _ in
                 print("Server stopped")
@@ -41,6 +43,8 @@ struct ContentView: View {
             process.terminate()
         }
     }
+    #else
+    var serverURL = "wss://server.wixonic.fr:3000"
     #endif
     
     var body: some View {

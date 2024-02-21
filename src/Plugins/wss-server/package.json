@@ -1,0 +1,18 @@
+{
+	"name": "wss-server",
+	"displayName": "WSS Server",
+	"description": "Allows communication between plugins",
+	"author": "Wixonic <contact@wixonic.fr> (https://wixonic.fr)",
+	"version": "1.0.0",
+	"main": "plugin.js",
+	"scripts": {
+		"start": "clear; node ."
+	},
+	"engines": {
+		"node": ">=v21.6.2",
+		"npm": ">=10.2.4"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.19"
+	}
+}

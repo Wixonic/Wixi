@@ -1,8 +1,9 @@
-Bot.xcodeproj/
+Wixi.xcodeproj/
 Node_arm64/
 Node_x64/
 node_modules/
 SSL/
 
 .DS_Store
+config.js
 package-lock.json
