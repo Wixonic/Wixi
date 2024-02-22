@@ -1,7 +1,7 @@
 {
-	"name": "http-server",
-	"displayName": "HTTP Server",
-	"description": "Redirects all request to the HTTPS Server",
+	"name": "wss_server",
+	"displayName": "WSS Server",
+	"description": "Allows communication between client and plugins",
 	"author": "Wixonic <contact@wixonic.fr> (https://wixonic.fr)",
 	"version": "1.0.0",
 	"main": "plugin.js",
@@ -11,9 +11,6 @@
 	"engines": {
 		"node": ">=v21.6.2",
 		"npm": ">=10.2.4"
-	},
-	"dependencies": {
-		"express": "^4.18.2"
 	},
 	"devDependencies": {
 		"@types/node": "^20.11.19"

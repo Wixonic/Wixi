@@ -1,7 +1,7 @@
 {
-	"name": "https-server",
-	"displayName": "HTTPS Server",
-	"description": "",
+	"name": "http_server",
+	"displayName": "HTTP Server",
+	"description": "Redirects all request to the HTTPS Server",
 	"author": "Wixonic <contact@wixonic.fr> (https://wixonic.fr)",
 	"version": "1.0.0",
 	"main": "plugin.js",

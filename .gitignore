@@ -1,8 +1,9 @@
-Wixi.xcodeproj/
+build/
 Node_arm64/
 Node_x64/
 node_modules/
 SSL/
+Wixi.xcodeproj/
 
 .DS_Store
 config.js
