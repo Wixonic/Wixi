@@ -53,7 +53,7 @@ class WSSServerManager {
 }
 
 class WSSServerDelegate: WebSocketDelegate {
-    let socket = WebSocket(request: URLRequest(url: URL(string: "https://server.wixonic.fr:1003")!))
+    let socket = WebSocket(request: URLRequest(url: URL(string: "https://server.wixonic.fr:3000")!))
     
     init() {
         socket.delegate = self
