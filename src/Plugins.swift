@@ -16,7 +16,6 @@ var plugins: [Plugin] = {
     
     for (id, view) in viewRegistry {
         plugins.append(Plugin(id: id, view: AnyView(view)))
-        print("Plugin \(id) added")
     }
     
     plugins.sort { $0.id < $1.id }

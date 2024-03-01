@@ -7,20 +7,20 @@ struct ContentView: View {
         VStack {
             switch (selectedTab) {
                 case 0:
-                List {
-                    ForEach(plugins, id: \.id) { plugin in
-                        Section {
-                            plugin.view
-                        } header: {
-                            Text(plugin.id)
-                                .fontWeight(.semibold)
-                                .font(.headline)
+                    List {
+                        ForEach(plugins, id: \.id) { plugin in
+                            Section {
+                                plugin.view
+                            } header: {
+                                Text(plugin.id)
+                                    .fontWeight(.semibold)
+                                    .font(.headline)
+                            }
+                            .collapsible(false)
                         }
-                        .collapsible(false)
                     }
-                }
-                .listStyle(.sidebar)
-                .scrollContentBackground(.hidden)
+                    .listStyle(.sidebar)
+                    .scrollContentBackground(.hidden)
                 
                 case 1:
                     Text("Logs")
