@@ -1,0 +1,21 @@
+{
+	"name": "https_server",
+	"displayName": "HTTPS Server",
+	"description": "",
+	"author": "Wixonic <contact@wixonic.fr> (https://wixonic.fr)",
+	"version": "1.0.0",
+	"main": "plugin.js",
+	"scripts": {
+		"start": "clear; node ."
+	},
+	"engines": {
+		"node": ">=v21.6.2",
+		"npm": ">=10.2.4"
+	},
+	"dependencies": {
+		"express": "^4.18.2"
+	},
+	"devDependencies": {
+		"@types/node": "^20.11.19"
+	}
+}

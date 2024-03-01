@@ -1,11 +1,10 @@
-cache/
-database/
+build/
+Node_arm64/
+Node_x64/
 node_modules/
-private/
 SSL/
+Wixi.xcodeproj/
 
 .DS_Store
+config.js
 package-lock.json
-
-config.json
-main.log
