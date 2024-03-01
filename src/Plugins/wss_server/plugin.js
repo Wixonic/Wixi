@@ -3,15 +3,14 @@ const https = require("https");
 const WebSocket = require("websocket");
 
 const config = require("./config");
+const package = require("./package");
 
 const server = https.createServer({
 	cert: fs.readFileSync("../../SSL/wixonic.fr.cer"),
 	key: fs.readFileSync("../../SSL/wixonic.fr.private.key")
-}, (req, res) => {
-	console.log("Yo");
 });
 
-server.listen(config.port, () => console.log("Server running on port :" + config.port));
+server.listen(config.port, () => console.log(`${package.displayName ?? package.name} running on port :${config.port}`));
 
 const ws = new WebSocket.server({
 	autoAcceptConnections: true,
