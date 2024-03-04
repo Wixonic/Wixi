@@ -10,7 +10,7 @@ const POST = async (extension, req, res) => {
 	clientManager.addActivity(`twitch-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.twitch.clientId,
 
-		name: "a live",
+		name: "a live on Twitch",
 		details: req.body?.mobile ? "Details not available" : "Unknown live",
 		state: `Currently on Twitch${req.body?.mobile ? " for iOS" : ""}`,
 

@@ -10,7 +10,7 @@ const POST = async (extension, req, res) => {
 	clientManager.addActivity(`youtube-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.youtube.clientId,
 
-		name: "a video",
+		name: "a video on YouTube",
 		details: req.body?.mobile ? "Details not available" : "Unknown video",
 		state: `Currently on YouTube${req.body?.mobile ? " for iOS" : ""}`,
 

@@ -10,8 +10,8 @@ const POST = async (extension, req, res) => {
 	clientManager.addActivity(`github-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.github.clientId,
 
-		name: "repositories",
-		details: req.body?.mobile ? "Details not available" : "Unknown details",
+		name: "repositories on GitHub",
+		details: req.body?.mobile ? "Details not available" : "Unknown repository",
 		state: `Currently on GitHub${req.body?.mobile ? " for iOS" : ""}`,
 
 		assets: {

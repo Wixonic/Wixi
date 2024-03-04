@@ -10,7 +10,7 @@ const POST = async (extension, req, res) => {
 	clientManager.addActivity(`discord-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.discord.clientId,
 
-		name: "servers",
+		name: "servers on Discord",
 		details: req.body?.mobile ? "Details not available" : "Unknown details",
 		state: `Currently on Discord${req.body?.mobile ? " for iOS" : ""}`,
 

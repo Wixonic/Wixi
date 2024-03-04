@@ -10,8 +10,8 @@ const POST = async (extension, req, res) => {
 	clientManager.addActivity(`tv-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.tv.clientId,
 
-		name: "series",
-		details: req.body?.mobile ? "Details not available" : "Unknown details",
+		name: "a video on Apple TV",
+		details: req.body?.mobile ? "Details not available" : "Unknown video",
 		state: `Currently on Apple TV${req.body?.mobile ? " for iOS" : ""}`,
 
 		assets: {

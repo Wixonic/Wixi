@@ -10,8 +10,7 @@ const POST = async (extension, req, res) => {
 	clientManager.addActivity("scriptable", {
 		application_id: config.extensions.scriptable.clientId,
 
-		name: "scripts",
-		details: "Details not available",
+		name: "Scriptable",
 		state: "Working on scripts",
 
 		assets: {
@@ -19,7 +18,11 @@ const POST = async (extension, req, res) => {
 			small_text: "Scriptable"
 		},
 
-		type: "WATCHING"
+		timestamps: {
+			start: Date.now()
+		},
+
+		type: "PLAYING"
 	});
 
 	res.status(204).end();
