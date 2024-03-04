@@ -18,6 +18,8 @@ class HTTPSServerManager {
                     break
             }
             
+            process.currentDirectoryURL = Bundle.main.url(forResource: "https_server", withExtension: nil, subdirectory: "Plugins")
+            
             process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/https_server")!.path(percentEncoded: false)]
             
             do {
@@ -31,6 +33,7 @@ class HTTPSServerManager {
     func disable() {
         if (process.isRunning) {
             process.terminate()
+            print("HTTPS Server terminated")
         }
     }
     #endif

@@ -18,6 +18,8 @@ class RPCServerManager {
                     break
             }
             
+            process.currentDirectoryURL = Bundle.main.url(forResource: "rpc_server", withExtension: nil, subdirectory: "Plugins")
+            
             process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/rpc_server")!.path(percentEncoded: false)]
             
             do {
@@ -31,6 +33,7 @@ class RPCServerManager {
     func disable() {
         if (process.isRunning) {
             process.terminate()
+            print("RPC Server terminated")
         }
     }
     #endif

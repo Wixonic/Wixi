@@ -19,8 +19,27 @@ fs.readdirSync("./extensions", {
              * @type {import("./extension").Extension}
              */
             const extension = require(path.join(__dirname, "extensions", file));
-            app.delete(extension.path, (req, res) => extension.DELETE(extension, req, res));
-            app.post(extension.path, (req, res) => extension.POST(extension, req, res));
+
+            app.delete(extension.path, (req, res) => {
+                try {
+                    extension.DELETE(extension, req, res);
+                    log(`${extension.name} - DELETE`);
+                } catch (e) {
+                    res.status(400).send(e.toString());
+                    log(`${extension.name} - Failed to DELETE: ${e}`);
+                }
+            });
+
+            app.post(extension.path, (req, res) => {
+                try {
+                    extension.POST(extension, req, res);
+                    log(`${extension.name} - POST`);
+                } catch (e) {
+                    res.status(400).send(e.toString());
+                    log(`${extension.name} - Failed to POST: ${e}`);
+                }
+            });
+
             log(`${extension.name} extension loaded`);
         } catch (e) {
             log(`Extension at "${file}" failed to load: ${e}`);
@@ -28,7 +47,7 @@ fs.readdirSync("./extensions", {
     }
 });
 
-app.use((req, res, next) => {
+app.use((req, _, next) => {
     log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${path.join(req.headers.host, req.url)}`);
     next();
 });

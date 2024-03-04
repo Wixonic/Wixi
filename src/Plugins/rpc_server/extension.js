@@ -1,37 +1,27 @@
-const { Client } = require("discord-rpc");
-
-const log = require("./log");
+/**
+ * @typedef {function(Extension, import("express").Request, import("express").Response)} ExtensionPOST
+ */
 
 /**
- * @property {Client} client
+ * @typedef {function(Extension, import("express").Request, import("express").Response)} ExtensionDELETE
+ */
+
+/**
  * @property {string} name
  * @property {string} path
  * 
- * @property {function(import("express").Request, import("express").Response)} DELETE
- * @property {function(import("express").Request, import("express").Response)} POST
+ * @property {ExtensionPOST} POST
+ * @property {ExtensionDELETE} DELETE
  */
 class Extension {
 	/**
-	 * @param {string} clientId
-	 * @param {string} clientSecret
 	 * @param {string} name
 	 * @param {string} path
 	 * 
-	 * @param {function(import("express").Request, import("express").Response)} POST
-	 * @param {function(import("express").Request, import("express").Response)} DELETE
+	 * @param {ExtensionPOST} POST
+	 * @param {ExtensionDELETE} DELETE
 	 */
-	constructor(name, path, POST, DELETE, clientId, clientSecret) {
-		this.client = new Client({
-			transport: "ipc"
-		});
-
-		this.client.on("ready", () => log(`${name} - Connected`));
-
-		this.client.login({
-			clientId,
-			clientSecret
-		}).catch((e) => log(`${name} - Failed to connect: ${e}`));
-
+	constructor(name, path, POST, DELETE) {
 		this.name = name;
 		this.path = path;
 

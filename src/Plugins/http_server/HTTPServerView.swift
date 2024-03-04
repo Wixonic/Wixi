@@ -18,6 +18,8 @@ class HTTPServerManager {
                     break
             }
             
+            process.currentDirectoryURL = Bundle.main.url(forResource: "http_server", withExtension: nil, subdirectory: "Plugins")
+            
             process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/http_server")!.path(percentEncoded: false)]
             
             do {
@@ -31,6 +33,7 @@ class HTTPServerManager {
     func disable() {
         if (process.isRunning) {
             process.terminate()
+            print("HTTP Server terminated")
         }
     }
     #endif

@@ -19,6 +19,8 @@ class WSSServerManager {
                     break
             }
             
+            process.currentDirectoryURL = Bundle.main.url(forResource: "wss_server", withExtension: nil, subdirectory: "Plugins")
+            
             process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/wss_server")!.path(percentEncoded: false)]
             
             do {
@@ -33,6 +35,7 @@ class WSSServerManager {
     func disable() {
         if (process.isRunning) {
             process.terminate()
+            print("WSS Server terminated")
         }
     }
     #endif
