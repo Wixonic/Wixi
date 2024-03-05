@@ -1,4 +1,5 @@
 import SwiftUI
+import SafariServices
 
 @main
 struct MacOSApp: App {
