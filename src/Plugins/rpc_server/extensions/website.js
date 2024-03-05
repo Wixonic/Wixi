@@ -11,7 +11,7 @@ const POST = async (extension, req, res) => {
 		application_id: config.extensions.website.clientId,
 
 		name: "my website",
-		details: req.body?.mobile ? "Details not available" : "Unknown details",
+		details: "Unknown details",
 		state: `Currently on wixonic.fr${req.body?.mobile ? " on iOS" : ""}`,
 
 		assets: {
