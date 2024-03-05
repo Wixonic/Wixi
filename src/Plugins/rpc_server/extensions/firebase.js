@@ -11,8 +11,8 @@ const POST = async (extension, req, res) => {
 		application_id: config.extensions.firebase.clientId,
 
 		name: "a project on Firebase",
-		details: req.body?.mobile ? "Details not available" : "Unknown video",
-		state: `Currently on Apple TV${req.body?.mobile ? " for iOS" : ""}`,
+		details: "Unknown details",
+		state: `Currently on Firebase${req.body?.mobile ? " on iOS" : ""}`,
 
 		assets: {
 			small_image: config.extensions.firebase.assets.app,
