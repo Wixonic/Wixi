@@ -1,40 +1,37 @@
 const extensions = [
     {
         matches: [
-            /^https:\/\/github\.com\/([\w-]+)\/([\w-]+)/
+            /^https:\/\/github\.com\/([\w-]+)\/([\w-]+)(?:/([\w-]+))?/
         ],
-        run: (url, owner, repo) => {
+        run: (url, owner, repo, details) => {
             sendStatus("POST", "/github", {
                 type: "repository",
                 owner,
+				details,
                 repository: repo,
                 url: `https://github.com/${owner}/${repo}`
             });
             
             onUnload.path = "/github";
             onUnload.data = {
-                type: "repository",
-                owner,
-                repository: repo,
+                type: "repository"
             };
-            
-            console.log([owner, repo]);
         }
     }, {
         matches: [
-            /^https:\/\/github\.com\/([\w-]+)\/
+            /^https:\/\/github\.com\/([\w-]+)(?:/([\w-]+))?/
         ],
-        run: (url, profile) => {
+        run: (url, profile, details) => {
             sendStatus("POST", "/github", {
                 type: "profile",
                 profile,
+				details,
                 url: `https://github.com/${profile}`
             });
             
             onUnload.path = "/github";
             onUnload.data = {
-                type: "profile",
-                profile
+                type: "profile"
             };
         }
     }
