@@ -11,12 +11,12 @@ const POST = async (extension, req, res) => {
 		application_id: config.extensions.apple.clientId,
 
 		name: "Apple's website",
-		details: req.body?.mobile ? "Details not available" : "Unknown video",
+		details: "Unknown details",
 		state: `Currently on apple.com${req.body?.mobile ? " on iOS" : ""}`,
 
 		assets: {
 			small_image: config.extensions.apple.assets.app,
-			small_text: `Firebase on Safari${req.body?.mobile ? " for iOS" : ""}`
+			small_text: `Apple on Safari${req.body?.mobile ? " for iOS" : ""}`
 		},
         
         url: "https://apple.com",
