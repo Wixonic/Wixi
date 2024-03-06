@@ -18,8 +18,8 @@ const POST = async (extension, req, res) => {
 			small_image: config.extensions.website.assets.app,
 			small_text: `Wixonic's Website on Safari${req.body?.mobile ? " for iOS" : ""}`
 		},
-        
-        url: "https://wixonic.fr",
+
+		url: "https://wixonic.fr",
 
 		type: "WATCHING"
 	});

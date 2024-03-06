@@ -10,6 +10,13 @@ const app = express();
 
 app.use(express.json());
 
+app.use((_, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    next();
+})
+
 fs.readdirSync("./extensions", {
     encoding: "utf-8"
 }).forEach((file) => {
@@ -48,7 +55,7 @@ fs.readdirSync("./extensions", {
 });
 
 app.use((req, _, next) => {
-    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${path.join(req.headers.host, req.url)}`);
+    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers.host, req.url)}`);
     next();
 });
 

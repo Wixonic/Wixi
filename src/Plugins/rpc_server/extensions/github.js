@@ -8,51 +8,51 @@ const config = require("../config");
  */
 const POST = async (extension, req, res) => {
 	const type = req.body?.type ?? "unknow";
-	
+
 	switch (type) {
 		case "repository":
 			const owner = req.body?.owner ?? "owner";
 			const repo = req.body?.repository ?? "repository";
-			
+
 			clientManager.addActivity(`github-${type}`, {
 				application_id: config.extensions.github.clientId,
 
 				name: `${owner}/${repo}`,
-				details: `${profile}/${repo} - ${req.body?.details ?? "overview"}`,
+				details: `Watching ${req.body?.details ?? "the repository"}`,
 				state: "On GitHub",
 
 				assets: {
 					small_image: config.extensions.github.assets.app,
 					small_text: "GitHub",
 				},
-				
+
 				url: req.body?.url ?? null,
 
 				type: "WATCHING"
 			});
 			break;
-		
+
 		case "profile":
 			const profile = req.body?.profile ?? "someone";
-			
+
 			clientManager.addActivity(`github-${type}`, {
 				application_id: config.extensions.github.clientId,
 
 				name: `${profile}'${profile.endsWith("s") ? "" : "s"} profile`,
-				details: `${profile}'${profile.endsWith("s") ? "" : "s"} ${req.body?.details ?? "overview"}`,
+				details: `Watching ${req.body?.details ?? "the profile"}`,
 				state: "On GitHub",
 
 				assets: {
 					small_image: config.extensions.github.assets.app,
 					small_text: "GitHub",
 				},
-				
+
 				url: req.body?.url ?? null,
 
 				type: "WATCHING"
 			});
 			break;
-			
+
 		default:
 			clientManager.addActivity(`github-${type}`, {
 				application_id: config.extensions.github.clientId,
@@ -70,7 +70,8 @@ const POST = async (extension, req, res) => {
 			});
 			break;
 
-	res.status(204).end();
+			res.status(204).end();
+	};
 };
 
 /**
