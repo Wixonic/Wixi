@@ -32,7 +32,7 @@ const extensions = [
                 type: "profile"
             };
         }
-    }, { // https://*.wixonic.fr
+    }, { // https://[*.]wixonic.fr
         matches: [
             /^https?:\/\/(?:\w+\.)*wixonic\.fr(?:\:\d+)?(?:\/\w+\/?)*(?:\#|\?)?(?:\w|\=|\&)*$/m
         ],
