@@ -9,11 +9,11 @@ struct ContentView: View {
             switch (selectedTab) {
                 case 0:
                     List {
-                        ForEach(plugins, id: \.id) { plugin in
+                        ForEach(Plugin.list, id: \.id) { plugin in
                             Section {
                                 plugin.view
                             } header: {
-                                Text(plugin.id)
+                                Text(plugin.name)
                                     .fontWeight(.semibold)
                                     .font(.headline)
                             }

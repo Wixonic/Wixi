@@ -1,10 +1,11 @@
 import SwiftUI
+import Starscream
 
-class HTTPSServerManager {
+class RPCServer: Plugin {
     #if os(macOS)
     var process = Process()
     
-    func enable() {
+    override func enable() {
         if (!process.isRunning) {
             process = Process()
             
@@ -18,33 +19,32 @@ class HTTPSServerManager {
                     break
             }
             
-            process.currentDirectoryURL = Bundle.main.url(forResource: "https_server", withExtension: nil, subdirectory: "Plugins")
+            process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
             
-            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/https_server")!.path(percentEncoded: false)]
+            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
             
             do {
                 try process.run()
             } catch {
-                print("Error while starting HTTPS Server: \(error)")
+                print("Error while starting \(self.name): \(error)")
             }
         }
     }
     
-    func disable() {
+    override func disable() {
         if (process.isRunning) {
             process.terminate()
-            print("HTTPS Server terminated")
         }
     }
     #endif
+    
+    init() {
+        super.init(id: "rpc_server", name: "RPC Server", view: RPCServerView())
+    }
 }
 
-struct HTTPSServerView: View {
+struct RPCServerView: View {
     @State var active = false
-    
-    #if os(macOS)
-    var manager = HTTPSServerManager()
-    #endif
     
     var body: some View {
         #if os(macOS)
@@ -52,9 +52,9 @@ struct HTTPSServerView: View {
             Text("Listening")
         }.onChange(of: active) {
             if (active) {
-                manager.enable()
+                Plugin.get(id: "rpc_server")!.enable()
             } else {
-                manager.disable()
+                Plugin.get(id: "rpc_server")!.disable()
             }
         }.toggleStyle(.switch)
         #endif
@@ -62,5 +62,5 @@ struct HTTPSServerView: View {
 }
 
 #Preview {
-    WSSServerView()
+    RPCServerView()
 }

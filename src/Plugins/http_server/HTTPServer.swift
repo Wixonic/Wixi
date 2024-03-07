@@ -1,11 +1,11 @@
 import SwiftUI
 import Starscream
 
-class WSSServerManager {
+class HTTPServer: Plugin {
     #if os(macOS)
     var process = Process()
     
-    func enable() {
+    override func enable() {
         if (!process.isRunning) {
             process = Process()
             
@@ -19,48 +19,32 @@ class WSSServerManager {
                     break
             }
             
-            process.currentDirectoryURL = Bundle.main.url(forResource: "wss_server", withExtension: nil, subdirectory: "Plugins")
+            process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
             
-            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/wss_server")!.path(percentEncoded: false)]
+            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
             
             do {
                 try process.run()
-                print("WSSServer started")
             } catch {
-                print("Error while starting WSSServer: \(error)")
+                print("Error while starting \(self.name): \(error)")
             }
         }
     }
     
-    func disable() {
+    override func disable() {
         if (process.isRunning) {
             process.terminate()
-            print("WSS Server terminated")
         }
     }
     #endif
-}
-
-class WSSServerDelegate: WebSocketDelegate {
-    let socket = WebSocket(request: URLRequest(url: URL(string: "https://server.wixonic.fr:3000")!))
     
     init() {
-        socket.delegate = self
-        socket.connect()
-    }
-    
-    func didReceive(event: WebSocketEvent, client: WebSocketClient) {
-        
+        super.init(id: "http_server", name: "HTTP Server", view: HTTPServerView())
     }
 }
 
-struct WSSServerView: View {
+struct HTTPServerView: View {
     @State var active = false
-    var socket = WSSServerDelegate()
-    
-    #if os(macOS)
-    var manager = WSSServerManager()
-    #endif
     
     var body: some View {
         #if os(macOS)
@@ -68,9 +52,9 @@ struct WSSServerView: View {
             Text("Listening")
         }.onChange(of: active) {
             if (active) {
-                manager.enable()
+                Plugin.get(id: "http_server")!.enable()
             } else {
-                manager.disable()
+                Plugin.get(id: "http_server")!.disable()
             }
         }.toggleStyle(.switch)
         #endif
@@ -78,5 +62,5 @@ struct WSSServerView: View {
 }
 
 #Preview {
-    WSSServerView()
+    HTTPServerView()
 }

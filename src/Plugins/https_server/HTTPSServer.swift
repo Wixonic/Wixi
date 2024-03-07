@@ -1,10 +1,11 @@
 import SwiftUI
+import Starscream
 
-class HTTPServerManager {
+class HTTPSServer: Plugin {
     #if os(macOS)
     var process = Process()
     
-    func enable() {
+    override func enable() {
         if (!process.isRunning) {
             process = Process()
             
@@ -18,33 +19,32 @@ class HTTPServerManager {
                     break
             }
             
-            process.currentDirectoryURL = Bundle.main.url(forResource: "http_server", withExtension: nil, subdirectory: "Plugins")
+            process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
             
-            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/http_server")!.path(percentEncoded: false)]
+            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
             
             do {
                 try process.run()
             } catch {
-                print("Error while starting HTTP Server: \(error)")
+                print("Error while starting \(self.name): \(error)")
             }
         }
     }
     
-    func disable() {
+    override func disable() {
         if (process.isRunning) {
             process.terminate()
-            print("HTTP Server terminated")
         }
     }
     #endif
+    
+    init() {
+        super.init(id: "https_server", name: "HTTPS Server", view: HTTPSServerView())
+    }
 }
 
-struct HTTPServerView: View {
+struct HTTPSServerView: View {
     @State var active = false
-    
-    #if os(macOS)
-    var manager = HTTPServerManager()
-    #endif
     
     var body: some View {
         #if os(macOS)
@@ -52,9 +52,9 @@ struct HTTPServerView: View {
             Text("Listening")
         }.onChange(of: active) {
             if (active) {
-                manager.enable()
+                Plugin.get(id: "https_server")!.enable()
             } else {
-                manager.disable()
+                Plugin.get(id: "https_server")!.disable()
             }
         }.toggleStyle(.switch)
         #endif
@@ -62,5 +62,5 @@ struct HTTPServerView: View {
 }
 
 #Preview {
-    WSSServerView()
+    HTTPServerView()
 }

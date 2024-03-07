@@ -1,10 +1,11 @@
 import SwiftUI
+import Starscream
 
-class RPCServerManager {
+class WSSServer: Plugin {
     #if os(macOS)
     var process = Process()
     
-    func enable() {
+    override func enable() {
         if (!process.isRunning) {
             process = Process()
             
@@ -18,33 +19,33 @@ class RPCServerManager {
                     break
             }
             
-            process.currentDirectoryURL = Bundle.main.url(forResource: "rpc_server", withExtension: nil, subdirectory: "Plugins")
+            process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
             
-            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/rpc_server")!.path(percentEncoded: false)]
+            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
             
             do {
                 try process.run()
             } catch {
-                print("Error while starting RPC Server: \(error)")
+                print("Error while starting \(self.name): \(error)")
             }
         }
     }
     
-    func disable() {
+    override func disable() {
         if (process.isRunning) {
             process.terminate()
-            print("RPC Server terminated")
         }
     }
     #endif
+    
+    init() {
+        super.init(id: "wss_server", name: "WSS Server", view: WSSServerView())
+    }
 }
 
-struct RPCServerView: View {
+struct WSSServerView: View {
     @State var active = false
-    
-    #if os(macOS)
-    var manager = RPCServerManager()
-    #endif
+    var socket = WSSServerDelegate()
     
     var body: some View {
         #if os(macOS)
@@ -52,12 +53,25 @@ struct RPCServerView: View {
             Text("Listening")
         }.onChange(of: active) {
             if (active) {
-                manager.enable()
+                Plugin.get(id: "wss_server")!.enable()
             } else {
-                manager.disable()
+                Plugin.get(id: "wss_server")!.disable()
             }
         }.toggleStyle(.switch)
         #endif
+    }
+}
+
+class WSSServerDelegate: WebSocketDelegate {
+    let socket = WebSocket(request: URLRequest(url: URL(string: "https://server.wixonic.fr:3000")!))
+    
+    init() {
+        socket.delegate = self
+        socket.connect()
+    }
+    
+    func didReceive(event: WebSocketEvent, client: WebSocketClient) {
+        
     }
 }
 

@@ -14,26 +14,50 @@ extension utsname {
 }
 #endif
 
-struct Plugin {
-    let id: String
-    let view: AnyView
-}
-
-var viewRegistry: [String: any View] = [
-    "http_server": HTTPServerView(),
-    "https_server": HTTPSServerView(),
-    "rpc_server": RPCServerView(),
-    "wss_server": WSSServerView()
-]
-
-var plugins: [Plugin] = {
-    var plugins: [Plugin] = []
+class Plugin {
+    static var list: [Plugin] = {
+        return [
+            HTTPServer(),
+            HTTPSServer(),
+            RPCServer(),
+            WSSServer()
+        ]
+    }()
     
-    for (id, view) in viewRegistry {
-        plugins.append(Plugin(id: id, view: AnyView(view)))
+    static func get(id: String) -> Plugin? {
+        for plugin in Plugin.list {
+            if (plugin.id == id) {
+                return plugin
+            }
+        }
+        
+        return nil
     }
     
-    plugins.sort { $0.id < $1.id }
+    let id: String
+    let name: String
+    let view: AnyView
     
-    return plugins
-}()
+    init(id: String, name: String, view: any View) {
+        self.id = id;
+        self.name = name;
+        self.view = AnyView(view);
+    }
+    
+    #if os(macOS)
+    func enable() {}
+    func disable() {}
+    
+    func hardEnable() {
+        self.enable();
+        
+        print("\(self.name) enabled")
+    }
+    
+    func hardDisable() {
+        self.disable();
+        
+        print("\(self.name) disabled")
+    }
+    #endif
+}
