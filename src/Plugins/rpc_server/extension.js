@@ -1,5 +1,5 @@
 /**
- * @typedef {function(Extension, import("express").Request, import("express").Response)} ExtensionPOST
+ * @typedef {function(Extension, import("express").Request, import("express").Response, number | null)} ExtensionPOST
  */
 
 /**

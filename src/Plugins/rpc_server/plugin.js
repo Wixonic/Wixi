@@ -13,9 +13,9 @@ app.use(express.json());
 app.use((_, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Server-Keep-Alive");
     next();
-})
+});
 
 fs.readdirSync("./extensions", {
     encoding: "utf-8"
@@ -27,35 +27,37 @@ fs.readdirSync("./extensions", {
              */
             const extension = require(path.join(__dirname, "extensions", file));
 
+            app.post(extension.path, (req, res) => {
+                try {
+                    extension.POST(extension, req, res, req.headers["server-keep-alive"] ? Number(req.headers["server-keep-alive"]) * 1000 : null);
+                    log(`${extension.name} - POST${req.headers["server-keep-alive"] ? " - Keep-Alive: " + req.headers["server-keep-alive"] + "s" : ""}`);
+                } catch (e) {
+                    if (!res.headersSent && res.writable) res.writeHead(400).send(e.toString());
+                    log(`${extension.name} - Failed to POST: ${e} `);
+                }
+            });
+
             app.delete(extension.path, (req, res) => {
                 try {
                     extension.DELETE(extension, req, res);
                     log(`${extension.name} - DELETE`);
                 } catch (e) {
-                    res.status(400).send(e.toString());
-                    log(`${extension.name} - Failed to DELETE: ${e}`);
+                    if (!res.headersSent && res.writable) res.writeHead(400).send(e.toString());
+                    log(`${extension.name} - Failed to DELETE: ${e} `);
                 }
             });
 
-            app.post(extension.path, (req, res) => {
-                try {
-                    extension.POST(extension, req, res);
-                    log(`${extension.name} - POST`);
-                } catch (e) {
-                    res.status(400).send(e.toString());
-                    log(`${extension.name} - Failed to POST: ${e}`);
-                }
-            });
+            app.options(extension.path, (req, res) => res.writeHead(204).end());
 
             log(`${extension.name} extension loaded`);
         } catch (e) {
-            log(`Extension at "${file}" failed to load: ${e}`);
+            log(`Extension at "${file}" failed to load: ${e} `);
         }
     }
 });
 
 app.use((req, _, next) => {
-    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers.host, req.url)}`);
+    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers.host, req.url)} `);
     next();
 });
 
@@ -64,4 +66,4 @@ const server = https.createServer({
     key: fs.readFileSync("../../SSL/wixonic.fr.private.key")
 }, app);
 
-server.listen(config.port, () => log(`Running on port :${config.port}`));
+server.listen(config.port, () => log(`Running on port:${config.port} `));

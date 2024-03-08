@@ -6,7 +6,7 @@ const config = require("../config");
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res) => {
+const POST = async (extension, req, res, keepAlive) => {
 	clientManager.addActivity(`youtube-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.youtube.clientId,
 
@@ -19,7 +19,9 @@ const POST = async (extension, req, res) => {
 			small_text: `YouTube${req.body?.mobile ? " for iOS" : ""}`
 		},
 
-		type: "WATCHING"
+		type: 3, // WATCHING
+
+		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`youtube-${req.body?.mobile ? "mobile" : "desktop"}`, true), keepAlive)
 	});
 
 	res.status(204).end();

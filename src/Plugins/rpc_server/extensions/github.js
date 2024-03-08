@@ -6,7 +6,7 @@ const config = require("../config");
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res) => {
+const POST = async (extension, req, res, keepAlive) => {
 	const type = req.body?.type ?? "unknow";
 
 	switch (type) {
@@ -23,12 +23,12 @@ const POST = async (extension, req, res) => {
 
 				assets: {
 					small_image: config.extensions.github.assets.app,
-					small_text: "GitHub",
+					small_text: "GitHub"
 				},
 
-				url: req.body?.url ?? null,
+				type: 3, // WATCHING
 
-				type: "WATCHING"
+				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`github-${type}`, true), keepAlive)
 			});
 			break;
 
@@ -44,12 +44,12 @@ const POST = async (extension, req, res) => {
 
 				assets: {
 					small_image: config.extensions.github.assets.app,
-					small_text: "GitHub",
+					small_text: "GitHub"
 				},
 
-				url: req.body?.url ?? null,
+				type: 3, // WATCHING
 
-				type: "WATCHING"
+				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`github-${type}`, true), keepAlive)
 			});
 			break;
 
@@ -66,12 +66,14 @@ const POST = async (extension, req, res) => {
 					small_text: `GitHub${type == "mobile" ? " for iOS" : ""}`
 				},
 
-				type: "WATCHING"
+				type: 3, // WATCHING
+
+				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`github-${type}`, true), keepAlive)
 			});
 			break;
-
-			res.status(204).end();
 	};
+
+	res.status(204).end();
 };
 
 /**

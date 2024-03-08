@@ -3,12 +3,11 @@ const extensions = [
         matches: [
             /^https:\/\/github\.com\/([\w-]+)\/([\w-]+)/m
         ],
-        run: (url, owner, repository) => {
+        run: (_, owner, repository) => {
             sendStatus("POST", "/github", {
                 type: "repository",
                 owner,
-                repository,
-                url: `https://github.com/${owner}/${repository}`
+                repository
             });
 
             onUnload.path = "/github";
@@ -20,11 +19,10 @@ const extensions = [
         matches: [
             /^https:\/\/github\.com\/([\w-]+)/m
         ],
-        run: (url, profile) => {
+        run: (_, profile) => {
             sendStatus("POST", "/github", {
                 type: "profile",
-                profile,
-                url: `https://github.com/${profile}`
+                profile
             });
 
             onUnload.path = "/github";
@@ -36,10 +34,9 @@ const extensions = [
         matches: [
             /^https?:\/\/(?:\w+\.)*wixonic\.fr(?:\:\d+)?(?:\/\w+\/?)*(?:\#|\?)?(?:\w|\=|\&)*$/m
         ],
-        run: (url) => {
+        run: (_) => {
             sendStatus("POST", "/website", {
-                type: "desktop",
-                url
+                type: "desktop"
             });
 
             onUnload.path = "/website";
@@ -54,6 +51,7 @@ const sendStatus = (method = "POST", path = "/", data = {}) => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, new URL(path, "https://server.wixonic.fr:4000"));
     xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.setRequestHeader("Server-Keep-Alive", "10");
     xhr.send(JSON.stringify(data));
 };
 
@@ -63,7 +61,7 @@ const onUnload = {
 };
 
 window.addEventListener("beforeunload", () => sendStatus("DELETE", onUnload.path, onUnload.data));
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentLoaded", () => {
     const url = location.href;
 
     for (const extension of extensions) {
@@ -72,6 +70,7 @@ window.addEventListener("load", () => {
 
             if (results?.length > 0) {
                 extension.run(...results);
+                setInterval(() => extension.run(...results), 9000);
                 return;
             }
         }

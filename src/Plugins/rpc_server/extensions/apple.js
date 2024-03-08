@@ -6,7 +6,7 @@ const config = require("../config");
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res) => {
+const POST = async (extension, req, res, keepAlive) => {
 	clientManager.addActivity(`apple-safari-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.apple.clientId,
 
@@ -18,10 +18,12 @@ const POST = async (extension, req, res) => {
 			small_image: config.extensions.apple.assets.app,
 			small_text: `Apple on Safari${req.body?.mobile ? " for iOS" : ""}`
 		},
-        
-        url: "https://apple.com",
 
-		type: "WATCHING"
+		url: "https://apple.com",
+
+		type: 3, // WATCHING
+
+		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`apple-safari-${req.body?.mobile ? "mobile" : "desktop"}`, true), keepAlive)
 	});
 
 	res.status(204).end();

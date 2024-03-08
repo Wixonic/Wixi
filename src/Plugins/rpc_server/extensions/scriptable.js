@@ -6,7 +6,7 @@ const config = require("../config");
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res) => {
+const POST = async (extension, req, res, keepAlive) => {
 	clientManager.addActivity("scriptable", {
 		application_id: config.extensions.scriptable.clientId,
 
@@ -22,7 +22,9 @@ const POST = async (extension, req, res) => {
 			start: Date.now()
 		},
 
-		type: "PLAYING"
+		type: 0, // PLAYING
+
+		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity("scriptable", true), keepAlive)
 	});
 
 	res.status(204).end();

@@ -6,7 +6,7 @@ const config = require("../config");
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res) => {
+const POST = async (extension, req, res, keepAlive) => {
 	clientManager.addActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.website.clientId,
 
@@ -19,9 +19,9 @@ const POST = async (extension, req, res) => {
 			small_text: `Wixonic's Website on Safari${req.body?.mobile ? " for iOS" : ""}`
 		},
 
-		url: "https://wixonic.fr",
+		type: 3, // WATCHING
 
-		type: "WATCHING"
+		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`, true), keepAlive)
 	});
 
 	res.status(204).end();
