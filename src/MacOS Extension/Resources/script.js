@@ -61,7 +61,7 @@ const onUnload = {
 };
 
 window.addEventListener("beforeunload", () => sendStatus("DELETE", onUnload.path, onUnload.data));
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
     const url = location.href;
 
     for (const extension of extensions) {
