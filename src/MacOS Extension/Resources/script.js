@@ -1,5 +1,5 @@
 const extensions = [
-    { // https://github.com/:owner/:repository[/:details]
+    { // https://github.com/:owner/:repository[:anything]
         matches: [
             /^https:\/\/github\.com\/([\w-]+)\/([\w-]+)/m
         ],
@@ -15,7 +15,7 @@ const extensions = [
                 type: "repository"
             };
         }
-    }, { // https://github.com/:profile[/:details]
+    }, { // https://github.com/:profile[:anything]
         matches: [
             /^https:\/\/github\.com\/([\w-]+)/m
         ],
@@ -30,19 +30,109 @@ const extensions = [
                 type: "profile"
             };
         }
-    }, { // https://[*.]wixonic.fr
+    }, { // https://[*.]github.com[:anything]
         matches: [
-            /^https?:\/\/(?:\w+\.)*wixonic\.fr(?:\:\d+)?(?:\/\w+\/?)*(?:\#|\?)?(?:\w|\=|\&)*$/m
+            /^https:\/\/(?:[\w-]+\.)*github\.com/m
         ],
         run: (_) => {
-            sendStatus("POST", "/website", {
+            sendStatus("POST", "/github", {});
+
+            onUnload.path = "/github";
+            onUnload.data = {};
+        }
+    }, { // https://[*.]wixonic.fr[:anything]
+        matches: [
+            /^https:\/\/(?:[\w-]+\.)*wixonic\.fr/m
+        ],
+        run: (_) => {
+            sendStatus("POST", "/website", {});
+
+            onUnload.path = "/website";
+            onUnload.data = {};
+        }
+    }, { // https://[*.]youtube.com/feed/subscriptions[:anything]
+        matches: [
+            /^https:\/\/(?:[\w-]+\.)*youtube\.com\/feed\/subscriptions/m
+        ],
+        run: (_) => {
+            sendStatus("POST", "/youtube", {
+                type: "subscriptions"
+            });
+
+            onUnload.path = "/youtube";
+            onUnload.data = {
+                type: "subscriptions"
+            };
+        }
+    }, { // https://[*.]youtube.com/watch[:anything]
+        matches: [
+            /^https:\/\/(?:[\w-]+\.)*youtube.com\/watch/m
+        ],
+        run: (_) => {
+            const dataScripts = document.querySelectorAll(`script[type="application/ld+json"]`);
+            let data = {};
+
+            for (let x = 0; x < dataScripts.length; ++x) {
+                try {
+                    const dataScript = JSON.parse(dataScripts[x].innerHTML);
+
+                    if (dataScript["@type"] == "VideoObject") {
+                        data = dataScript;
+                        break;
+                    }
+                } catch { }
+            }
+
+            sendStatus("POST", "/youtube", {
+                type: "video",
+                author: data.author,
+                name: data.name,
+                thumbnail: (data.thumbnailUrl ?? [])[0],
+                videoId: new URL(location.href).searchParams.get("v")
+            });
+
+            onUnload.path = "/youtube";
+            onUnload.data = {
+                type: "video"
+            };
+        }
+    }, { // https://[*.]youtube.com
+        matches: [
+            /^https:\/\/(?:[\w-]+\.)*youtube\.com(?:\/)?$/m
+        ],
+        run: (_) => {
+            sendStatus("POST", "/youtube", {
+                type: "home"
+            });
+
+            onUnload.path = "/youtube";
+            onUnload.data = {
+                type: "home"
+            };
+        }
+    }, { // https://[*.]youtube.com[:anything]
+        matches: [
+            /^https:\/\/(?:[\w-]+\.)*youtube\.com/m
+        ],
+        run: (_) => {
+            sendStatus("POST", "/youtube", {
                 type: "desktop"
             });
 
-            onUnload.path = "/website";
+            onUnload.path = "/youtube";
             onUnload.data = {
                 type: "desktop"
             };
+        }
+    }, { // https://[*.]firebase.google.com[:anything]
+        matches: [
+            /^https:\/\/(?:[\w-]+\.)*firebase\.google\.com/m
+        ],
+        run: (_) => {
+            sendStatus("POST", "/firebase", {});
+
+            onUnload.path = "/firebase";
+            onUnload.data = {};
         }
     }
 ];
@@ -51,7 +141,7 @@ const sendStatus = (method = "POST", path = "/", data = {}) => {
     const xhr = new XMLHttpRequest();
     xhr.open(method, new URL(path, "https://server.wixonic.fr:4000"));
     xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.setRequestHeader("Server-Keep-Alive", "10");
+    xhr.setRequestHeader("Server-Keep-Alive", "15");
     xhr.send(JSON.stringify(data));
 };
 
@@ -60,8 +150,7 @@ const onUnload = {
     path: null
 };
 
-window.addEventListener("beforeunload", () => sendStatus("DELETE", onUnload.path, onUnload.data));
-window.addEventListener("load", () => {
+const check = () => {
     const url = location.href;
 
     for (const extension of extensions) {
@@ -69,10 +158,17 @@ window.addEventListener("load", () => {
             const results = match.exec(url);
 
             if (results?.length > 0) {
-                extension.run(...results);
-                setInterval(() => extension.run(...results), 9000);
+                try {
+                    extension.run(...results);
+                } catch (e) {
+                    console.warn(e);
+                }
                 return;
             }
         }
     }
-});
+};
+
+check();
+setInterval(check, 10000);
+window.addEventListener("beforeunload", () => sendStatus("DELETE", onUnload.path, onUnload.data));

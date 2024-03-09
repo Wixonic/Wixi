@@ -25,7 +25,7 @@ fs.readdirSync("./extensions", {
             /**
              * @type {import("./extension").Extension}
              */
-            const extension = require(path.join(__dirname, "extensions", file));
+            const extension = require(path.join(process.cwd(), "extensions", file));
 
             app.post(extension.path, (req, res) => {
                 try {
