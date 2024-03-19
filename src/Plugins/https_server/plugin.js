@@ -10,8 +10,20 @@ const app = express();
 
 const log = (txt) => console.log(`[${package.displayName ?? package.name}]: ${txt}`);
 
-app.use((req, res, next) => {
+app.use((req, _, next) => {
     log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${path.join(req.headers.host, req.url)}`);
+    next();
+});
+
+app.all("/", (req, res) => {
+    const url = new URL(req.url, `https://wixonic.fr`);
+
+    res.writeHead(302, {
+        "location": url.href
+    }).end();
+
+    log(`Redirected to: ${url.href}`);
+
     next();
 });
 
