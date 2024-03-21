@@ -1,7 +1,6 @@
 import SwiftUI
-import Starscream
 
-class HTTPServer: Plugin {
+class WebServer: Plugin {
     #if os(macOS)
     var process = Process()
     
@@ -39,11 +38,11 @@ class HTTPServer: Plugin {
     #endif
     
     init() {
-        super.init(id: "http_server", name: "HTTP Server", view: HTTPServerView())
+        super.init(id: "web_server", name: "Web Server", view: WebServerView())
     }
 }
 
-struct HTTPServerView: View {
+struct WebServerView: View {
     @State var active = false
     
     var body: some View {
@@ -52,9 +51,9 @@ struct HTTPServerView: View {
             Text("Listening")
         }.onChange(of: active) {
             if (active) {
-                Plugin.get(id: "http_server")!.enable()
+                Plugin.get(id: "web_server")!.enable()
             } else {
-                Plugin.get(id: "http_server")!.disable()
+                Plugin.get(id: "web_server")!.disable()
             }
         }.toggleStyle(.switch)
         #endif
@@ -62,5 +61,5 @@ struct HTTPServerView: View {
 }
 
 #Preview {
-    HTTPServerView()
+    WebServerView()
 }

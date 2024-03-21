@@ -57,7 +57,7 @@ fs.readdirSync("./extensions", {
 });
 
 app.use((req, _, next) => {
-    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers.host, req.url)} `);
+    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers["host"], req.url)} `);
     next();
 });
 

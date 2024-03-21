@@ -1,5 +1,6 @@
 build/
 cache/
+database/
 Node_arm64/
 Node_x64/
 node_modules/
