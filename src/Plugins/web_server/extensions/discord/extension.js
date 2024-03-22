@@ -14,15 +14,15 @@ const settings = require("./settings");
 
 module.exports = (router, io, extensionPath) => {
 	router.get("/authorize", (req, res) => {
-		const url = new URL(req.url, `https://${req.headers["host"]}`);
+		const url = new URL(req.url, "https://server.wixonic.fr");
 
 		const authParams = new URLSearchParams({
 			client_id: config.clientId,
 			prompt: "none",
-			redirect_uri: new URL(`/${extensionPath}/oauth2/authorize`, `https://${req.headers["host"]}`).href,
+			redirect_uri: `https://server.wixonic.fr/${extensionPath}/oauth2/authorize`,
 			response_type: "code",
 			scope: config.oauth2.scopes.join(" "),
-			state: config.oauth2.state + (url.searchParams.get("redirect_url") ?? encodeURIComponent(req.url))
+			state: config.oauth2.state + (url.searchParams.get("redirect_url") ?? encodeURIComponent(`https://server.wixonic.fr/${extensionPath}`))
 		});
 
 		res.setHeader("location", `https://discord.com/oauth2/authorize?${authParams.toString()}`).sendStatus(307);
@@ -37,14 +37,15 @@ module.exports = (router, io, extensionPath) => {
 	});
 
 	router.get("/oauth2/authorize", (req, res) => {
-		const url = new URL(req.url, `https://${req.headers["host"]}`);
+		const url = new URL(req.url, "https://server.wixonic.fr");
 
-		if (url.searchParams.has("code") && url.searchParams.has("state") && url.searchParams.get("state").split(config.oauth2.state).length == 2 && url.searchParams.get("state").split(config.oauth2.state)[0] == "") {
+		if (url.searchParams.has("code") && url.searchParams.has("state") && url.searchParams.get("state").startsWith(config.oauth2.state)) {
 			try {
-				redirect_url = new URL(decodeURIComponent(url.searchParams.get("state").split(config.oauth2.state)[1]));
-			} catch {
+				redirect_url = new URL(decodeURIComponent(url.searchParams.get("state").split(config.oauth2.state)[1]), `https://server.wixonic.fr/${extensionPath}`);
+			} catch (e) {
+				console.log(e)
 				const message = "Invalid redirect url";
-				log(`Failed to authorize: ${message}(state: ${url.searchParams.get("state")})`);
+				log(`Failed to authorize: ${message} (state: ${url.searchParams.get("state")})`);
 				res.status(500).send(message);
 				return;
 			}
@@ -103,7 +104,7 @@ module.exports = (router, io, extensionPath) => {
 			request.write(new URLSearchParams({
 				code: url.searchParams.get("code"),
 				grant_type: "authorization_code",
-				redirect_uri: new URL("/discord/oauth2/authorize", `https://${req.headers["host"]}`).href
+				redirect_uri: new URL("/discord/oauth2/authorize", "https://server.wixonic.fr").href
 			}).toString());
 
 			request.end();
@@ -131,8 +132,8 @@ module.exports = (router, io, extensionPath) => {
 			});
 		}
 
-		if (fs.existsSync("./files/rules.md")) {
-			const rules = fs.readFileSync("./files/rules.md", "utf-8");
+		if (fs.existsSync(path.join(__dirname, "/files/rules.md"))) {
+			const rules = fs.readFileSync(path.join(__dirname, "/files/rules.md"), "utf-8");
 
 			const message = (await guild.rulesChannel.messages.fetch({
 				limit: 1
@@ -189,9 +190,9 @@ module.exports = (router, io, extensionPath) => {
 					client.commands.set(command.data.name, command);
 					if ("plugin" in command) command.plugin(router);
 
-					log(`Command started at ./${path.relative(foldersPath, filePath)}`);
+					log(`Command started at /${path.relative(foldersPath, filePath)}`);
 					started++;
-				} else log(`The command at ./${path.relative(foldersPath, filePath)} is missing a required "data" or "execute" property.`);
+				} else log(`The command at /${path.relative(foldersPath, filePath)} is missing a required "data" or "execute" property.`);
 			}
 		}
 
@@ -303,7 +304,7 @@ module.exports = (router, io, extensionPath) => {
 						for (const colorRole of roles.colors) {
 							if (id != colorRole && data.roles.includes(colorRole)) {
 								await member.roles.remove(colorRole);
-								socket.user.log(`Removed role ${roles.all.find((role) => role.id == colorRole).name}`);
+								socket.user.log(`Removed role ${roles.all.find((role) => role.id == colorRole).name} `);
 							}
 						}
 					}
@@ -311,10 +312,10 @@ module.exports = (router, io, extensionPath) => {
 					if (roles.check(id)) {
 						if (!bool && data.roles.includes(id)) {
 							await member.roles.remove(id);
-							socket.user.log(`Removed role ${roles.all.find((role) => role.id == id).name}`);
+							socket.user.log(`Removed role ${roles.all.find((role) => role.id == id).name} `);
 						} else if (bool && !data.roles.includes(id)) {
 							await member.roles.add(id);
-							socket.user.log(`Added role ${roles.all.find((role) => role.id == id).name}`);
+							socket.user.log(`Added role ${roles.all.find((role) => role.id == id).name} `);
 						}
 
 						await refreshRoles();
@@ -334,13 +335,13 @@ module.exports = (router, io, extensionPath) => {
 					socket.disconnect(true);
 				});
 			} catch (e) {
-				log(`${socket?.username ?? "Unknow"} - Failed to connect from "${socket.handshake.auth?.page ?? "unknown page"}": ${e}`);
+				log(`${socket?.username ?? "Unknow"} - Failed to connect from "${socket.handshake.auth?.page ?? "unknown page"}": ${e} `);
 				socket.disconnect(true);
 			}
 		});
 
 		router.use(express.static(path.join(__dirname, "website"), {
-			setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /${extensionPath}/${filePath}`)
+			setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /${extensionPath}/${path.relative(__dirname, filePath)} `)
 		}));
 
 

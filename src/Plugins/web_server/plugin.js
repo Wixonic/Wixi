@@ -15,18 +15,18 @@ const httpsApp = express();
 
 
 httpApp.use((req, _, next) => {
-    log(`HTTP | Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${path.join(req.headers.host, req.url)}`);
+    log(`HTTP | Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.url}`);
     next();
 });
 
 httpsApp.use((req, _, next) => {
-    log(`HTTPS | Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${path.join(req.headers.host, req.url)}`);
+    log(`HTTPS | Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.url}`);
     next();
 });
 
 
 httpApp.use((req, res, next) => {
-    const url = new URL(req.url, `https://${req.headers.host}`);
+    const url = new URL(req.url, "https://server.wixonic.fr");
 
     res.writeHead(301, {
         "location": url.href
@@ -60,7 +60,7 @@ const httpsServer = https.createServer({
 const wssServer = https.createServer({
     cert: fs.readFileSync("../../SSL/wixonic.fr.cer"),
     key: fs.readFileSync("../../SSL/wixonic.fr.private.key")
-}, (req, _) => log(`WSS | Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${path.join(req.headers["host"], req.url)}`));
+}, (req, _) => log(`WSS | Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.url}`));
 
 
 const ws = new io.Server(wssServer, {
@@ -71,10 +71,10 @@ const ws = new io.Server(wssServer, {
 });
 
 
-fs.readdirSync("./extensions", {
+fs.readdirSync(path.join(__dirname, "extensions"), {
     encoding: "utf-8"
 }).forEach((folderName) => {
-    const folder = `./${path.join("extensions", folderName)}`;
+    const folder = path.join(__dirname, "extensions", folderName);
 
     if (fs.statSync(folder).isDirectory()) {
         fs.readdirSync(folder, {
@@ -89,9 +89,9 @@ fs.readdirSync("./extensions", {
 
                     require(file)(router, ws, folderName);
 
-                    log(`Extension at "${file}" loaded`);
+                    log(`Extension at /${path.relative(path.join(__dirname, "extensions"), file)} loaded`);
                 } catch (e) {
-                    log(`Extension at "${file}" failed to load: ${e}`);
+                    log(`Extension at /${path.relative(path.join(__dirname, "extensions"), file)} failed to load: ${e}`);
                 }
             }
         });

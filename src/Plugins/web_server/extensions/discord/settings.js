@@ -18,8 +18,8 @@ module.exports = {
 	},
 	rules: {
 		force: false,
-		silent: true,
-		url: "https://discord.wixonic.fr/authorize"
+		silent: false,
+		url: "https://server.wixonic.fr/discord/authorize"
 	},
 	storage: {
 		limit: true,
