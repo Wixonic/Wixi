@@ -105,8 +105,10 @@ class ClientManager {
 	addActivity(id, activity) {
 		clearTimeout(this.activities[id]?.keepAliveId);
 
-		this.activities[id] = activity;
-		this.updateActivity();
+		if (this.activities[id] != activity) {
+			this.activities[id] = activity;
+			this.updateActivity();
+		}
 	};
 
 	/**
