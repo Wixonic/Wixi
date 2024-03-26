@@ -46,9 +46,9 @@
                 /^https:\/\/(?:[\w-]+\.)*wixonic\.fr/m
             ],
             run: (_) => {
-                sendStatus("POST", "/website", {});
+                sendStatus("POST", "/safari/website", {});
 
-                onUnload.path = "/website";
+                onUnload.path = "/safari/website";
                 onUnload.data = {};
             }
         }, { // https://[*.]youtube.com/feed/subscriptions[:anything]
@@ -115,10 +115,38 @@
                 /^https:\/\/(?:[\w-]+\.)*firebase\.google\.com/m
             ],
             run: (_) => {
-                sendStatus("POST", "/firebase", {});
+                sendStatus("POST", "/safari/firebase", {});
 
-                onUnload.path = "/firebase";
+                onUnload.path = "/safari/firebase";
                 onUnload.data = {};
+            }
+        }, { // https://developer.apple.com/wwdc24[:anything]
+            matches: [
+                /^https:\/\/developer\.apple\.com\/wwdc24/m
+            ],
+            run: (_) => {
+                sendStatus("POST", "/appledev", {
+                    type: "wwdc"
+                });
+
+                onUnload.path = "/appledev";
+                onUnload.data = {
+                    type: "wwdc"
+                };
+            }
+        }, { // https://developer.apple.com[:anything]
+            matches: [
+                /^https:\/\/developer\.apple\.com/m
+            ],
+            run: (_) => {
+                sendStatus("POST", "/appledev", {
+                    type: "website"
+                });
+
+                onUnload.path = "/appledev";
+                onUnload.data = {
+                    type: "website"
+                };
             }
         }
     ];
