@@ -11,15 +11,25 @@ module.exports = {
 				.setMinValue(1)
 		),
 
-	async execute(interaction) {
-		interaction.log("This feature doesn't work for now");
+	/**
+	 * @param {import("discord.js").ChatInputCommandInteraction} interaction
+	 */
 
-		await interaction.safeReply({
-			content: "This feature doesn't work for now",
-			ephemeral: true,
-			allowedMentions: {
-				repliedUser: false
-			}
+	async execute(interaction) {
+		const count = interaction.options.getInteger("count") ?? 1;
+
+		const channel = await interaction.channel.fetch(true);
+
+		const messages = await channel.messages.fetch({
+			deletable: true,
+			limit: count
 		});
+
+		await new Promise((resolve) => {
+			messages.each(async (message) => await message.delete());
+			resolve();
+		});
+
+		await interaction.reply(`${count} message${count > 1 ? "s" : ""} deleted`);
 	}
 };
