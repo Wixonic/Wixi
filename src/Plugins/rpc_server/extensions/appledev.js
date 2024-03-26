@@ -14,13 +14,13 @@ const POST = async (extension, req, res, keepAlive) => {
 			clientManager.addActivity(`appledev-${type}`, {
 				application_id: config.extensions.appledev.clientId,
 
-				name: "news",
+				name: "developer stuff",
 				details: "Watching stuff for developers",
 				state: "On Apple Developer for iOS",
 
 				assets: {
 					small_image: config.extensions.appledev.assets.app,
-					small_text: "Apple Developer"
+					small_text: "Apple Developer for iOS"
 				},
 
 				type: 3, // WATCHING
@@ -52,7 +52,7 @@ const POST = async (extension, req, res, keepAlive) => {
 			clientManager.addActivity(`appledev-${type}`, {
 				application_id: config.extensions.appledev.clientId,
 
-				name: "news",
+				name: "developer stuff",
 				details: "Watching stuff for developers",
 				state: "On Apple Developer",
 
