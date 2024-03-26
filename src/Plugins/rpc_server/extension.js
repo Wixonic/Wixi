@@ -18,8 +18,8 @@ class Extension {
 	 * @param {string} name
 	 * @param {string} path
 	 * 
-	 * @param {ExtensionPOST} POST
-	 * @param {ExtensionDELETE} DELETE
+	 * @param {ExtensionPOST?} POST
+	 * @param {ExtensionDELETE?} DELETE
 	 */
 	constructor(name, path, POST, DELETE) {
 		this.name = name;
