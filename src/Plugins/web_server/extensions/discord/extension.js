@@ -19,10 +19,10 @@ module.exports = (router, io, extensionPath) => {
 		const authParams = new URLSearchParams({
 			client_id: config.clientId,
 			prompt: "none",
-			redirect_uri: `https://server.wixonic.fr/${extensionPath}/oauth2/authorize`,
+			redirect_uri: `https://server.wixonic.fr/discord/oauth2/authorize`,
 			response_type: "code",
 			scope: config.oauth2.scopes.join(" "),
-			state: config.oauth2.state + (url.searchParams.get("redirect_url") ?? encodeURIComponent(`https://server.wixonic.fr/${extensionPath}`))
+			state: config.oauth2.state + (url.searchParams.get("redirect_url") ?? encodeURIComponent(`https://server.wixonic.fr/discord`))
 		});
 
 		res.setHeader("location", `https://discord.com/oauth2/authorize?${authParams.toString()}`).sendStatus(307);
@@ -41,7 +41,7 @@ module.exports = (router, io, extensionPath) => {
 
 		if (url.searchParams.has("code") && url.searchParams.has("state") && url.searchParams.get("state").startsWith(config.oauth2.state)) {
 			try {
-				redirect_url = new URL(decodeURIComponent(url.searchParams.get("state").split(config.oauth2.state)[1]), `https://server.wixonic.fr/${extensionPath}`);
+				redirect_url = new URL(decodeURIComponent(url.searchParams.get("state").split(config.oauth2.state)[1]), `https://server.wixonic.fr/discord`);
 			} catch (e) {
 				console.log(e)
 				const message = "Invalid redirect url";
@@ -104,7 +104,7 @@ module.exports = (router, io, extensionPath) => {
 			request.write(new URLSearchParams({
 				code: url.searchParams.get("code"),
 				grant_type: "authorization_code",
-				redirect_uri: new URL("/discord/oauth2/authorize", "https://server.wixonic.fr").href
+				redirect_uri: "https://server.wixonic.fr/discord/oauth2/authorize"
 			}).toString());
 
 			request.end();
@@ -341,7 +341,7 @@ module.exports = (router, io, extensionPath) => {
 		});
 
 		router.use(express.static(path.join(__dirname, "website"), {
-			setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /${extensionPath}/${path.relative(__dirname, filePath)} `)
+			setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /discord/${path.relative(__dirname, filePath)} `)
 		}));
 
 

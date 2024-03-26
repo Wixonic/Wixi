@@ -23,11 +23,11 @@ for (const folder of commandFolders) {
 	}
 }
 
-const rest = new REST().setToken(config.discord.token);
+const rest = new REST().setToken(config.token);
 
 (async () => {
 	try {
-		await rest.put(Routes.applicationCommands(config.discord.clientId), { body: commands });
+		await rest.put(Routes.applicationCommands(config.clientId), { body: commands });
 	} catch (e) {
 		log(e);
 	} finally {

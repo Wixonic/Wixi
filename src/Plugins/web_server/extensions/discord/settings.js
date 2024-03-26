@@ -24,6 +24,6 @@ module.exports = {
 	storage: {
 		limit: true,
 		needed: 30,
-		path: "./database/storage"
+		path: "./extensions/discord/database/storage/"
 	}
 }

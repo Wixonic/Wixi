@@ -90,7 +90,7 @@ class User {
 		} else return userId;
 	};
 
-	static folder = (userId) => `./database/users/${userId}/`;
+	static folder = (userId) => `${__dirname}/extensions/discord/database/users/${userId}/`;
 
 	static async fromAccessTokenExchange(accessTokenExchange) {
 		const token = Token.fromAccessTokenExchange(accessTokenExchange);
