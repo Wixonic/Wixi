@@ -1,6 +1,8 @@
+const { EventEmitter } = require("stream");
+
 const log = require("./log");
 
-class BaseObject extends EventTarget {
+class BaseObject extends EventEmitter {
 	constructor() {
 		super();
 

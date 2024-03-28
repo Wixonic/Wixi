@@ -1,22 +1,29 @@
 const https = require("https");
 
 /**
+ * @typedef {"GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS"} RequestMethod
+ */
+
+/**
+ * @typedef {"raw" | "text" | "json"} RequestResponseType
+ */
+
+/**
  * @typedef {Object} RequestOptions
  * @property {String?} auth
  * @property {Object?} body
  * @property {import("http").OutgoingHttpHeaders?} headers
- * @property {"GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "OPTIONS"} method
- * @property {"raw" | "text" | "json"} type
+ * @property {RequestMethod} method
+ * @property {RequestResponseType} type
  * @property {URL | String} url
  */
 
 /**
- * @typedef {(options: RequestOptions) => Promise<RequestResponse>} Request
+ * @typedef {(options: RequestOptions) => Promise<any>} Request
  */
 
 /**
  * @type {Request}
- * @param {RequestOptions} options
  */
 const request = (options = {}) => {
 	return new Promise((resolve) => {
