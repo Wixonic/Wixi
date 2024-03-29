@@ -111,6 +111,20 @@
                     type: "home"
                 };
             }
+        }, { // https://[*.]youtube.com[:anything]
+            matches: [
+                /^https:\/\/(?:[\w-]+\.)*youtube\.com/m
+            ],
+            run: (_) => {
+                sendStatus("POST", "/youtube", {
+                    type: "desktop"
+                });
+
+                onUnload.path = "/youtube";
+                onUnload.data = {
+                    type: "desktop"
+                };
+            }
         }, { // https://[*.]firebase.google.com[:anything]
             matches: [
                 /^https:\/\/(?:[\w-]+\.)*firebase\.google\.com/m
@@ -151,7 +165,7 @@
             }
         }, { // https://[*.]twitch.tv
             matches: [
-                /^https:\/\/(?:[\w-]+\.)*twitch\.tv(?:\/)?$/m
+                /^https:\/\/(?:[\w-]+\.)*twitch\.tv/m
             ],
             run: (_) => {
                 sendStatus("POST", "/twitch", {
