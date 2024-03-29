@@ -1,97 +1,27 @@
 const { Client } = require("discord.js-selfbot-v13");
+const fs = require("fs");
 
-const config = require("./config");
-const log = require("./log");
+const { BaseObject } = require("./base");
+const request = require("./request");
 const { clone } = require("./utils");
 
+const config = require("./config");
+const path = require("path");
+
 /**
- * @typedef {Object} ActivityAssets
- * @property {string?} large_image
- * @property {string?} large_text
- * @property {string?} small_image
- * @property {string?} small_text
- * 
- * @typedef {Object} ActivityButton
- * @property {string} label
- * @property {string} url
- * 
- * @typedef {Object} ActivityParty
- * @property {string?} id
- * @property {number[]?} size
- * 
- * @typedef {Object} ActivitySecrets
- * @property {string?} joins
- * 
- * @typedef {Object} ActivityTimestamps
- * @property {number?} start
- * @property {number?} end
- * 
- * 
- * @typedef {Object} BaseActivity
- * @property {string} application_id
- * @property {0 | 1 | 2 | 3 | 4 | 5} type
- * @property {string} name
- * @property {NodeJS.Timeout?} keepAliveId
- * 
- * 
- * @typedef {BaseActivity & {
- *   type: 0,
- *   assets: ActivityAssets?,
- *   details: string?,
- *   party: ActivityParty?,
- *   state: string?,
- *   secrets: ActivitySecrets?,
- *   timestamps: ActivityTimestamps?
- * }} PlayingActivity
- * 
- * @typedef {BaseActivity & {
- *   type: 1,
- *   assets: ActivityAssets?,
- *   details: string?,
- *   party: ActivityParty?,
- *   state: string?,
- *   url: string?
- * }} StreamingActivity
- * 
- * @typedef {BaseActivity & {
- *   type: 2,
- *   assets: ActivityAssets?,
- *   details: string?,
- *   party: ActivityParty?,
- *   state: string?
- * }} ListeningActivity
- * 
- * @typedef {BaseActivity & {
- *   type: 3,
- *   assets: ActivityAssets?,
- *   details: string?,
- *   party: ActivityParty?,
- *   state: string?
- * }} WatchingActivity
- * 
- * @typedef {BaseActivity & {
- *   type: 4,
- *   state: string?
- * }} CustomActivity
- * 
- * @typedef {BaseActivity & {
- *   type: 5,
- *   assets: ActivityAssets?,
- *   details: string?,
- *   party: ActivityParty?,
- *   state: string?
- * }} CompetingActivity
- * 
- * 
- * @typedef {PlayingActivity | StreamingActivity | ListeningActivity | WatchingActivity | CustomActivity | CompetingActivity} Activity
+ * @typedef {(import("discord.js-selfbot-v13").ActivitiesOptions | import("discord.js-selfbot-v13").RichPresence | import("discord.js-selfbot-v13").SpotifyRPC | import("discord.js-selfbot-v13").CustomStatus)} Activity
  */
 
-
-class ClientManager {
+class ClientManager extends BaseObject {
 	/**
 	 * @type {Object<string, Activity>}
 	 */
 	activities = {};
+
+	/**
+	 * @type {Object<string, CachedAsset>}
+	 */
+	assetsCache = {};
 
 	/**
 	 * @type {Client?}
@@ -120,41 +50,75 @@ class ClientManager {
 
 		delete this.activities[id];
 		this.updateActivity();
-		if (fromKeepAlive) log(`${id} deleted by Keep-Alive`);
+		if (fromKeepAlive) this.log(`${id} deleted by Keep-Alive`);
 	};
 
 	async updateActivity() {
-		const activityList = Object.values(clone(this.activities));
+		const activities = Object.values(this.activities).length > 0 ? Object.values(clone(this.activities)) : [{
+			type: 3, // WATCHING
+
+			name: "the ground",
+			details: "(Wixi is playing outside)",
+			state: "I'm touching..",
+
+			assets: {
+				large_image: config.assets.grass,
+				large_text: "Grass",
+				small_image: config.assets.app,
+				small_text: "Wixi"
+			},
+
+			buttons: [
+				"Open my website",
+				"Join WixiLand (Discord server)"
+			],
+			metadata: {
+				button_urls: [
+					"https://wixonic.fr",
+					(await request({
+						type: "headers",
+						url: "https://go.wixonic.fr/discord"
+					}))["location"]
+				]
+			}
+		}];
 
 		while (!this.client.isReady()) await new Promise((resolve) => setTimeout(resolve, 1000));
 
-		for (const activity of activityList) delete activity.keepAliveId;
+		for (const activity of activities) {
+			activity.application_id = config.applicationId;
+			delete activity.keepAliveId;
+		}
 
 		this.client.user.setPresence({
-			activities: activityList,
-			status: activityList.length > 0 ? "idle" : "invisible"
+			activities,
+			afk: true,
+			status: Object.values(this.activities).length > 0 ? "online" : "idle"
 		});
 	};
 
 	constructor() {
+		super();
+
 		this.client = new Client({
 			presence: {
-				status: "invisible"
+				afk: true,
+				status: "idle"
 			}
 		});
 
 		this.client.on("ready", () => {
-			log(`Client - Logged in as ${this.client.user?.username ?? "unknown"}`);
+			this.log(`Logged in as ${this.client.user?.username ?? "unknown"}`);
 			this.updateActivity();
 		});
 
-		this.client.on("error", (error) => log(`Client - An error occured: ${error}`));
+		this.client.on("error", (error) => this.log(`An error occured: ${error}`));
 
 		this.client.login(config.token);
 
 		process.on("SIGINT", async () => {
 			this.client.destroy();
-			log(`Client - Logged out`);
+			this.log(`Logged out`);
 			process.exit(0);
 		});
 	};

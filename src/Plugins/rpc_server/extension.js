@@ -1,3 +1,5 @@
+const { BaseObject } = require("./base");
+
 /**
  * @typedef {function(Extension, import("express").Request, import("express").Response, number | null)} ExtensionPOST
  */
@@ -13,7 +15,7 @@
  * @property {ExtensionPOST} POST
  * @property {ExtensionDELETE} DELETE
  */
-class Extension {
+class Extension extends BaseObject {
 	/**
 	 * @param {string} name
 	 * @param {string} path
@@ -22,6 +24,8 @@ class Extension {
 	 * @param {ExtensionDELETE?} DELETE
 	 */
 	constructor(name, path, POST, DELETE) {
+		super();
+
 		this.name = name;
 		this.path = path;
 

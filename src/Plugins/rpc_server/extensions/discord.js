@@ -1,22 +1,33 @@
-const { Extension } = require("../extension");
-
 const clientManager = require("../client");
+const { Extension } = require("../extension");
+const request = require("../request");
+
 const config = require("../config");
 
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res, keepAlive) => {
+const POST = async (_, req, res, keepAlive) => {
 	clientManager.addActivity(`discord-${req.body?.mobile ? "mobile" : "desktop"}`, {
-		application_id: config.extensions.discord.clientId,
-
 		name: "servers on Discord",
 		details: req.body?.mobile ? "Details not available" : "Unknown details",
 		state: `Currently on Discord${req.body?.mobile ? " for iOS" : ""}`,
 
 		assets: {
-			small_image: config.extensions.discord.assets.app,
+			small_image: config.assets.logo_discord,
 			small_text: `Discord${req.body?.mobile ? " for iOS" : ""}`
+		},
+
+		buttons: [
+			"Join WixiLand (Discord server)"
+		],
+		metadata: {
+			button_urls: [
+				(await request({
+					type: "headers",
+					url: "https://go.wixonic.fr/discord"
+				}))["location"]
+			]
 		},
 
 		type: 3, // WATCHING
@@ -30,7 +41,7 @@ const POST = async (extension, req, res, keepAlive) => {
 /**
  * @type {import("../extension").ExtensionDELETE}
  */
-const DELETE = (extension, req, res) => {
+const DELETE = (_, req, res) => {
 	clientManager.removeActivity(`discord-${req.body?.mobile ? "mobile" : "desktop"}`);
 
 	res.status(204).end();

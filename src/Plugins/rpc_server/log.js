@@ -1,3 +1,3 @@
 const package = require("./package");
 
-module.exports = (txt) => console.log(`[${package.displayName ?? package.name}]: ${txt}`);
+module.exports = (any) => console.log(`[${package.displayName ?? package.name}]: ${typeof any == "string" ? any : JSON.stringify(any, null, 2)}`);

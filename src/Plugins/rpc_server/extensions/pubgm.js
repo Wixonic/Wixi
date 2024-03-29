@@ -1,19 +1,17 @@
+const clientManager = require("../client");
 const { Extension } = require("../extension");
 
-const clientManager = require("../client");
 const config = require("../config");
 
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res, keepAlive) => {
+const POST = async (_, _2, res, keepAlive) => {
 	clientManager.addActivity("pubgm", {
-		application_id: config.extensions.pubgm.clientId,
-
 		name: "PUBG Mobile",
 
 		assets: {
-			small_image: config.extensions.pubgm.assets.app,
+			small_image: config.assets.logo_pubg_mobile,
 			small_text: "PUBG Mobile"
 		},
 
@@ -32,10 +30,10 @@ const POST = async (extension, req, res, keepAlive) => {
 /**
  * @type {import("../extension").ExtensionDELETE}
  */
-const DELETE = (extension, req, res) => {
+const DELETE = (_, _2, res) => {
 	clientManager.removeActivity("pubgm");
 
 	res.status(204).end();
 };
 
-module.exports = new Extension("PUBG Mobile", "/pubgm", POST, DELETE, config.extensions.pubgm.clientId, config.extensions.pubgm.clientSecret);
+module.exports = new Extension("PUBG Mobile", "/pubgm", POST, DELETE);

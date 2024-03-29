@@ -1,20 +1,18 @@
+const clientManager = require("../client");
 const { Extension } = require("../extension");
 
-const clientManager = require("../client");
 const config = require("../config");
 
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res, keepAlive) => {
+const POST = async (_, _2, res, keepAlive) => {
 	clientManager.addActivity("scriptable", {
-		application_id: config.extensions.scriptable.clientId,
-
 		name: "Scriptable",
 		state: "Working on scripts",
 
 		assets: {
-			small_image: config.extensions.scriptable.assets.app,
+			small_image: config.assets.logo_scriptable,
 			small_text: "Scriptable"
 		},
 
@@ -33,10 +31,10 @@ const POST = async (extension, req, res, keepAlive) => {
 /**
  * @type {import("../extension").ExtensionDELETE}
  */
-const DELETE = (extension, req, res) => {
+const DELETE = (_, _2, res) => {
 	clientManager.removeActivity("scriptable");
 
 	res.status(204).end();
 };
 
-module.exports = new Extension("Scriptable", "/scriptable", POST, DELETE, config.extensions.scriptable.clientId, config.extensions.scriptable.clientSecret);
+module.exports = new Extension("Scriptable", "/scriptable", POST, DELETE);

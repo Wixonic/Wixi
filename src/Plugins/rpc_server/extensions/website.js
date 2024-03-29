@@ -1,12 +1,12 @@
+const clientManager = require("../client");
 const { Extension } = require("../extension");
 
-const clientManager = require("../client");
 const config = require("../config");
 
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res, keepAlive) => {
+const POST = async (_, req, res, keepAlive) => {
 	clientManager.addActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		application_id: config.extensions.website.clientId,
 
@@ -15,8 +15,17 @@ const POST = async (extension, req, res, keepAlive) => {
 		state: `Currently on wixonic.fr${req.body?.mobile ? " on iOS" : ""}`,
 
 		assets: {
-			small_image: config.extensions.website.assets.app,
+			small_image: config.assets.logo_with_character,
 			small_text: `Wixonic's Website on Safari${req.body?.mobile ? " for iOS" : ""}`
+		},
+
+		buttons: [
+			"Open my website"
+		],
+		metadata: {
+			button_urls: [
+				"https://wixonic.fr"
+			]
 		},
 
 		type: 3, // WATCHING
@@ -30,7 +39,7 @@ const POST = async (extension, req, res, keepAlive) => {
 /**
  * @type {import("../extension").ExtensionDELETE}
  */
-const DELETE = (extension, req, res) => {
+const DELETE = (_, req, res) => {
 	clientManager.removeActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`);
 
 	res.status(204).end();

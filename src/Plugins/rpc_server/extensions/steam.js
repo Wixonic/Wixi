@@ -1,8 +1,8 @@
+const clientManager = require("../client");
 const { Extension } = require("../extension");
 
-const clientManager = require("../client");
 const config = require("../config");
 
+// Steam RPC
 
-
-module.exports = new Extension("Steam", "/steam", null, null, config.extensions.steam.clientId, config.extensions.steam.clientSecret);
+module.exports = new Extension("Steam", "/steam", null, null);

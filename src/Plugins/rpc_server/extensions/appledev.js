@@ -1,25 +1,23 @@
+const clientManager = require("../client");
 const { Extension } = require("../extension");
 
-const clientManager = require("../client");
 const config = require("../config");
 
 /**
  * @type {import("../extension").ExtensionPOST}
  */
-const POST = async (extension, req, res, keepAlive) => {
+const POST = async (_, req, res, keepAlive) => {
 	const type = req.body?.type ?? "unknow";
 
 	switch (type) {
 		case "app":
 			clientManager.addActivity(`appledev-${type}`, {
-				application_id: config.extensions.appledev.clientId,
-
 				name: "developer stuff",
 				details: "Watching stuff for developers",
 				state: "On Apple Developer for iOS",
 
 				assets: {
-					small_image: config.extensions.appledev.assets.app,
+					small_image: config.assets.logo_apple_developer,
 					small_text: "Apple Developer for iOS"
 				},
 
@@ -31,15 +29,22 @@ const POST = async (extension, req, res, keepAlive) => {
 
 		case "wwdc":
 			clientManager.addActivity(`appledev-${type}`, {
-				application_id: config.extensions.appledev.clientId,
-
 				name: "WWDC 24",
 				details: "Watching news for developers",
 				state: "On Apple developer",
 
 				assets: {
-					small_image: config.extensions.appledev.assets.wwdc,
+					small_image: config.assets.logo_wwdc,
 					small_text: "WWDC 24"
+				},
+
+				buttons: [
+					"Watch WWDC 24"
+				],
+				metadata: {
+					button_urls: [
+						"https://developer.apple.com/wwdc24/"
+					]
 				},
 
 				type: 3, // WATCHING
@@ -50,14 +55,12 @@ const POST = async (extension, req, res, keepAlive) => {
 
 		default:
 			clientManager.addActivity(`appledev-${type}`, {
-				application_id: config.extensions.appledev.clientId,
-
 				name: "developer stuff",
 				details: "Watching stuff for developers",
 				state: "On Apple Developer",
 
 				assets: {
-					small_image: config.extensions.appledev.assets.app,
+					small_image: config.assets.logo_apple_developer,
 					small_text: "Apple Developer"
 				},
 
@@ -74,10 +77,10 @@ const POST = async (extension, req, res, keepAlive) => {
 /**
  * @type {import("../extension").ExtensionDELETE}
  */
-const DELETE = (extension, req, res) => {
+const DELETE = (_, req, res) => {
 	clientManager.removeActivity(`appledev-${req.body?.type ?? "unknow"}`);
 
 	res.status(204).end();
 };
 
-module.exports = new Extension("Apple Developer", "/appledev", POST, DELETE, config.extensions.youtube.clientId, config.extensions.youtube.clientSecret);
+module.exports = new Extension("Apple Developer", "/appledev", POST, DELETE);

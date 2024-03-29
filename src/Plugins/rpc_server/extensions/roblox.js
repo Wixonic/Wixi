@@ -1,8 +1,8 @@
+const clientManager = require("../client");
 const { Extension } = require("../extension");
 
-const clientManager = require("../client");
 const config = require("../config");
 
+// Roblox RPC
 
-
-module.exports = new Extension("Roblox", "/roblox", null, null, config.extensions.roblox.clientId, config.extensions.roblox.clientSecret);
+module.exports = new Extension("Roblox", "/roblox", null, null);
