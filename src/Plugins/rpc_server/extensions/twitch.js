@@ -9,7 +9,7 @@ const config = require("../config");
 const POST = async (_, req, res, keepAlive) => {
 	clientManager.addActivity(`twitch-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		name: "a live on Twitch",
-		details: req.body?.mobile ? "Details not available" : "Unknown live",
+		details: "Details not available",
 		state: `Currently on Twitch${req.body?.mobile ? " for iOS" : ""}`,
 
 		assets: {
