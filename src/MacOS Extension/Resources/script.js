@@ -149,6 +149,20 @@
                     type: "website"
                 };
             }
+        }, { // https://[*.]twitch.tv
+            matches: [
+                /^https:\/\/(?:[\w-]+\.)*twitch\.tv(?:\/)?$/m
+            ],
+            run: (_) => {
+                sendStatus("POST", "/twitch", {
+                    type: "desktop"
+                });
+
+                onUnload.path = "/twitch";
+                onUnload.data = {
+                    type: "desktop"
+                };
+            }
         }
     ];
 
