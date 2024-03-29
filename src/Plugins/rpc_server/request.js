@@ -5,7 +5,7 @@ const https = require("https");
  */
 
 /**
- * @typedef {"raw" | "text" | "json"} RequestResponseType
+ * @typedef {"headers" | "json" | "raw" | "text"} RequestResponseType
  */
 
 /**
@@ -55,43 +55,46 @@ const request = (options = {}) => {
 				req.on("timeout", () => reject("Connection got timed out"));
 
 				req.on("response", (res) => {
-					const chunks = [];
+					if (options.type == "headers") resolve(res.headers);
+					else {
+						const chunks = [];
 
-					const reject = (reason = "Unknown reason") => {
-						res.removeAllListeners();
-						req.removeAllListeners();
+						const reject = (reason = "Unknown reason") => {
+							res.removeAllListeners();
+							req.removeAllListeners();
 
-						resolve({
-							error: reason
+							resolve({
+								error: reason
+							});
+						};
+
+						res.on("close", () => reject("Connection closed"));
+						res.on("error", (e) => reject(e));
+
+						res.on("data", (chunk) => chunks.push(chunk));
+						res.on("end", () => {
+							res.removeAllListeners();
+							req.removeAllListeners();
+
+							switch (options.type) {
+								case "json":
+									resolve(JSON.parse(chunks.join("")));
+									break;
+
+								case "raw":
+									resolve(chunks);
+									break;
+
+								case "text":
+									resolve(chunks.join(""));
+									break;
+
+								default:
+									reject(`Invalid type: ${options.type ?? "<empty>"}`);
+									break;
+							}
 						});
-					};
-
-					res.on("close", () => reject("Connection closed"));
-					res.on("error", (e) => reject(e));
-
-					res.on("data", (chunk) => chunks.push(chunk));
-					res.on("end", () => {
-						res.removeAllListeners();
-						req.removeAllListeners();
-
-						switch (options.type) {
-							case "json":
-								resolve(JSON.parse(chunks.join("")));
-								break;
-
-							case "raw":
-								resolve(chunks);
-								break;
-
-							case "text":
-								resolve(chunks.join(""));
-								break;
-
-							default:
-								reject(`Invalid type: ${options.type ?? "<empty>"}`);
-								break;
-						}
-					});
+					}
 				});
 
 				req.write(String(options?.body));

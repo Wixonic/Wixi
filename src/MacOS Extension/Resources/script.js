@@ -88,7 +88,8 @@
                     type: "video",
                     author: data.author,
                     name: data.name,
-                    thumbnail: (data.thumbnailUrl ?? [])[0]
+                    thumbnail: (data.thumbnailUrl ?? [])[0],
+                    url: `https://www.youtube.com/watch?v=${data.embedUrl.slice("https://www.youtube.com/embed/".length)}`
                 });
 
                 onUnload.path = "/youtube";
@@ -155,7 +156,7 @@
         const xhr = new XMLHttpRequest();
         xhr.open(method, new URL(path, "https://server.wixonic.fr:4000"));
         xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.setRequestHeader("Server-Keep-Alive", "15");
+        xhr.setRequestHeader("Server-Keep-Alive", "30");
         xhr.send(JSON.stringify(data));
     };
 

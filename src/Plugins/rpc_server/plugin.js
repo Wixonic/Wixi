@@ -3,55 +3,71 @@ const fs = require("fs");
 const https = require("https");
 const path = require("path");
 
-const { Client } = require("./client");
+const config = require("./config");
 const log = require("./log");
 
-const config = require("./config");
-
 const app = express();
-const client = new Client();
 
-app.use((req, _, next) => {
-    log(`Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers["host"], req.url)}`);
+app.use(express.json());
+
+app.use((_, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Server-Keep-Alive");
     next();
 });
 
-client.selfbot.on("ready", (selfbot) => {
-    selfbot.user.setPresence({
-        activities: [
-            {
-                application_id: config.applicationId,
-                type: "WATCHING",
-                name: "outside",
-                details: "I'm touching grass",
-                state: "Try it!",
-                assets: [
+fs.readdirSync("./extensions", {
+    encoding: "utf-8"
+}).forEach((file) => {
+    if (file.endsWith("js")) {
+        try {
+            /**
+             * @type {import("./extension").Extension}
+             */
+            const extension = require(path.join(process.cwd(), "extensions", file));
 
-                ],
-                buttons: [
-                    "Website",
-                    "WixiLand"
-                ],
-                metadata: {
-                    button_urls: [
-                        "https://wixonic.fr",
-                        "https://go.wixonic.fr/discord"
-                    ]
+            app.post(extension.path, (req, res) => {
+                if (extension.POST) {
+                    try {
+                        extension.POST(extension, req, res, req.headers["server-keep-alive"] ? Number(req.headers["server-keep-alive"]) * 1000 : null);
+                        log(`[Extensions Manager] ${extension.name} - POST${req.headers["server-keep-alive"] ? " - Keep-Alive: " + req.headers["server-keep-alive"] + "s" : ""}`);
+                    } catch (e) {
+                        if (!res.headersSent && res.writable) res.writeHead(400).send(e.toString());
+                        log(`[Extensions Manager] ${extension.name} - Failed to POST: ${e}`);
+                    }
                 }
-            }
-        ],
-        afk: true,
-        status: "invisible"
-    });
+            });
 
-    client.log(`Logged in as ${selfbot.user.username}`);
+            app.delete(extension.path, (req, res) => {
+                if (extension.DELETE) {
+                    try {
+                        extension.DELETE(extension, req, res);
+                        log(`[Extensions Manager] ${extension.name} - DELETE`);
+                    } catch (e) {
+                        if (!res.headersSent && res.writable) res.writeHead(400).send(e.toString());
+                        log(`[Extensions Manager] ${extension.name} - Failed to DELETE: ${e}`);
+                    }
+                }
+            });
+
+            app.options(extension.path, (_, res) => res.writeHead(204).end());
+
+            log(`[Extensions Manager] ${extension.name} extension loaded`);
+        } catch (e) {
+            log(`[Extensions Manager] Extension at "${file}" failed to load: ${e}`);
+        }
+    }
 });
 
-client.selfbot.login(config.token);
+app.use((req, _, next) => {
+    log(`[HTTPS Server] Incomming request from ${req.socket.remoteAddress ?? "unknown ip"} - ${req.method} ${path.join(req.headers["host"], req.url)}`);
+    next();
+});
 
 const server = https.createServer({
     cert: fs.readFileSync("../../SSL/wixonic.fr.cer"),
     key: fs.readFileSync("../../SSL/wixonic.fr.private.key")
 }, app);
 
-server.listen(config.port, () => log(`Running on port :${config.port}`));
+server.listen(config.port, () => log(`[HTTPS Server] Running on port :${config.port}`));
