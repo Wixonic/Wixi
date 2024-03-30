@@ -1,0 +1,2220 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Brawl Stars API</title>
+  <style type="text/css">
+    body {
+      font-family: Trebuchet MS, sans-serif;
+      font-size: 15px;
+      color: #444;
+      margin-right: 24px;
+    }
+
+    h1 {
+      font-size: 25px;
+    }
+
+    h2 {
+      font-size: 20px;
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    hr {
+      height: 1px;
+      border: 0;
+      color: #ddd;
+      background-color: #ddd;
+    }
+
+    .app-desc {
+      clear: both;
+      margin-left: 20px;
+    }
+
+    .param-name {
+      width: 100%;
+    }
+
+    .license-info {
+      margin-left: 20px;
+    }
+
+    .license-url {
+      margin-left: 20px;
+    }
+
+    .model {
+      margin: 0 0 0px 20px;
+    }
+
+    .method {
+      margin-left: 20px;
+    }
+
+    .method-notes {
+      margin: 10px 0 20px 0;
+      font-size: 90%;
+      color: #555;
+    }
+
+    pre {
+      padding: 10px;
+      margin-bottom: 2px;
+    }
+
+    .http-method {
+      text-transform: uppercase;
+    }
+
+    pre.get {
+      background-color: #0f6ab4;
+    }
+
+    pre.post {
+      background-color: #10a54a;
+    }
+
+    pre.put {
+      background-color: #c5862b;
+    }
+
+    pre.delete {
+      background-color: #a41e22;
+    }
+
+    .huge {
+      color: #fff;
+    }
+
+    pre.example {
+      background-color: #f3f3f3;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    code {
+      white-space: pre;
+    }
+
+    .nickname {
+      font-weight: bold;
+    }
+
+    .method-path {
+      font-size: 1.5em;
+      background-color: #0f6ab4;
+    }
+
+    .up {
+      float: right;
+    }
+
+    .parameter {
+      width: 500px;
+    }
+
+    .param {
+      width: 500px;
+      padding: 10px 0 0 20px;
+      font-weight: bold;
+    }
+
+    .param-desc {
+      width: 700px;
+      padding: 0 0 0 20px;
+      color: #777;
+    }
+
+    .param-type {
+      font-style: italic;
+    }
+
+    .param-enum-header {
+      width: 700px;
+      padding: 0 0 0 60px;
+      color: #777;
+      font-weight: bold;
+    }
+
+    .param-enum {
+      width: 700px;
+      padding: 0 0 0 80px;
+      color: #777;
+      font-style: italic;
+    }
+
+    .field-label {
+      padding: 0;
+      margin: 0;
+      clear: both;
+    }
+
+    .field-items {
+      padding: 0 0 15px 0;
+      margin-bottom: 15px;
+    }
+
+    .return-type {
+      clear: both;
+      padding-bottom: 10px;
+    }
+
+    .param-header {
+      font-weight: bold;
+    }
+
+    .method-tags {
+      text-align: right;
+    }
+
+    .method-tag {
+      background: none repeat scroll 0% 0% #24A600;
+      border-radius: 3px;
+      padding: 2px 10px;
+      margin: 2px;
+      color: #FFF;
+      display: inline-block;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Brawl Stars API</h1>
+  <div class="app-desc">Brawl Stars API</div>
+  <div class="app-desc">More information: <a href="https://helloreverb.com">https://helloreverb.com</a></div>
+  <div class="app-desc">Contact Info: <a href="hello@helloreverb.com">hello@helloreverb.com</a></div>
+  <div class="app-desc">Version: v1</div>
+  <div class="app-desc">BasePath:/v1</div>
+  <div class="license-info">All rights reserved</div>
+  <div class="license-url">http://apache.org/licenses/LICENSE-2.0.html</div>
+  <h2>Access</h2>
+  <ol>
+    <li>APIKey KeyParamName:authorization KeyInQuery:false KeyInHeader:true</li>
+  </ol>
+
+  <h2><a name="__Methods">Methods</a></h2>
+  [ Jump to <a href="#__Models">Models</a> ]
+
+  <h3>Table of Contents </h3>
+  <div class="method-summary"></div>
+  <h4><a href="#Brawlers">Brawlers</a></h4>
+  <ul>
+    <li><a href="#getBrawler"><code><span class="http-method">get</span> /brawlers/{brawlerId}</code></a></li>
+    <li><a href="#getBrawlers"><code><span class="http-method">get</span> /brawlers</code></a></li>
+  </ul>
+  <h4><a href="#Clubs">Clubs</a></h4>
+  <ul>
+    <li><a href="#getClub"><code><span class="http-method">get</span> /clubs/{clubTag}</code></a></li>
+    <li><a href="#getClubMembers"><code><span class="http-method">get</span> /clubs/{clubTag}/members</code></a></li>
+  </ul>
+  <h4><a href="#Events">Events</a></h4>
+  <ul>
+    <li><a href="#getScheduledEvents"><code><span class="http-method">get</span> /events/rotation</code></a></li>
+  </ul>
+  <h4><a href="#Players">Players</a></h4>
+  <ul>
+    <li><a href="#getBattleLog"><code><span class="http-method">get</span> /players/{playerTag}/battlelog</code></a>
+    </li>
+    <li><a href="#getPlayer"><code><span class="http-method">get</span> /players/{playerTag}</code></a></li>
+  </ul>
+  <h4><a href="#Rankings">Rankings</a></h4>
+  <ul>
+    <li><a
+        href="#getBrawlerRankings"><code><span class="http-method">get</span> /rankings/{countryCode}/brawlers/{brawlerId}</code></a>
+    </li>
+    <li><a href="#getClubRankings"><code><span class="http-method">get</span> /rankings/{countryCode}/clubs</code></a>
+    </li>
+    <li><a
+        href="#getPlayerRankings"><code><span class="http-method">get</span> /rankings/{countryCode}/players</code></a>
+    </li>
+    <li><a
+        href="#getPowerPlaySeasonRankings"><code><span class="http-method">get</span> /rankings/{countryCode}/powerplay/seasons/{seasonId}</code></a>
+    </li>
+    <li><a
+        href="#getPowerPlaySeasons"><code><span class="http-method">get</span> /rankings/{countryCode}/powerplay/seasons</code></a>
+    </li>
+  </ul>
+
+  <h1><a name="Brawlers">Brawlers</a></h1>
+  <div class="method"><a name="getBrawler" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre class="get"><code class="huge"><span class="http-method">get</span> /brawlers/{brawlerId}</code></pre>
+    </div>
+    <div class="method-summary">Get information about a brawler. (<span class="nickname">getBrawler</span>)</div>
+    <div class="method-notes">Get information about a brawler.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">brawlerId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Identifier of the brawler. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Brawler">Brawler</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{"empty": false}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#Brawler">Brawler</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getBrawlers" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre class="get"><code class="huge"><span class="http-method">get</span> /brawlers</code></pre>
+    </div>
+    <div class="method-summary">Get list of available brawlers. (<span class="nickname">getBrawlers</span>)</div>
+    <div class="method-notes">Get list of available brawlers.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#BrawlerList">BrawlerList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#BrawlerList">BrawlerList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <h1><a name="Clubs">Clubs</a></h1>
+  <div class="method"><a name="getClub" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre class="get"><code class="huge"><span class="http-method">get</span> /clubs/{clubTag}</code></pre>
+    </div>
+    <div class="method-summary">Get club information. (<span class="nickname">getClub</span>)</div>
+    <div class="method-notes">Get information about a single clan by club tag. Club tags can be found in game. Note that
+      clan tags start with hash character '#' and that needs to be URL-encoded properly to work in URL, so for example
+      clan tag '#2ABC' would become '%232ABC' in the URL.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">clubTag (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Tag of the club. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Club">Club</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{"empty": false}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#Club">Club</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getClubMembers" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre class="get"><code class="huge"><span class="http-method">get</span> /clubs/{clubTag}/members</code></pre>
+    </div>
+    <div class="method-summary">List club members. (<span class="nickname">getClubMembers</span>)</div>
+    <div class="method-notes">List club members.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">clubTag (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Tag of the club. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ClubMemberList">ClubMemberList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#ClubMemberList">ClubMemberList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <h1><a name="Events">Events</a></h1>
+  <div class="method"><a name="getScheduledEvents" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre class="get"><code class="huge"><span class="http-method">get</span> /events/rotation</code></pre>
+    </div>
+    <div class="method-summary">Get event rotation (<span class="nickname">getScheduledEvents</span>)</div>
+    <div class="method-notes">Get event rotation for ongoing events.</div>
+
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ScheduledEvents">ScheduledEvents</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#ScheduledEvents">ScheduledEvents</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <h1><a name="Players">Players</a></h1>
+  <div class="method"><a name="getBattleLog" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre
+        class="get"><code class="huge"><span class="http-method">get</span> /players/{playerTag}/battlelog</code></pre>
+    </div>
+    <div class="method-summary">Get log of recent battles for a player. (<span class="nickname">getBattleLog</span>)
+    </div>
+    <div class="method-notes">Get list of recent battle results for a player. NOTE: It may take up to 30 minutes for a
+      new battle to appear in the battlelog.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">playerTag (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Tag of the player. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#BattleList">BattleList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#BattleList">BattleList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getPlayer" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre class="get"><code class="huge"><span class="http-method">get</span> /players/{playerTag}</code></pre>
+    </div>
+    <div class="method-summary">Get player information (<span class="nickname">getPlayer</span>)</div>
+    <div class="method-notes">Get information about a single player by player tag. Player tags can be found either in
+      game or by from clan member list.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">playerTag (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Tag of the player. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#Player">Player</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{"empty": false}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#Player">Player</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <h1><a name="Rankings">Rankings</a></h1>
+  <div class="method"><a name="getBrawlerRankings" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre
+        class="get"><code class="huge"><span class="http-method">get</span> /rankings/{countryCode}/brawlers/{brawlerId}</code></pre>
+    </div>
+    <div class="method-summary">Get brawler rankings for a country or global rankings. (<span
+        class="nickname">getBrawlerRankings</span>)</div>
+    <div class="method-notes">Get brawler rankings for a country or global rankings. Brawler identifiers can be found by
+      using the /v1/brawlers API endpoint.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">countryCode (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Two letter country code, or
+        'global' for global rankings. </div>
+      <div class="param">brawlerId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Identifier of the brawler. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PlayerRankingList">PlayerRankingList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#PlayerRankingList">PlayerRankingList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getClubRankings" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre
+        class="get"><code class="huge"><span class="http-method">get</span> /rankings/{countryCode}/clubs</code></pre>
+    </div>
+    <div class="method-summary">Get club rankings for a country or global rankings. (<span
+        class="nickname">getClubRankings</span>)</div>
+    <div class="method-notes">Get club rankings for a country or global rankings.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">countryCode (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Two letter country code, or
+        'global' for global rankings. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#ClubRankingList">ClubRankingList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#ClubRankingList">ClubRankingList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getPlayerRankings" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre
+        class="get"><code class="huge"><span class="http-method">get</span> /rankings/{countryCode}/players</code></pre>
+    </div>
+    <div class="method-summary">Get player rankings for a country or global rankings. (<span
+        class="nickname">getPlayerRankings</span>)</div>
+    <div class="method-notes">Get player rankings for a country or global rankings.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">countryCode (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Two letter country code, or
+        'global' for global rankings. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PlayerRankingList">PlayerRankingList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#PlayerRankingList">PlayerRankingList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getPowerPlaySeasonRankings" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre
+        class="get"><code class="huge"><span class="http-method">get</span> /rankings/{countryCode}/powerplay/seasons/{seasonId}</code></pre>
+    </div>
+    <div class="method-summary">Get power play rankings for a country or global rankings. (<span
+        class="nickname">getPowerPlaySeasonRankings</span>)</div>
+    <div class="method-notes">Get power play rankings for a country or global rankings. Season identifiers can be found
+      by using the /rankings/{countryCode}/powerplay/seasons API endpoint. Also, 'latest' can be used as seasonId to get
+      rankings for the latest season.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">countryCode (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Two letter country code, or
+        'global' for global rankings. </div>
+      <div class="param">seasonId (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Identifier of the season. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PlayerRankingList">PlayerRankingList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#PlayerRankingList">PlayerRankingList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+  <div class="method"><a name="getPowerPlaySeasons" />
+    <div class="method-path">
+      <a class="up" href="#__Methods">Up</a>
+      <pre
+        class="get"><code class="huge"><span class="http-method">get</span> /rankings/{countryCode}/powerplay/seasons</code></pre>
+    </div>
+    <div class="method-summary">Get list of power play seasons for a country or global rankings. (<span
+        class="nickname">getPowerPlaySeasons</span>)</div>
+    <div class="method-notes">Get list of power play seasons for a country or global rankings.</div>
+
+    <h3 class="field-label">Path parameters</h3>
+    <div class="field-items">
+      <div class="param">countryCode (required)</div>
+
+      <div class="param-desc"><span class="param-type">Path Parameter</span> &mdash; Two letter country code, or
+        'global' for global rankings. </div>
+    </div> <!-- field-items -->
+
+    <h3 class="field-label">Consumes</h3>
+    This API call consumes the following media types via the <span class="header">Content-Type</span> request header:
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+
+
+    <h3 class="field-label">Query parameters</h3>
+    <div class="field-items">
+      <div class="param">before (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur
+        before this marker. Before marker can be found from the response, inside the 'paging' property. Note that only
+        after or before can be specified for a request, not both. </div>
+      <div class="param">after (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Return only items that occur after
+        this marker. Before marker can be found from the response, inside the 'paging' property. Note that only after or
+        before can be specified for a request, not both. </div>
+      <div class="param">limit (optional)</div>
+
+      <div class="param-desc"><span class="param-type">Query Parameter</span> &mdash; Limit the number of items returned
+        in the response. </div>
+    </div> <!-- field-items -->
+
+
+    <h3 class="field-label">Return type</h3>
+    <div class="return-type">
+      <a href="#PowerPlaySeasonList">PowerPlaySeasonList</a>
+
+    </div>
+
+    <!--Todo: process Response Object and its headers, schema, examples -->
+
+    <h3 class="field-label">Example data</h3>
+    <div class="example-data-content-type">Content-Type: application/json</div>
+    <pre class="example"><code>{
+  "bytes": [],
+  "empty": true
+}</code></pre>
+
+    <h3 class="field-label">Produces</h3>
+    This API call produces the following media types according to the <span class="header">Accept</span> request header;
+    the media type will be conveyed by the <span class="header">Content-Type</span> response header.
+    <ul>
+      <li><code>application/json</code></li>
+    </ul>
+
+    <h3 class="field-label">Responses</h3>
+    <h4 class="field-label">200</h4>
+    Successful response
+    <a href="#PowerPlaySeasonList">PowerPlaySeasonList</a>
+    <h4 class="field-label">400</h4>
+    Client provided incorrect parameters for the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">403</h4>
+    Access denied, either because of missing/incorrect credentials or used API token does not grant access to the
+    requested resource.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">404</h4>
+    Resource was not found.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">429</h4>
+    Request was throttled, because amount of requests was above the threshold defined for the used API token.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">500</h4>
+    Unknown error happened when handling the request.
+    <a href="#ClientError">ClientError</a>
+    <h4 class="field-label">503</h4>
+    Service is temprorarily unavailable because of maintenance.
+    <a href="#ClientError">ClientError</a>
+  </div> <!-- method -->
+  <hr />
+
+  <h2><a name="__Models">Models</a></h2>
+  [ Jump to <a href="#__Methods">Methods</a> ]
+
+  <h3>Table of Contents</h3>
+  <ol>
+    <li><a href="#Accessory"><code>Accessory</code> - </a></li>
+    <li><a href="#AccessoryList"><code>AccessoryList</code> - </a></li>
+    <li><a href="#BannedBrawlerEntry"><code>BannedBrawlerEntry</code> - </a></li>
+    <li><a href="#BannedBrawlerList"><code>BannedBrawlerList</code> - </a></li>
+    <li><a href="#Battle"><code>Battle</code> - </a></li>
+    <li><a href="#BattleList"><code>BattleList</code> - </a></li>
+    <li><a href="#BattleRegion"><code>BattleRegion</code> - </a></li>
+    <li><a href="#BattleRegionList"><code>BattleRegionList</code> - </a></li>
+    <li><a href="#BattleResult"><code>BattleResult</code> - </a></li>
+    <li><a href="#Brawler"><code>Brawler</code> - </a></li>
+    <li><a href="#BrawlerInfo"><code>BrawlerInfo</code> - </a></li>
+    <li><a href="#BrawlerInfoList"><code>BrawlerInfoList</code> - </a></li>
+    <li><a href="#BrawlerList"><code>BrawlerList</code> - </a></li>
+    <li><a href="#BrawlerStat"><code>BrawlerStat</code> - </a></li>
+    <li><a href="#BrawlerStatList"><code>BrawlerStatList</code> - </a></li>
+    <li><a href="#CancelMatchResponse"><code>CancelMatchResponse</code> - </a></li>
+    <li><a href="#ClientError"><code>ClientError</code> - </a></li>
+    <li><a href="#Club"><code>Club</code> - </a></li>
+    <li><a href="#ClubMember"><code>ClubMember</code> - </a></li>
+    <li><a href="#ClubMemberList"><code>ClubMemberList</code> - </a></li>
+    <li><a href="#ClubRanking"><code>ClubRanking</code> - </a></li>
+    <li><a href="#ClubRankingList"><code>ClubRankingList</code> - </a></li>
+    <li><a href="#CompletedGame"><code>CompletedGame</code> - </a></li>
+    <li><a href="#CompletedGameList"><code>CompletedGameList</code> - </a></li>
+    <li><a href="#CompletedGameTeam"><code>CompletedGameTeam</code> - </a></li>
+    <li><a href="#CompletedGameTeamList"><code>CompletedGameTeamList</code> - </a></li>
+    <li><a href="#Event"><code>Event</code> - </a></li>
+    <li><a href="#EventModifier"><code>EventModifier</code> - </a></li>
+    <li><a href="#EventModifierList"><code>EventModifierList</code> - </a></li>
+    <li><a href="#GearInfo"><code>GearInfo</code> - </a></li>
+    <li><a href="#GearInfoList"><code>GearInfoList</code> - </a></li>
+    <li><a href="#GearStat"><code>GearStat</code> - </a></li>
+    <li><a href="#GearStatList"><code>GearStatList</code> - </a></li>
+    <li><a href="#JsonLocalizedName"><code>JsonLocalizedName</code> - </a></li>
+    <li><a href="#Match"><code>Match</code> - </a></li>
+    <li><a href="#MatchLocation"><code>MatchLocation</code> - </a></li>
+    <li><a href="#MatchLocationList"><code>MatchLocationList</code> - </a></li>
+    <li><a href="#MatchTeam"><code>MatchTeam</code> - </a></li>
+    <li><a href="#MatchTeamList"><code>MatchTeamList</code> - </a></li>
+    <li><a href="#MatchTeamPlayer"><code>MatchTeamPlayer</code> - </a></li>
+    <li><a href="#MatchTeamPlayerList"><code>MatchTeamPlayerList</code> - </a></li>
+    <li><a href="#Player"><code>Player</code> - </a></li>
+    <li><a href="#PlayerClub"><code>PlayerClub</code> - </a></li>
+    <li><a href="#PlayerEntry"><code>PlayerEntry</code> - </a></li>
+    <li><a href="#PlayerEntryCompletedGame"><code>PlayerEntryCompletedGame</code> - </a></li>
+    <li><a href="#PlayerEntryCompletedGameList"><code>PlayerEntryCompletedGameList</code> - </a></li>
+    <li><a href="#PlayerIcon"><code>PlayerIcon</code> - </a></li>
+    <li><a href="#PlayerMatchStatus"><code>PlayerMatchStatus</code> - </a></li>
+    <li><a href="#PlayerMatchStatusList"><code>PlayerMatchStatusList</code> - </a></li>
+    <li><a href="#PlayerRanking"><code>PlayerRanking</code> - </a></li>
+    <li><a href="#PlayerRankingClub"><code>PlayerRankingClub</code> - </a></li>
+    <li><a href="#PlayerRankingList"><code>PlayerRankingList</code> - </a></li>
+    <li><a href="#PowerPlaySeason"><code>PowerPlaySeason</code> - </a></li>
+    <li><a href="#PowerPlaySeasonList"><code>PowerPlaySeasonList</code> - </a></li>
+    <li><a href="#RegisterMatchRequest"><code>RegisterMatchRequest</code> - </a></li>
+    <li><a href="#RegisterMatchRequestPlayers"><code>RegisterMatchRequestPlayers</code> - </a></li>
+    <li><a href="#RegisterMatchResponse"><code>RegisterMatchResponse</code> - </a></li>
+    <li><a href="#ScheduledEvent"><code>ScheduledEvent</code> - </a></li>
+    <li><a href="#ScheduledEventLocation"><code>ScheduledEventLocation</code> - </a></li>
+    <li><a href="#ScheduledEvents"><code>ScheduledEvents</code> - </a></li>
+    <li><a href="#ServiceVersion"><code>ServiceVersion</code> - </a></li>
+    <li><a href="#SetEsportsNotificationRequest"><code>SetEsportsNotificationRequest</code> - </a></li>
+    <li><a href="#SetEsportsNotificationResponse"><code>SetEsportsNotificationResponse</code> - </a></li>
+    <li><a href="#SiegeStats"><code>SiegeStats</code> - </a></li>
+    <li><a href="#StarPower"><code>StarPower</code> - </a></li>
+    <li><a href="#StarPowerList"><code>StarPowerList</code> - </a></li>
+    <li><a href="#Stats"><code>Stats</code> - </a></li>
+  </ol>
+
+  <div class="model">
+    <h3><a name="Accessory"><code>Accessory</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="AccessoryList"><code>AccessoryList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BannedBrawlerEntry"><code>BannedBrawlerEntry</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">side (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BannedBrawlerList"><code>BannedBrawlerList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Battle"><code>Battle</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">battleTime (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">event (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#Event">Event</a></span> </div>
+      <div class="param">battle (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BattleResult">BattleResult</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BattleList"><code>BattleList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BattleRegion"><code>BattleRegion</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BattleRegionList"><code>BattleRegionList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BattleResult"><code>BattleResult</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Brawler"><code>Brawler</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">gadgets (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#AccessoryList">AccessoryList</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">starPowers (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#StarPowerList">StarPowerList</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BrawlerInfo"><code>BrawlerInfo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">trophyChange (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gears (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#GearInfoList">GearInfoList</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">power (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gadget (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#Accessory">Accessory</a></span> </div>
+      <div class="param">starPower (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#StarPower">StarPower</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BrawlerInfoList"><code>BrawlerInfoList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BrawlerList"><code>BrawlerList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BrawlerStat"><code>BrawlerStat</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">starPowers (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#StarPowerList">StarPowerList</a></span> </div>
+      <div class="param">gadgets (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#AccessoryList">AccessoryList</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">rank (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">highestTrophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">power (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gears (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#GearStatList">GearStatList</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="BrawlerStatList"><code>BrawlerStatList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CancelMatchResponse"><code>CancelMatchResponse</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">success (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ClientError"><code>ClientError</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">reason (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">message (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">type (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">detail (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#object">Object</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Club"><code>Club</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">description (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">requiredTrophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">members (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#ClubMemberList">ClubMemberList</a></span> </div>
+      <div class="param">type (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">open</div>
+      <div class="param-enum">inviteOnly</div>
+      <div class="param-enum">closed</div>
+      <div class="param-enum">unknown</div>
+      <div class="param">badgeId (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ClubMember"><code>ClubMember</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">icon (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#PlayerIcon">PlayerIcon</a></span> </div>
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">role (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">notMember</div>
+      <div class="param-enum">member</div>
+      <div class="param-enum">president</div>
+      <div class="param-enum">senior</div>
+      <div class="param-enum">vicePresident</div>
+      <div class="param-enum">unknown</div>
+      <div class="param">nameColor (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ClubMemberList"><code>ClubMemberList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ClubRanking"><code>ClubRanking</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">rank (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">memberCount (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">badgeId (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ClubRankingList"><code>ClubRankingList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CompletedGame"><code>CompletedGame</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">teams (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#CompletedGameTeamList">CompletedGameTeamList</a></span>
+      </div>
+      <div class="param">duration (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">location (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#MatchLocation">MatchLocation</a></span> </div>
+      <div class="param">replayId (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CompletedGameList"><code>CompletedGameList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CompletedGameTeam"><code>CompletedGameTeam</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">score (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">isWinner (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">siege (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#SiegeStats">SiegeStats</a></span> </div>
+      <div class="param">players (optional)</div>
+      <div class="param-desc"><span class="param-type"><a
+            href="#PlayerEntryCompletedGameList">PlayerEntryCompletedGameList</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="CompletedGameTeamList"><code>CompletedGameTeamList</code> - </a> <a class="up" href="#__Models">Up</a>
+    </h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Event"><code>Event</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">mode (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">soloShowdown</div>
+      <div class="param-enum">duoShowdown</div>
+      <div class="param-enum">heist</div>
+      <div class="param-enum">bounty</div>
+      <div class="param-enum">siege</div>
+      <div class="param-enum">gemGrab</div>
+      <div class="param-enum">brawlBall</div>
+      <div class="param-enum">bigGame</div>
+      <div class="param-enum">bossFight</div>
+      <div class="param-enum">roboRumble</div>
+      <div class="param-enum">takedown</div>
+      <div class="param-enum">loneStar</div>
+      <div class="param-enum">presentPlunder</div>
+      <div class="param-enum">hotZone</div>
+      <div class="param-enum">superCityRampage</div>
+      <div class="param-enum">knockout</div>
+      <div class="param-enum">volleyBrawl</div>
+      <div class="param-enum">basketBrawl</div>
+      <div class="param-enum">holdTheTrophy</div>
+      <div class="param-enum">trophyThieves</div>
+      <div class="param-enum">duels</div>
+      <div class="param-enum">wipeout</div>
+      <div class="param-enum">payload</div>
+      <div class="param-enum">botDrop</div>
+      <div class="param-enum">hunters</div>
+      <div class="param-enum">lastStand</div>
+      <div class="param-enum">snowtelThieves</div>
+      <div class="param-enum">pumpkinPlunder</div>
+      <div class="param-enum">trophyEscape</div>
+      <div class="param-enum">unknown</div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">map (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="EventModifier"><code>EventModifier</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="EventModifierList"><code>EventModifierList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="GearInfo"><code>GearInfo</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">level (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="GearInfoList"><code>GearInfoList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="GearStat"><code>GearStat</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">level (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="GearStatList"><code>GearStatList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="JsonLocalizedName"><code>JsonLocalizedName</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Match"><code>Match</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">games (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#CompletedGameList">CompletedGameList</a></span> </div>
+      <div class="param">phase (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">init</div>
+      <div class="param-enum">banHeroes</div>
+      <div class="param-enum">pickHeroes</div>
+      <div class="param-enum">finalPreparation</div>
+      <div class="param-enum">battle</div>
+      <div class="param-enum">matchResult</div>
+      <div class="param-enum">ending</div>
+      <div class="param">initiativeSide (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">round (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">teams (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#MatchTeamList">MatchTeamList</a></span> </div>
+      <div class="param">terminationReason (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">none</div>
+      <div class="param-enum">playerDisconnected</div>
+      <div class="param-enum">playerNotResponding</div>
+      <div class="param-enum">technicalError</div>
+      <div class="param-enum">matchTooLong</div>
+      <div class="param-enum">other</div>
+      <div class="param">players (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#PlayerMatchStatusList">PlayerMatchStatusList</a></span>
+      </div>
+      <div class="param">state (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">open</div>
+      <div class="param-enum">cancelled</div>
+      <div class="param-enum">completed</div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchLocation"><code>MatchLocation</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">gameMode (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchLocationList"><code>MatchLocationList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchTeam"><code>MatchTeam</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">players (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#MatchTeamPlayerList">MatchTeamPlayerList</a></span>
+      </div>
+      <div class="param">bans (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BrawlerInfoList">BrawlerInfoList</a></span> </div>
+      <div class="param">side (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchTeamList"><code>MatchTeamList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchTeamPlayer"><code>MatchTeamPlayer</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">causedTermination (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">isLeader (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">brawler (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BrawlerInfo">BrawlerInfo</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="MatchTeamPlayerList"><code>MatchTeamPlayerList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Player"><code>Player</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">club (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#PlayerClub">PlayerClub</a></span> </div>
+      <div class="param">3vs3Victories (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">isQualifiedFromChampionshipChallenge (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">icon (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#PlayerIcon">PlayerIcon</a></span> </div>
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">expLevel (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">expPoints (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">highestTrophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">powerPlayPoints (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">highestPowerPlayPoints (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">soloVictories (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">duoVictories (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">bestRoboRumbleTime (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">bestTimeAsBigBrawler (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">brawlers (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BrawlerStatList">BrawlerStatList</a></span> </div>
+      <div class="param">nameColor (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerClub"><code>PlayerClub</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerEntry"><code>PlayerEntry</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">side (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerEntryCompletedGame"><code>PlayerEntryCompletedGame</code> - </a> <a class="up"
+        href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">brawler (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BrawlerInfo">BrawlerInfo</a></span> </div>
+      <div class="param">statistics (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#Stats">Stats</a></span> </div>
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">accountId (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerEntryCompletedGameList"><code>PlayerEntryCompletedGameList</code> - </a> <a class="up"
+        href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerIcon"><code>PlayerIcon</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerMatchStatus"><code>PlayerMatchStatus</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">brawler (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BrawlerInfo">BrawlerInfo</a></span> </div>
+      <div class="param">isReady (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">hasJoined (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">isOnline (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">isInBattle (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerMatchStatusList"><code>PlayerMatchStatusList</code> - </a> <a class="up" href="#__Models">Up</a>
+    </h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerRanking"><code>PlayerRanking</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">club (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#PlayerRankingClub">PlayerRankingClub</a></span> </div>
+      <div class="param">trophies (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">icon (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#PlayerIcon">PlayerIcon</a></span> </div>
+      <div class="param">tag (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">rank (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">nameColor (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerRankingClub"><code>PlayerRankingClub</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PlayerRankingList"><code>PlayerRankingList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PowerPlaySeason"><code>PowerPlaySeason</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">startTime (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">endTime (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="PowerPlaySeasonList"><code>PowerPlaySeasonList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RegisterMatchRequest"><code>RegisterMatchRequest</code> - </a> <a class="up" href="#__Models">Up</a>
+    </h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">mode (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">regular</div>
+      <div class="param-enum">powerMatch</div>
+      <div class="param">players (optional)</div>
+      <div class="param-desc"><span class="param-type"><a
+            href="#RegisterMatchRequestPlayers">RegisterMatchRequestPlayers</a></span> </div>
+      <div class="param">locationId (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">winsRequired (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gadgetsAllowed (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">bannedBrawlers (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#BannedBrawlerList">BannedBrawlerList</a></span> </div>
+      <div class="param">timerPreset (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">default</div>
+      <div class="param-enum">longer</div>
+      <div class="param-enum">longest</div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RegisterMatchRequestPlayers"><code>RegisterMatchRequestPlayers</code> - </a> <a class="up"
+        href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="RegisterMatchResponse"><code>RegisterMatchResponse</code> - </a> <a class="up" href="#__Models">Up</a>
+    </h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ScheduledEvent"><code>ScheduledEvent</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">slotId (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">event (optional)</div>
+      <div class="param-desc"><span class="param-type"><a
+            href="#ScheduledEventLocation">ScheduledEventLocation</a></span> </div>
+      <div class="param">startTime (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param">endTime (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ScheduledEventLocation"><code>ScheduledEventLocation</code> - </a> <a class="up"
+        href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">mode (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">soloShowdown</div>
+      <div class="param-enum">duoShowdown</div>
+      <div class="param-enum">heist</div>
+      <div class="param-enum">bounty</div>
+      <div class="param-enum">siege</div>
+      <div class="param-enum">gemGrab</div>
+      <div class="param-enum">brawlBall</div>
+      <div class="param-enum">bigGame</div>
+      <div class="param-enum">bossFight</div>
+      <div class="param-enum">roboRumble</div>
+      <div class="param-enum">takedown</div>
+      <div class="param-enum">loneStar</div>
+      <div class="param-enum">presentPlunder</div>
+      <div class="param-enum">hotZone</div>
+      <div class="param-enum">superCityRampage</div>
+      <div class="param-enum">knockout</div>
+      <div class="param-enum">volleyBrawl</div>
+      <div class="param-enum">basketBrawl</div>
+      <div class="param-enum">holdTheTrophy</div>
+      <div class="param-enum">trophyThieves</div>
+      <div class="param-enum">duels</div>
+      <div class="param-enum">wipeout</div>
+      <div class="param-enum">payload</div>
+      <div class="param-enum">botDrop</div>
+      <div class="param-enum">hunters</div>
+      <div class="param-enum">lastStand</div>
+      <div class="param-enum">snowtelThieves</div>
+      <div class="param-enum">pumpkinPlunder</div>
+      <div class="param-enum">trophyEscape</div>
+      <div class="param-enum">unknown</div>
+      <div class="param">modifiers (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#EventModifierList">EventModifierList</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">map (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ScheduledEvents"><code>ScheduledEvents</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="ServiceVersion"><code>ServiceVersion</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">major (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">minor (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">content (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="SetEsportsNotificationRequest"><code>SetEsportsNotificationRequest</code> - </a> <a class="up"
+        href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">type (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+      <div class="param-enum-header">Enum:</div>
+      <div class="param-enum">hub</div>
+      <div class="param-enum">unknown</div>
+      <div class="param">players (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#List">List</a></span> </div>
+      <div class="param">ttl (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="SetEsportsNotificationResponse"><code>SetEsportsNotificationResponse</code> - </a> <a class="up"
+        href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">notification (optional)</div>
+      <div class="param-desc"><span class="param-type"><a
+            href="#SetEsportsNotificationRequest">SetEsportsNotificationRequest</a></span> </div>
+      <div class="param">status (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#string">String</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="SiegeStats"><code>SiegeStats</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">botDamageToBase (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">botLevelByRound (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#List">List</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="StarPower"><code>StarPower</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">name (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#JsonLocalizedName">JsonLocalizedName</a></span> </div>
+      <div class="param">id (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="StarPowerList"><code>StarPowerList</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+    </div> <!-- field-items -->
+  </div>
+  <div class="model">
+    <h3><a name="Stats"><code>Stats</code> - </a> <a class="up" href="#__Models">Up</a></h3>
+    <div class='model-description'></div>
+    <div class="field-items">
+      <div class="param">healingDone (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">deaths (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">damageDealt (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">kills (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">averageLatency (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">damageReceived (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">totalDamageToSafe (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">totalDamageToPets (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">siegeDamageToRobot (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">siegeBoltsCollected (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">brawlBallGoalsScored (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gemGrabGemsCollected (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gemGrabGemsLost (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">bountyStarsGained (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">bountyStarsLost (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">superUsedCount (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">gadgetUsedCount (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">bountyPickedMiddleStar (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#boolean">Boolean</a></span> </div>
+      <div class="param">matchEndKillStreak (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">maxKillStreak (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">hotZoneInsideZonePercentage (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">healingDoneToSelf (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">healingDoneToTeamMates (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">objectivesRecovered (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">objectivesStolen (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">brawlBallShotsOnGoal (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+      <div class="param">brawlBallShotsSaved (optional)</div>
+      <div class="param-desc"><span class="param-type"><a href="#integer">Integer</a></span> </div>
+    </div> <!-- field-items -->
+  </div>
+</body>
+
+</html>
