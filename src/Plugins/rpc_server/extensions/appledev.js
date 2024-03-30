@@ -52,23 +52,6 @@ const POST = async (_, req, res, keepAlive) => {
 				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`appledev-${type}`, true), keepAlive)
 			});
 			break;
-
-		default:
-			clientManager.addActivity(`appledev-${type}`, {
-				name: "developer stuff",
-				details: "Watching stuff for developers",
-				state: "On Apple Developer",
-
-				assets: {
-					small_image: config.assets.logo_apple_developer,
-					small_text: "Apple Developer"
-				},
-
-				type: 3, // WATCHING
-
-				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`appledev-${type}`, true), keepAlive)
-			});
-			break;
 	};
 
 	res.status(204).end();
