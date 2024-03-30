@@ -54,35 +54,6 @@ class ClientManager extends BaseObject {
 	};
 
 	async updateActivity() {
-		const activities = Object.values(this.activities).length > 0 ? Object.values(clone(this.activities)) : [{
-			type: 3, // WATCHING
-
-			name: "the ground",
-			details: "(Wixi is playing outside)",
-			state: "I'm touching..",
-
-			assets: {
-				large_image: config.assets.grass,
-				large_text: "Grass",
-				small_image: config.assets.app,
-				small_text: "Wixi"
-			},
-
-			buttons: [
-				"Open my website",
-				"Join WixiLand (Discord server)"
-			],
-			metadata: {
-				button_urls: [
-					"https://wixonic.fr",
-					(await request({
-						type: "headers",
-						url: "https://go.wixonic.fr/discord"
-					}))["location"]
-				]
-			}
-		}];
-
 		while (!this.client.isReady()) await new Promise((resolve) => setTimeout(resolve, 1000));
 
 		for (const activity of activities) {
@@ -93,7 +64,7 @@ class ClientManager extends BaseObject {
 		this.client.user.setPresence({
 			activities,
 			afk: true,
-			status: Object.values(this.activities).length > 0 ? "online" : "idle"
+			status: Object.values(this.activities).length > 0 ? "idle" : "invisible"
 		});
 	};
 
