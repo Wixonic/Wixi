@@ -12,7 +12,7 @@ const config = require("./config");
 const roles = require("./files/roles");
 const settings = require("./settings");
 
-module.exports = (router, io, extensionPath) => {
+module.exports = async (router, io) => {
 	router.get("/authorize", (req, res) => {
 		const url = new URL(req.url, "https://server.wixonic.fr");
 
@@ -304,7 +304,7 @@ module.exports = (router, io, extensionPath) => {
 						for (const colorRole of roles.colors) {
 							if (id != colorRole && data.roles.includes(colorRole)) {
 								await member.roles.remove(colorRole);
-								socket.user.log(`Removed role ${roles.all.find((role) => role.id == colorRole).name} `);
+								socket.user.log(`Removed role ${roles.all.find((role) => role.id == colorRole).name}`);
 							}
 						}
 					}
@@ -312,10 +312,10 @@ module.exports = (router, io, extensionPath) => {
 					if (roles.check(id)) {
 						if (!bool && data.roles.includes(id)) {
 							await member.roles.remove(id);
-							socket.user.log(`Removed role ${roles.all.find((role) => role.id == id).name} `);
+							socket.user.log(`Removed role ${roles.all.find((role) => role.id == id).name}`);
 						} else if (bool && !data.roles.includes(id)) {
 							await member.roles.add(id);
-							socket.user.log(`Added role ${roles.all.find((role) => role.id == id).name} `);
+							socket.user.log(`Added role ${roles.all.find((role) => role.id == id).name}`);
 						}
 
 						await refreshRoles();
@@ -335,15 +335,14 @@ module.exports = (router, io, extensionPath) => {
 					socket.disconnect(true);
 				});
 			} catch (e) {
-				log(`${socket?.username ?? "Unknow"} - Failed to connect from "${socket.handshake.auth?.page ?? "unknown page"}": ${e} `);
+				log(`${socket?.username ?? "Unknow"} - Failed to connect from "${socket.handshake.auth?.page ?? "unknown page"}": ${e}`);
 				socket.disconnect(true);
 			}
 		});
 
 		router.use(express.static(path.join(__dirname, "website"), {
-			setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /discord/${path.relative(__dirname, filePath)} `)
+			setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /${path.relative(__dirname, filePath)}`)
 		}));
-
 
 		client.user.setActivity(defaultActivity);
 

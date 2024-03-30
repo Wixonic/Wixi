@@ -79,7 +79,7 @@ fs.readdirSync(path.join(__dirname, "extensions"), {
     if (fs.statSync(folder).isDirectory()) {
         fs.readdirSync(folder, {
             encoding: "utf-8"
-        }).forEach((fileName) => {
+        }).forEach(async (fileName) => {
             if (fileName == "extension.js") {
                 const file = path.join(process.cwd(), "extensions", folderName, fileName);
 
@@ -87,7 +87,7 @@ fs.readdirSync(path.join(__dirname, "extensions"), {
                     const router = express.Router();
                     httpsApp.use(`/${folderName}`, router);
 
-                    require(file)(router, ws, folderName);
+                    await require(file)(router, ws);
 
                     log(`Extension at /${path.relative(path.join(__dirname, "extensions"), file)} loaded`);
                 } catch (e) {
