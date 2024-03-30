@@ -31,16 +31,6 @@
                     type: "profile"
                 };
             }
-        }, { // https://[*.]github.com[:anything]
-            matches: [
-                /^https:\/\/(?:[\w-]+\.)*github\.com/m
-            ],
-            run: (_) => {
-                sendStatus("POST", "/github", {});
-
-                onUnload.path = "/github";
-                onUnload.data = {};
-            }
         }, { // https://[*.]wixonic.fr[:anything]
             matches: [
                 /^https:\/\/(?:[\w-]+\.)*wixonic\.fr/m
@@ -50,20 +40,6 @@
 
                 onUnload.path = "/safari/website";
                 onUnload.data = {};
-            }
-        }, { // https://[*.]youtube.com/feed/subscriptions[:anything]
-            matches: [
-                /^https:\/\/(?:[\w-]+\.)*youtube\.com\/feed\/subscriptions/m
-            ],
-            run: (_) => {
-                sendStatus("POST", "/youtube", {
-                    type: "subscriptions"
-                });
-
-                onUnload.path = "/youtube";
-                onUnload.data = {
-                    type: "subscriptions"
-                };
             }
         }, { // https://[*.]youtube.com/watch[:anything]
             matches: [
@@ -97,34 +73,6 @@
                     type: "video"
                 };
             }
-        }, { // https://[*.]youtube.com
-            matches: [
-                /^https:\/\/(?:[\w-]+\.)*youtube\.com(?:\/)?$/m
-            ],
-            run: (_) => {
-                sendStatus("POST", "/youtube", {
-                    type: "home"
-                });
-
-                onUnload.path = "/youtube";
-                onUnload.data = {
-                    type: "home"
-                };
-            }
-        }, { // https://[*.]youtube.com[:anything]
-            matches: [
-                /^https:\/\/(?:[\w-]+\.)*youtube\.com/m
-            ],
-            run: (_) => {
-                sendStatus("POST", "/youtube", {
-                    type: "desktop"
-                });
-
-                onUnload.path = "/youtube";
-                onUnload.data = {
-                    type: "desktop"
-                };
-            }
         }, { // https://[*.]firebase.google.com[:anything]
             matches: [
                 /^https:\/\/(?:[\w-]+\.)*firebase\.google\.com/m
@@ -147,20 +95,6 @@
                 onUnload.path = "/appledev";
                 onUnload.data = {
                     type: "wwdc"
-                };
-            }
-        }, { // https://developer.apple.com[:anything]
-            matches: [
-                /^https:\/\/developer\.apple\.com/m
-            ],
-            run: (_) => {
-                sendStatus("POST", "/appledev", {
-                    type: "website"
-                });
-
-                onUnload.path = "/appledev";
-                onUnload.data = {
-                    type: "website"
                 };
             }
         }, { // https://[*.]twitch.tv
