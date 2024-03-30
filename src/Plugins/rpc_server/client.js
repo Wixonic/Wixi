@@ -54,6 +54,11 @@ class ClientManager extends BaseObject {
 	};
 
 	async updateActivity() {
+		/**
+		 * @type {Activity[]}
+		 */
+		const activities = Object.values(clone(this.activities));
+
 		while (!this.client.isReady()) await new Promise((resolve) => setTimeout(resolve, 1000));
 
 		for (const activity of activities) {

@@ -11,9 +11,9 @@ const app = express();
 app.use(express.json());
 
 app.use((_, res, next) => {
-    res.setHeader("access-control-allow-origin", "*");
-    res.setHeader("access-control-allow-methods", "GET, POST, DELETE, OPTIONS");
-    res.setHeader("access-control-allow-headers", "content-type, server-keep-alive");
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type, Server-Keep-Alive");
     next();
 });
 
