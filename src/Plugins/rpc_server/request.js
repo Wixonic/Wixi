@@ -78,7 +78,11 @@ const request = (options = {}) => {
 
 							switch (options.type) {
 								case "json":
-									resolve(JSON.parse(chunks.join("")));
+									try {
+										resolve(JSON.parse(chunks.join("")));
+									} catch {
+										reject("Failed to parse JSON");
+									}
 									break;
 
 								case "raw":
