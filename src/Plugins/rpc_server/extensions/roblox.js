@@ -18,39 +18,12 @@ const cycle = async () => {
 		},
 		method: "POST",
 		type: "json",
-		url: config.extensions.roblox.endpoints.presence
+		url: "https://presence.roblox.com/v1/presence/users"
 	});
 
-	const presence = response?.userPresences?.at(0) ?? {
-		userPresenceType: 0
-	};
+	const presence = response?.userPresences?.at(0) ?? {};
 
 	switch (presence.userPresenceType) {
-		case 1: // Online
-			clientManager.addActivity("roblox", {
-				name: "experiences",
-				details: "Watching experiences",
-				state: "On " + presence.lastLocation,
-
-				assets: {
-					small_image: config.assets.logo_roblox,
-					small_text: "Roblox"
-				},
-
-				buttons: [
-					"Open my profile"
-				],
-
-				metadata: {
-					button_urls: [
-						"https://www.roblox.com/users/" + config.extensions.roblox.id
-					]
-				},
-
-				type: 3 // WATCHING
-			});
-			break;
-
 		case 2: // InGame
 			clientManager.addActivity("roblox", {
 				name: presence.lastLocation,
