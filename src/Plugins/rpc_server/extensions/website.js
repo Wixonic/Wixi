@@ -8,8 +8,6 @@ const config = require("../config");
  */
 const POST = async (_, req, res, keepAlive) => {
 	clientManager.addActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`, {
-		application_id: config.extensions.website.clientId,
-
 		name: "my website",
 		details: "Unknown details",
 		state: `Currently on wixonic.fr${req.body?.mobile ? " on iOS" : ""}`,
@@ -45,4 +43,4 @@ const DELETE = (_, req, res) => {
 	res.status(204).end();
 };
 
-module.exports = new Extension("Website", "/safari/website", POST, DELETE, config.extensions.website.clientId, config.extensions.website.clientSecret);
+module.exports = new Extension("Website", "/safari/website", POST, DELETE);

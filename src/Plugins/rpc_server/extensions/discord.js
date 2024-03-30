@@ -47,4 +47,4 @@ const DELETE = (_, req, res) => {
 	res.status(204).end();
 };
 
-module.exports = new Extension("Discord", "/discord", POST, DELETE, config.extensions.discord.clientId, config.extensions.discord.clientSecret);
+module.exports = new Extension("Discord", "/discord", POST, DELETE);

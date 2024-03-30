@@ -119,4 +119,4 @@ const DELETE = (_, req, res) => {
 	res.status(204).end();
 };
 
-module.exports = new Extension("GitHub", "/github", POST, DELETE, config.extensions.github.clientId, config.extensions.github.clientSecret);
+module.exports = new Extension("GitHub", "/github", POST, DELETE);
