@@ -5,7 +5,7 @@ const https = require("https");
 const path = require("path");
 
 const { client, guild, defaultActivity } = require("./client");
-const log = require("../../log");
+const log = require("./log");
 const { User } = require("./user");
 
 const config = require("./config");

@@ -3,7 +3,7 @@ const request = require("./request");
 
 const config = require("./config");
 
-(async () => {
+module.exports = async (router, io, extensionPath) => {
 	const response = await request({
 		headers: {
 			accept: "application/json",
@@ -13,4 +13,4 @@ const config = require("./config");
 		type: "json",
 		url: `https://api.brawlstars.com/v1/players/%23${config.profiles[0]}`
 	});
-})();
+};

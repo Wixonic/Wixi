@@ -4,7 +4,7 @@ const path = require("path");
 
 const config = require("./config");
 
-const log = require("../../log");
+const log = require("./log");
 
 const commands = [];
 const foldersPath = path.join(__dirname, "commands");

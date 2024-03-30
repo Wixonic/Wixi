@@ -3,7 +3,7 @@ const path = require("path");
 const https = require("https");
 
 const { guild } = require("./client");
-const log = require("../../log");
+const log = require("./log");
 
 const settings = require("./settings");
 

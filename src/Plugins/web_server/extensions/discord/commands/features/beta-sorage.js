@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 
 const { Format } = require("../../format");
-const log = require("../../../../log");
+const log = require("../../log");
 
 const config = require("../../config");
 const settings = require("../../settings");

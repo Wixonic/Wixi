@@ -98,7 +98,6 @@ fs.readdirSync(path.join(__dirname, "extensions"), {
     }
 });
 
-
-httpServer.listen(config.http, () => log(`HTTP | Running on port :${config.http}`));
-httpsServer.listen(config.https, () => log(`HTTPS | Running on port :${config.https}`));
-wssServer.listen(config.wss, () => log(`WSS | Running on port :${config.wss}`));
+httpServer.listen(process.env["HTTPPORT"] ?? config.http, () => log(`HTTP | Running on port :${process.env["HTTPPORT"] ?? config.http}`));
+httpsServer.listen(process.env["HTTPSPORT"] ?? config.https, () => log(`HTTPS | Running on port :${process.env["HTTPSPORT"] ?? config.https}`));
+wssServer.listen(process.env["WSSPORT"] ?? config.wss, () => log(`WSS | Running on port :${process.env["WSSPORT"] ?? config.wss}`));
