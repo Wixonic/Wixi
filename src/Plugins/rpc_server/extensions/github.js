@@ -78,11 +78,11 @@ const POST = async (_, req, res, keepAlive) => {
 			});
 			break;
 
-		default:
-			clientManager.addActivity(`github-${type}`, {
+		case "mobile":
+			clientManager.addActivity("github", {
 				name: "repositories",
 				details: "Details not available",
-				state: `Currently on GitHub${type == "mobile" ? " for iOS" : ""}`,
+				state: `Currently on GitHub for iOS`,
 
 				assets: {
 					small_image: config.assets.logo_github,
@@ -103,7 +103,7 @@ const POST = async (_, req, res, keepAlive) => {
 
 				type: 3, // WATCHING
 
-				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`github-${type}`, true), keepAlive)
+				keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity("github", true), keepAlive)
 			});
 			break;
 	};
