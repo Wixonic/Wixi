@@ -1,3 +1,1 @@
-const package = require("./package");
-
-module.exports = (any) => console.log(`[${package.displayName ?? package.name}]: ${typeof any == "string" ? any : JSON.stringify(any, null, 2)}`);
+module.exports = (any) => console.log(`[${new Date().toISOString()}]: ${typeof any == "string" ? any : JSON.stringify(any, null, 2)}`);
