@@ -3,9 +3,37 @@ const path = require("path");
 
 const log = require("./log");
 const request = require("./request");
-const { wait } = require("./utils");
+const { wait, toProperCase } = require("./utils");
 
 const config = require("./config");
+
+/**
+ * @typedef {object} Brawler
+ * @property {string} name
+ */
+
+/**
+ * @typedef {object} Player
+ * @property {number} brawler
+ * @property {string} id
+ * @property {string} name
+ * @property {number} power
+ * @property {number} trophies
+ */
+
+/**
+ * @typedef {object} Battle
+ * @property {string} date
+ * @property {number?} duration
+ * @property {number} map
+ * @property {string} mode
+ * @property {string?} mvp
+ * @property {Player[]} players
+ * @property {number?} rank
+ * @property {Player[][]} teams
+ * @property {number} trophies
+ * @property {boolean?} win
+ */
 
 /**
  * @typedef {object} TrophiesData
@@ -48,29 +76,6 @@ const config = require("./config");
  * @property {Object<string, number>?} trophies
  */
 
-/**
- * @typedef {object} Player
- * @property {number} brawler
- * @property {string} id
- * @property {string} name
- * @property {number} power
- * @property {number} trophies
- */
-
-/**
- * @typedef {object} Battle
- * @property {string} date
- * @property {number?} duration
- * @property {number} map
- * @property {string} mode
- * @property {string?} mvp
- * @property {Player[]} players
- * @property {number?} rank
- * @property {Player[][]} teams
- * @property {number} trophies
- * @property {boolean?} win
- */
-
 const root = path.join(__dirname, "database");
 
 /**
@@ -95,6 +100,30 @@ const api = async (endpoint = "/", method = "GET") => {
 	}
 
 	return null;
+};
+
+/**
+ * @returns {Promise<Object<number, Brawler>?>}
+ */
+const getBrawlersList = async () => {
+	const response = await api("/brawlers");
+
+	if (response && !response.error) {
+		/**
+		 * @type {Object<number, Brawler>}
+		 */
+		const brawlers = {};
+
+		for (const brawlerData of response.items) {
+			brawlers[brawlerData.id] = {
+				name: toProperCase(brawlerData.name)
+			};
+		}
+
+		return brawlers;
+	}
+
+	return {};
 };
 
 
@@ -164,7 +193,7 @@ const getBattlelog = async (id) => {
 					addPlayers();
 					break;
 
-				case "duoShowdown":
+				case "duoshowdown":
 					battle = {
 						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
 						map: battleData.event.id,
@@ -317,6 +346,9 @@ const track = async (id) => {
 };
 
 const cycle = async (time) => {
+	if (!fs.existsSync(root)) fs.mkdirSync(root, { recursive: true });
+	fs.writeFileSync(path.join(root, "brawlers.json"), JSON.stringify(await getBrawlersList(), null, 4));
+
 	for (const id of config.profiles) await track(id);
 	setTimeout(cycle, time);
 };
