@@ -64,10 +64,10 @@ const config = require("./config");
  * @property {number} map
  * @property {string} mode
  * @property {string?} mvp
+ * @property {Player[]} players
  * @property {number?} rank
  * @property {Player[][]} teams
  * @property {number} trophies
- * @property {boolean} showdown
  * @property {boolean?} win
  */
 
@@ -115,36 +115,11 @@ const getBattlelog = async (id) => {
 			/**
 			 * @type {Battle}
 			 */
-			const battle = battleData.battle.rank != null ? {
-				date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
-				map: battleData.event.id,
-				mode: battleData.event.mode.toLowerCase(),
-				rank: battleData.battle.rank,
-				teams: [],
-				trophies: battleData.battle.trophyChange,
+			let battle;
 
-				showdown: true
-			} : {
-				date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
-				duration: battleData.battle.duration,
-				map: battleData.event.id,
-				mode: battleData.event.mode.toLowerCase(),
-				mvp: battleData.battle.starPlayer?.tag?.slice(1),
-				teams: [],
-				trophies: battleData.battle.trophyChange,
-				win: [true, false][["victory", "defeat"].indexOf(battleData.battle.result)],
-
-				showdown: false
-			};
-
-			for (const teamData of battleData.battle?.teams ?? []) {
-				/**
-				 * @type {Player[]}
-				 */
-				const team = [];
-
-				for (const playerData of teamData) {
-					team.push({
+			const addPlayers = () => {
+				for (const playerData of battleData.battle.players) {
+					battle.players.push({
 						brawler: playerData.brawler.id,
 						id: playerData.tag.slice(1),
 						name: playerData.name,
@@ -152,9 +127,71 @@ const getBattlelog = async (id) => {
 						trophies: playerData.brawler.trophies
 					});
 				}
+			};
 
-				battle.teams.push(team);
-			}
+			const addTeams = () => {
+				for (const teamData of battleData.battle.teams) {
+					/**
+					 * @type {Player[]}
+					 */
+					const team = [];
+
+					for (const playerData of teamData) {
+						team.push({
+							brawler: playerData.brawler.id,
+							id: playerData.tag.slice(1),
+							name: playerData.name,
+							power: playerData.brawler.power,
+							trophies: playerData.brawler.trophies
+						});
+					}
+
+					battle.teams.push(team);
+				}
+			};
+
+			switch (battleData.event.mode.toLowerCase()) {
+				case "soloshowdown":
+					battle = {
+						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
+						map: battleData.event.id,
+						mode: battleData.event.mode.toLowerCase(),
+						rank: battleData.battle.rank,
+						players: [],
+						trophies: battleData.battle.trophyChange
+					};
+
+					addPlayers();
+					break;
+
+				case "duoShowdown":
+					battle = {
+						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
+						map: battleData.event.id,
+						mode: battleData.event.mode.toLowerCase(),
+						rank: battleData.battle.rank,
+						teams: [],
+						trophies: battleData.battle.trophyChange
+					};
+
+					addTeams();
+					break;
+
+				default:
+					battle = {
+						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
+						duration: battleData.battle.duration,
+						map: battleData.event.id,
+						mode: battleData.event.mode.toLowerCase(),
+						mvp: battleData.battle.starPlayer?.tag?.slice(1),
+						teams: [],
+						trophies: battleData.battle.trophyChange,
+						win: [true, false][["victory", "defeat"].indexOf(battleData.battle.result)]
+					};
+
+					addTeams();
+					break;
+			};
 
 			battles.push(battle);
 		}
