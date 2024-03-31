@@ -4,35 +4,37 @@ class WebServer: Plugin {
     #if os(macOS)
     var process = Process()
     
-    override func enable() {
-        if (!process.isRunning) {
-            process = Process()
+    override func onEnabled() {
+        if (!self.process.isRunning) {
+            self.process = Process()
             
             switch (utsname.sMachine) {
                 case "arm64":
-                    process.executableURL = Bundle.main.url(forResource: "node", withExtension: nil, subdirectory: "Node_arm64/bin")!
+                self.process.executableURL = Bundle.main.url(forResource: "node", withExtension: nil, subdirectory: "Node_arm64/bin")!
                     break
                 
                 default:
-                    process.executableURL = Bundle.main.url(forResource: "node", withExtension: nil, subdirectory: "Node_x64/bin")!
+                self.process.executableURL = Bundle.main.url(forResource: "node", withExtension: nil, subdirectory: "Node_x64/bin")!
                     break
             }
             
-            process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
-            
-            process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
+            self.process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
+            self.process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
+
+            self.process.standardOutput = self.output
+            self.process.standardError = self.output
             
             do {
-                try process.run()
+                try self.process.run()
             } catch {
                 print("Error while starting \(self.name): \(error)")
             }
         }
     }
     
-    override func disable() {
-        if (process.isRunning) {
-            process.terminate()
+    override func onDisabled() {
+        if (self.process.isRunning) {
+            self.process.terminate()
         }
     }
     #endif
@@ -56,6 +58,9 @@ struct WebServerView: View {
                 Plugin.get(id: "web_server")!.disable()
             }
         }.toggleStyle(.switch)
+        .onAppear {
+            self.active = Plugin.get(id: "web_server")!.enabled
+        }
         #endif
     }
 }

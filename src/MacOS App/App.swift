@@ -8,7 +8,7 @@ struct MacOSApp: App {
     
     func quit() {
         Plugin.list.forEach { plugin in
-            plugin.hardDisable()
+            plugin.disable()
         }
     }
     

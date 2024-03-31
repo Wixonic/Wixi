@@ -17,7 +17,6 @@ extension utsname {
 class Plugin {
     static var list: [Plugin] = {
         return [
-            BrawlServer(),
             RPCServer(),
             WebServer()
         ]
@@ -37,6 +36,12 @@ class Plugin {
     let name: String
     let view: AnyView
     
+    #if os(macOS)
+    var output = Pipe()
+    @Published var logs = ""
+    var enabled = false;
+    #endif
+    
     init(id: String, name: String, view: any View) {
         self.id = id;
         self.name = name;
@@ -44,19 +49,40 @@ class Plugin {
     }
     
     #if os(macOS)
-    func enable() {}
-    func disable() {}
+    func onEnabled() {}
+    func onDisabled() {}
     
-    func hardEnable() {
-        self.enable();
+    func enable() {
+        self.enabled = true;
+        
+        DispatchQueue.global(qos: .background).async {
+            while (self.enabled) {
+                self.read()
+                usleep(useconds_t(0.5 * 1000 * 1000))
+            }
+        }
+        
+        self.onEnabled();
         
         print("\(self.name) enabled")
     }
     
-    func hardDisable() {
-        self.disable();
+    func disable() {
+        self.enabled = false;
+        self.onDisabled();
         
         print("\(self.name) disabled")
+    }
+    
+    private func read() {
+        let outputHandle = self.output.fileHandleForReading
+        let availableData = outputHandle.availableData
+        
+        if !availableData.isEmpty {
+            DispatchQueue.main.async {
+                self.logs += String(data: availableData, encoding: .utf8) ?? ""
+            }
+        }
     }
     #endif
 }

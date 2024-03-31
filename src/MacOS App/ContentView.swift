@@ -2,7 +2,6 @@ import SwiftUI
 
 struct ContentView: View {
     @State var selectedTab = 0
-    @State var extensionEnabled = false
     
     var body: some View {
         VStack {
@@ -24,13 +23,31 @@ struct ContentView: View {
                     .scrollContentBackground(.hidden)
                 
                 case 1:
-                    Text("Logs")
+                    List {
+                        ForEach(Plugin.list, id: \.id) { plugin in
+                            Section {
+                                ScrollView([.horizontal, .vertical]) {
+                                    Text(plugin.logs)
+                                        .fontDesign(.monospaced)
+                                        .lineLimit(nil)
+                                }
+                                .frame(maxHeight: 100)
+                            } header: {
+                                Text(plugin.name)
+                                    .fontWeight(.semibold)
+                                    .font(.headline)
+                            }
+                            .collapsible(false)
+                        }
+                    }
+                    .listStyle(.sidebar)
+                    .scrollContentBackground(.hidden)
                 
                 case 2:
                     Text("Settings")
                 
                 default:
-                    Text("")
+                    Text("Error")
             }
         }
         .toolbar {
