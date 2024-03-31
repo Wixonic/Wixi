@@ -108,7 +108,7 @@ const api = async (endpoint = "/", method = "GET") => {
 const getBrawlersList = async () => {
 	const response = await api("/brawlers");
 
-	if (response && !response.error) {
+	try {
 		/**
 		 * @type {Object<number, Brawler>}
 		 */
@@ -121,9 +121,9 @@ const getBrawlersList = async () => {
 		}
 
 		return brawlers;
+	} catch (e) {
+		return {};
 	}
-
-	return {};
 };
 
 
@@ -134,7 +134,7 @@ const getBrawlersList = async () => {
 const getBattlelog = async (id) => {
 	const battleResponse = await api(`/players/%23${id}/battlelog`);
 
-	if (battleResponse && !battleResponse.error) {
+	try {
 		/**
 		 * @type {Battle[]}
 		 */
@@ -226,10 +226,10 @@ const getBattlelog = async (id) => {
 		}
 
 		return battles;
+	} catch (e) {
+		log(`Failed to fetch battlelog of #${id}: ${e}`);
+		return [];
 	}
-
-	log(`Failed to fetch battlelog of #${id}`);
-	return [];
 };
 
 /**
@@ -239,7 +239,7 @@ const getBattlelog = async (id) => {
 const getData = async (id) => {
 	const userResponse = await api(`/players/%23${id}`);
 
-	if (userResponse && !userResponse.error) {
+	try {
 		/**
 		 * @type {DataEntry}
 		 */
@@ -270,11 +270,10 @@ const getData = async (id) => {
 		}
 
 		return data;
+	} catch (e) {
+		log(`Failed to fetch data of #${id}: ${e}`);
+		return {};
 	}
-
-	log(`Failed to fetch data of #${id}`);
-
-	return {};
 };
 
 /**
