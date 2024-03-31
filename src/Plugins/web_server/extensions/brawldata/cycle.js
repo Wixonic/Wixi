@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 
-const { cycle } = require("./cycle");
 const log = require("./log");
 const request = require("./request");
 const { wait } = require("./utils");
