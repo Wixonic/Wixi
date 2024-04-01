@@ -114,11 +114,7 @@ const getBrawlersList = async () => {
 		 */
 		const brawlers = {};
 
-		for (const brawlerData of response.items) {
-			brawlers[brawlerData.id] = {
-				name: toProperCase(brawlerData.name)
-			};
-		}
+		for (const brawlerData of response.items) brawlers[brawlerData.id] = toProperCase(brawlerData.name)
 
 		return brawlers;
 	} catch (e) {
@@ -179,12 +175,12 @@ const getBattlelog = async (id) => {
 				}
 			};
 
-			switch (battleData.event.mode.toLowerCase()) {
+			switch (battleData.battle.mode.toLowerCase()) {
 				case "soloshowdown":
 					battle = {
 						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
 						map: battleData.event.id,
-						mode: battleData.event.mode.toLowerCase(),
+						mode: battleData.battle.mode.toLowerCase(),
 						rank: battleData.battle.rank,
 						players: [],
 						trophies: battleData.battle.trophyChange
@@ -197,7 +193,7 @@ const getBattlelog = async (id) => {
 					battle = {
 						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
 						map: battleData.event.id,
-						mode: battleData.event.mode.toLowerCase(),
+						mode: battleData.battle.mode.toLowerCase(),
 						rank: battleData.battle.rank,
 						teams: [],
 						trophies: battleData.battle.trophyChange
@@ -211,7 +207,7 @@ const getBattlelog = async (id) => {
 						date: new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).toISOString(),
 						duration: battleData.battle.duration,
 						map: battleData.event.id,
-						mode: battleData.event.mode.toLowerCase(),
+						mode: battleData.battle.mode.toLowerCase(),
 						mvp: battleData.battle.starPlayer?.tag?.slice(1),
 						teams: [],
 						trophies: battleData.battle.trophyChange,

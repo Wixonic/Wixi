@@ -1,0 +1,17 @@
+@import url("../main.css");
+
+input[type="search"] {
+	background: var(--text-color);
+
+	color: var(--background);
+	font-size: 0.9rem;
+
+	border: none;
+	border-radius: 0.3rem;
+
+	margin: 0.5rem;
+	padding: 0.2rem 0.5rem;
+
+	cursor: text;
+	pointer-events: fill;
+}

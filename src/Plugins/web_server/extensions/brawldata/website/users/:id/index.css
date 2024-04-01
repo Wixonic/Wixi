@@ -1,0 +1,44 @@
+@import url("../../main.css");
+
+.hidden {
+	display: none;
+}
+
+select {
+	background: var(--text-color);
+
+	color: var(--background);
+	font-size: 0.9rem;
+
+	border: none;
+	border-radius: 0.3rem;
+
+	margin: 0.5rem;
+	padding: 0.2rem 0.5rem;
+
+	cursor: pointer;
+	pointer-events: fill !important;
+}
+
+label#toCompare,
+input[type="checkbox"] {
+	cursor: pointer;
+	pointer-events: fill;
+}
+
+input[type="checkbox"] {
+	background: var(--text-color);
+
+	color: var(--background);
+	font-size: 0.9rem;
+
+	border: none;
+	border-radius: 0.3rem;
+
+	margin: 0.5rem;
+	padding: 0.2rem 0.5rem;
+}
+
+input#compare {
+	margin-left: 0;
+}
