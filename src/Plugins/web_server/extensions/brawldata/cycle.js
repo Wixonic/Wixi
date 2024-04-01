@@ -76,7 +76,7 @@ const config = require("./config");
  * @property {Object<string, number>?} trophies
  */
 
-const root = path.join(__dirname, "database");
+const root = path.join(process.env.HOME, "BrawlData DB");
 
 /**
  * @param {string} endpoint 
