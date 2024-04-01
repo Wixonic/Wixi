@@ -7,8 +7,6 @@ const log = require("./log");
 
 const config = require("./config");
 
-const root = path.join(__dirname, "database");
-
 /**
  * @param {import("express").Router} router 
  * @param {import("socket.io").Server} _
@@ -48,7 +46,7 @@ module.exports = async (router, _) => {
 			} else res.writeHead(404);
 		} else {
 			const file = path.join(__dirname, "website", "users", ":id", "index.html");
-			const user = path.join(root, "users", id, "latest.json");
+			const user = path.join(config.root, "users", id, "latest.json");
 
 			if (fs.existsSync(file) && fs.existsSync(user)) {
 				const userData = JSON.parse(fs.readFileSync(user));
@@ -74,7 +72,7 @@ module.exports = async (router, _) => {
 	});
 
 	router.get("/api/brawlers", (_, res) => {
-		const file = path.join(root, "brawlers.json");
+		const file = path.join(config.root, "brawlers.json");
 
 		if (fs.existsSync(file)) res.writeHead(200).write(fs.readFileSync(file));
 		else res.writeHead(500).write(JSON.stringify({
@@ -86,7 +84,7 @@ module.exports = async (router, _) => {
 	});
 
 	router.get("/api/users", (_, res) => {
-		const folder = path.join(root, "users");
+		const folder = path.join(config.root, "users");
 
 		if (fs.existsSync(folder)) {
 			const users = {};
@@ -107,7 +105,7 @@ module.exports = async (router, _) => {
 	});
 
 	router.get("/api/users/:id", (req, res) => {
-		const file = path.join(root, "users", req.params.id, "latest.json");
+		const file = path.join(config.root, "users", req.params.id, "latest.json");
 
 		if (fs.existsSync(file)) res.writeHead(200).write(fs.readFileSync(file));
 		else res.writeHead(404).write(JSON.stringify({
@@ -119,7 +117,7 @@ module.exports = async (router, _) => {
 	});
 
 	router.get("/api/users/:id/stats", (req, res) => {
-		const file = path.join(root, "users", req.params.id, "stats.json");
+		const file = path.join(config.root, "users", req.params.id, "stats.json");
 
 		if (fs.existsSync(file)) res.writeHead(200).write(fs.readFileSync(file));
 		else res.writeHead(404).write(JSON.stringify({

@@ -76,8 +76,6 @@ const config = require("./config");
  * @property {Object<string, number>?} trophies
  */
 
-const root = path.join(process.env.HOME, "BrawlData DB");
-
 /**
  * @param {string} endpoint 
  * @param {string} method 
@@ -279,7 +277,7 @@ const getData = async (id) => {
 const track = async (id) => {
 	const date = new Date().toISOString();
 
-	const directory = path.join(root, "users", id);
+	const directory = path.join(config.root, "users", id);
 
 	const recentBattles = await getBattlelog(id);
 	const data = await getData(id);
@@ -341,8 +339,8 @@ const track = async (id) => {
 };
 
 const cycle = async (time) => {
-	if (!fs.existsSync(root)) fs.mkdirSync(root, { recursive: true });
-	fs.writeFileSync(path.join(root, "brawlers.json"), JSON.stringify(await getBrawlersList(), null, 4));
+	if (!fs.existsSync(config.root)) fs.mkdirSync(config.root, { recursive: true });
+	fs.writeFileSync(path.join(config.root, "brawlers.json"), JSON.stringify(await getBrawlersList(), null, 4));
 
 	for (const id of config.profiles) await track(id);
 	setTimeout(cycle, time);
