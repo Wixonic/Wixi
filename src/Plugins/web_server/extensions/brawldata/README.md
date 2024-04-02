@@ -1,10 +1,10 @@
 # BrawlData
 
-- [Website](https://server.wixonic.fr/brawldata)
+[Website](https://server.wixonic.fr/brawldata)
 
 ## File format
 
-> 
+> The file
 
 ### user.trophies.log
 
