@@ -8,13 +8,13 @@ const soloModes = [
 ];
 
 const separator = {
-	data: "<|2|>",
-	entry: "<|1|>",
+	data: "\uF002",
+	entry: "\uF001",
 	player: {
-		data: "<|5|>",
-		team: "<|4|>"
+		data: "\uF005",
+		team: "\uF004"
 	},
-	team: "<|3|>"
+	team: "\uF003"
 };
 
 const readUser = (id) => {
@@ -33,9 +33,9 @@ const readUser = (id) => {
 		"trophies.highest": {}
 	};
 
-	const user = fs.existsSync(path.join(userPath, "user.log")) ? fs.readFileSync(path.join(userPath, "user.log")).toString() : null;
-	const brawlers = fs.existsSync(path.join(userPath, "user.brawlers.log")) ? fs.readFileSync(path.join(userPath, "user.brawlers.log")).toString() : null;
-	const battlelog = fs.existsSync(path.join(userPath, "user.battle.log")) ? fs.readFileSync(path.join(userPath, "user.battle.log")).toString() : null;
+	const user = fs.existsSync(path.join(userPath, "user.log")) ? fs.readFileSync(path.join(userPath, "user.log"), { encoding: "utf-8" }).toString() : null;
+	const brawlers = fs.existsSync(path.join(userPath, "user.brawlers.log")) ? fs.readFileSync(path.join(userPath, "user.brawlers.log"), { encoding: "utf-8" }).toString() : null;
+	const battlelog = fs.existsSync(path.join(userPath, "user.battle.log")) ? fs.readFileSync(path.join(userPath, "user.battle.log"), { encoding: "utf-8" }).toString() : null;
 
 	if (user) {
 		for (const entry of user.split(separator.entry)) {
@@ -153,12 +153,10 @@ const writeUser = (id, data) => {
 
 	const previousData = readUser(id);
 
-	console.log(JSON.stringify(previousData, null, 4));
-
 	const userPath = path.join(config.root, "users", id);
 
 	if (!fs.existsSync(userPath)) fs.mkdirSync(userPath, { recursive: true });
-	const append = (fileName, ...data) => fs.appendFileSync(path.join(userPath, fileName), data.join(separator.data) + separator.entry);
+	const append = (fileName, ...data) => fs.appendFileSync(path.join(userPath, fileName), data.join(separator.data) + separator.entry, { encoding: "utf-8" });
 
 	const check = (fileName, date, key, value) => {
 		const values = Object.values(previousData[key]);
@@ -178,7 +176,7 @@ const writeUser = (id, data) => {
 		battleData.date = Math.floor(new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).getTime() / 1000);
 		battleData.playersData = "";
 
-		if (soloModes.includes(battleData.battle.type)) {
+		if (soloModes.includes(battleData.battle.mode)) {
 			const playersData = battleData.battle.players;
 			const players = [];
 
@@ -189,10 +187,10 @@ const writeUser = (id, data) => {
 			const teamsData = battleData.battle.teams;
 			const teams = [];
 
-			for (let i = 0; i < teamsData.length; ++i) {
+			for (const teamData of teamsData) {
 				const team = [];
 
-				for (const playerData of teamsData[i]) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(separator.player.data));
+				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(separator.player.data));
 
 				teams.push(team.join(separator.player.team));
 			}
