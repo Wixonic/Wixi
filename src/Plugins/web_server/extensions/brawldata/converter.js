@@ -3,13 +3,22 @@ const fs = require("fs");
 
 const config = require("./config");
 
-const soloModes = [
-	"soloShowdown"
-];
+/**
+ * @type {BufferEncoding}
+ */
+const fsOptions = "utf8";
+
+const paths = {
+	battlelog: (id) => path.join(paths.main(id), "battlelog.bsldata"),
+	brawlers: (id) => path.join(paths.main(id), "brawlers"),
+	brawler: (userId, brawlerId) => path.join(paths.brawlers(userId), `${brawlerId}.bsdata`),
+	main: (id) => path.join(config.root, "users", id),
+	user: (id) => path.join(paths.main(id), "user.bsdata")
+};
 
 const separator = {
 	data: "\uF002",
-	entry: "\uF001",
+	entry: "\n",
 	player: {
 		data: "\uF005",
 		team: "\uF004"
@@ -17,9 +26,11 @@ const separator = {
 	team: "\uF003"
 };
 
-const readUser = (id) => {
-	const userPath = path.join(config.root, "users", id);
+const soloModes = [
+	"soloShowdown"
+];
 
+const readUser = (id) => {
 	const data = {
 		battles: [],
 		brawlers: {},
@@ -33,9 +44,9 @@ const readUser = (id) => {
 		"trophies.highest": {}
 	};
 
-	const user = fs.existsSync(path.join(userPath, "user.log")) ? fs.readFileSync(path.join(userPath, "user.log"), { encoding: "utf-8" }).toString() : null;
-	const brawlers = fs.existsSync(path.join(userPath, "user.brawlers.log")) ? fs.readFileSync(path.join(userPath, "user.brawlers.log"), { encoding: "utf-8" }).toString() : null;
-	const battlelog = fs.existsSync(path.join(userPath, "user.battle.log")) ? fs.readFileSync(path.join(userPath, "user.battle.log"), { encoding: "utf-8" }).toString() : null;
+	const user = fs.existsSync(paths.user(id)) ? fs.readFileSync(paths.user(id), fsOptions).toString() : null;
+	const brawlers = fs.existsSync(paths.brawlers(id)) ? fs.readdirSync(paths.brawlers(id), fsOptions) : [];
+	const battlelog = fs.existsSync(paths.battlelog(id)) ? fs.readFileSync(paths.battlelog(id), fsOptions).toString() : null;
 
 	if (user) {
 		for (const entry of user.split(separator.entry)) {
@@ -44,13 +55,9 @@ const readUser = (id) => {
 		}
 	}
 
-	if (brawlers) {
-		for (const entry of brawlers.split(separator.entry)) {
-			const entryData = entry.split(separator.data);
-
-			if (entry.length > 0) {
-				// Brawlers list
-			}
+	for (const brawlerFile of brawlers) {
+		if (brawlerFile.endsWith(".bsdata")) {
+			// Add brawler to brawlers list
 		}
 	}
 
@@ -154,23 +161,46 @@ const writeUser = (id, data) => {
 	const previousData = readUser(id);
 
 	const userPath = path.join(config.root, "users", id);
+	const brawlersPath = path.join(config.root, "users", id, "brawlers");
 
 	if (!fs.existsSync(userPath)) fs.mkdirSync(userPath, { recursive: true });
-	const append = (fileName, ...data) => fs.appendFileSync(path.join(userPath, fileName), data.join(separator.data) + separator.entry, { encoding: "utf-8" });
+	if (!fs.existsSync(brawlersPath)) fs.mkdirSync(brawlersPath, { recursive: true });
 
-	const check = (fileName, date, key, value) => {
-		const values = Object.values(previousData[key]);
-		if (values[values.length - 1] != value) append(fileName, date, key, value);
+	const append = (filePath, ...data) => fs.appendFileSync(filePath, data.join(separator.data) + separator.entry, fsOptions);
+	const check = (date, key, value) => {
+		if (previousData[key]) {
+			const values = Object.values(previousData[key]);
+			if (values[values.length - 1] == value) return;
+		}
+
+		append(paths.user(id), date, key, value);
 	};
 
-	check("user.log", now, "name", data.name);
-	check("user.log", now, "color", data.nameColor);
-	check("user.log", now, "icon", data.icon.id - 28000000);
-	check("user.log", now, "trophies", data.trophies);
-	check("user.log", now, "trophies.highest", data.highestTrophies);
-	check("user.log", now, "level", data.expLevel);
-	check("user.log", now, "club.name", data.club.name);
-	check("user.log", now, "club.tag", data.club.tag);
+	check(now, "name", data.name);
+	check(now, "color", data.nameColor);
+	check(now, "icon", data.icon.id - 28000000);
+	check(now, "trophies", data.trophies);
+	check(now, "trophies.highest", data.highestTrophies);
+	check(now, "level", data.expLevel);
+	check(now, "club.name", data.club.name);
+	check(now, "club.tag", data.club.tag);
+
+	/* data.brawlers.forEach((brawlerData) => {
+		const append = (...data) => fs.appendFileSync(paths.brawler(id, brawlerData.id - 16000000), data.join(separator.data) + separator.entry, fsOptions);
+		const check = (date, key, value) => {
+			if (previousData.brawlers?.[key]) {
+				const values = Object.values(previousData.brawlers[key]);
+				if (values[values.length - 1] == value) return;
+			}
+
+			append(date, key, value);
+		};
+
+		check(now, "power", brawlerData.power);
+		check(now, "rank", brawlerData.rank);
+		check(now, "trophies", brawlerData.trophies);
+		check(now, "trophies.highest", brawlerData.highestTrophies);
+	}); */
 
 	data.battlelog.forEach((battleData) => {
 		battleData.date = Math.floor(new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).getTime() / 1000);
@@ -202,7 +232,7 @@ const writeUser = (id, data) => {
 	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData.battles[previousData.battles.length - 1]?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
 
-	for (const battleData of data.battlelog) append("user.battle.log", battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);
+	for (const battleData of data.battlelog) append(paths.battlelog(id), battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);
 };
 
 module.exports = {
