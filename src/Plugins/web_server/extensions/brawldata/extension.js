@@ -47,5 +47,5 @@ module.exports = async (router, _) => {
 	router.use(`/api/v${config.api.version}`, apiRouter);
 
 	await API.connect(apiRouter);
-	await API.cycle(60 * 60 / 3 * 1000); // Every 20 minutes
+	await API.cycle((config.cycle * 60) * 1000); // Every 10 minutes
 };

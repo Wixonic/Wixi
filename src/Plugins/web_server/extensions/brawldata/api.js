@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { readClub, writeClub, readUser, writeUser } = require("./converter");
+const { writeClub, writeUser } = require("./converter");
 const log = require("./log");
 const request = require("./request");
 const { wait } = require("./utils");
@@ -60,17 +60,17 @@ const user = async (id) => {
 /**
  * @param {import("express").Router} router
  */
-const connect = (router) => {
+const connect = async (router) => {
 	router.get("/", (req, res) => {
 
 	});
 };
 
 const cycle = async (time) => {
-	/* for (const clubId of config.clubs) {
+	for (const clubId of config.clubs) {
 		const data = await club(clubId);
 		writeClub(clubId, data);
-	} */
+	}
 
 	for (const userId of config.users) {
 		const data = await user(userId);
