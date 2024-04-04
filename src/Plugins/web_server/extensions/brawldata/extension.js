@@ -12,11 +12,15 @@ const config = require("./config");
  * @param {import("socket.io").Server} _
  */
 module.exports = async (router, _) => {
+	const apiRouter = express.Router();
+
 	router.use("/api", (req, res, next) => {
 		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 		res.setHeader("content-type", "application/json");
 		next();
 	});
+
+	router.use(`/api/v${config.api.version}`, apiRouter);
 
 	router.use("/api", (_, res) => {
 		res.writeHead(404).write(JSON.stringify({
@@ -42,9 +46,6 @@ module.exports = async (router, _) => {
 
 		res.end();
 	});
-
-	const apiRouter = express.Router();
-	router.use(`/api/v${config.api.version}`, apiRouter);
 
 	await API.connect(apiRouter);
 	await API.cycle((config.cycle * 60) * 1000); // Every 10 minutes

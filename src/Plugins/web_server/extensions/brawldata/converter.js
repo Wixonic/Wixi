@@ -1,38 +1,30 @@
 const path = require("path");
 const fs = require("fs");
 
+const log = require("./log");
+const { toTime } = require("./utils");
+
 const config = require("./config");
-
-/**
- * @type {BufferEncoding}
- */
-const fsOptions = "utf8";
-
-const paths = {
-	battlelog: (id) => path.join(paths.main(id), "battlelog.bsldata"),
-	brawlers: (id) => path.join(paths.main(id), "brawlers"),
-	brawler: (userId, brawlerId) => path.join(paths.brawlers(userId), `${brawlerId}.bsdata`),
-	main: (id) => path.join(config.root, "users", id),
-	user: (id) => path.join(paths.main(id), "user.bsdata")
-};
-
-const separator = {
-	data: "\uF002",
-	entry: "\n",
-	player: {
-		data: "\uF005",
-		team: "\uF004"
-	},
-	team: "\uF003"
-};
 
 ////////// CLUBS //////////////////////////////////
 const readClub = (id) => {
+	const readStartTimestamp = Date.now();
+	log(`Reading data of club ${id}`);
 
+	// 
+
+	const readEndTimestamp = Date.now();
+	log(`Club ${id} data read in ${toTime(readStartTimestamp, readEndTimestamp)}`);
 };
 
 const writeClub = (id) => {
+	const writeStartTimestamp = Date.now();
+	log(`Writing data of club ${id}`);
 
+	// 
+
+	const writeEndTimestamp = Date.now();
+	log(`Club ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
 };
 ////////// CLUBS //////////////////////////////////
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
@@ -41,6 +33,9 @@ const soloModes = [
 ];
 
 const readUser = (id) => {
+	const readStartTimestamp = Date.now();
+	log(`Reading data of player ${id}`);
+
 	const data = {
 		battles: [],
 		brawlers: {},
@@ -54,13 +49,13 @@ const readUser = (id) => {
 		"trophies.highest": {}
 	};
 
-	const user = fs.existsSync(paths.user(id)) ? fs.readFileSync(paths.user(id), fsOptions).toString() : null;
-	const brawlers = fs.existsSync(paths.brawlers(id)) ? fs.readdirSync(paths.brawlers(id), fsOptions) : [];
-	const battlelog = fs.existsSync(paths.battlelog(id)) ? fs.readFileSync(paths.battlelog(id), fsOptions).toString() : null;
+	const user = fs.existsSync(config.paths.user.data(id)) ? fs.readFileSync(config.paths.user.data(id), config.fsOptions).toString() : null;
+	const brawlers = fs.existsSync(config.paths.user.brawler.list(id)) ? fs.readdirSync(config.paths.user.brawler.list(id), config.fsOptions) : [];
+	const battlelog = fs.existsSync(config.paths.user.battlelog(id)) ? fs.readFileSync(config.paths.user.battlelog(id), config.fsOptions).toString() : null;
 
 	if (user) {
-		for (const entry of user.split(separator.entry)) {
-			const entryData = entry.split(separator.data);;
+		for (const entry of user.split(config.api.separators.entry)) {
+			const entryData = entry.split(config.api.separators.data);
 
 			if (entry.length > 0) {
 				const isNumber = ["icon", "level", "trophies", "trophies.highest"].includes(entryData[1]);
@@ -72,7 +67,7 @@ const readUser = (id) => {
 	for (const brawlerFile of brawlers) {
 		if (brawlerFile.endsWith(".bsdata")) {
 			const brawlerId = brawlerFile.slice(0, -7);
-			const brawler = fs.readFileSync(paths.brawler(id, brawlerId), fsOptions);
+			const brawler = fs.readFileSync(config.paths.user.brawler(id, brawlerId), config.fsOptions);
 
 			if (brawler) {
 				data.brawlers[brawlerId] = {
@@ -82,8 +77,8 @@ const readUser = (id) => {
 					"trophies.highest": {}
 				};
 
-				for (const entry of brawler.split(separator.entry)) {
-					const entryData = entry.split(separator.data);
+				for (const entry of brawler.split(config.api.separators.entry)) {
+					const entryData = entry.split(config.api.separators.data);
 
 					if (entry.length > 0) {
 						const isNumber = ["power", "rank", "trophies", "trophies.highest"].includes(entryData[1]);
@@ -95,8 +90,8 @@ const readUser = (id) => {
 	}
 
 	if (battlelog) {
-		for (const entry of battlelog.split(separator.entry)) {
-			const entryData = entry.split(separator.data);
+		for (const entry of battlelog.split(config.api.separators.entry)) {
+			const entryData = entry.split(config.api.separators.data);
 
 			if (entry.length > 0) {
 				const type = entryData[1];
@@ -117,10 +112,10 @@ const readUser = (id) => {
 				if (soloModes.includes(type)) {
 					battle.players = [];
 
-					const playersData = entryData[9].split(separator.player.team);
+					const playersData = entryData[9].split(config.api.separators.player.team);
 
 					for (const playerDataString of playersData) {
-						const playerData = playerDataString.split(separator.player.data);
+						const playerData = playerDataString.split(config.api.separators.player.data);
 
 						const player = {
 							brawler: Number(playerData[2]),
@@ -137,13 +132,13 @@ const readUser = (id) => {
 				} else {
 					battle.teams = [];
 
-					const teamsData = entryData[9].split(separator.team);
+					const teamsData = entryData[9].split(config.api.separators.team);
 
 					for (const teamDataString of teamsData) {
 						const team = [];
 
-						for (const playerDataString of teamDataString.split(separator.player.team)) {
-							const playerData = playerDataString.split(separator.player.data);
+						for (const playerDataString of teamDataString.split(config.api.separators.player.team)) {
+							const playerData = playerDataString.split(config.api.separators.player.data);
 
 							const player = {
 								brawler: Number(playerData[2]),
@@ -169,28 +164,31 @@ const readUser = (id) => {
 
 	data.battles.sort((battleA, battleB) => battleA.date - battleB.date);
 
+	const readEndTimestamp = Date.now();
+	log(`Player ${id} data read in ${toTime(readStartTimestamp, readEndTimestamp)}`);
+
 	return data;
 };
 
 const writeUser = (id, data) => {
+	const writeStartTimestamp = Date.now();
 	const now = Math.floor(Date.now() / 1000);
 
 	const previousData = readUser(id);
 
-	const userPath = path.join(config.root, "users", id);
-	const brawlersPath = path.join(config.root, "users", id, "brawlers");
+	log(`Writing data of player ${id}`);
 
-	if (!fs.existsSync(userPath)) fs.mkdirSync(userPath, { recursive: true });
-	if (!fs.existsSync(brawlersPath)) fs.mkdirSync(brawlersPath, { recursive: true });
+	if (!fs.existsSync(config.paths.user(id))) fs.mkdirSync(config.paths.user(id), { recursive: true });
+	if (!fs.existsSync(config.paths.user.brawler.list(id))) fs.mkdirSync(config.paths.user.brawler.list(id), { recursive: true });
 
-	const append = (filePath, ...data) => fs.appendFileSync(filePath, data.join(separator.data) + separator.entry, fsOptions);
+	const append = (filePath, ...data) => fs.appendFileSync(filePath, data.join(config.api.separators.data) + config.api.separators.entry, config.fsOptions);
 	const check = (date, key, value) => {
 		if (previousData[key]) {
 			const values = Object.values(previousData[key]);
 			if (values[values.length - 1] == value) return;
 		}
 
-		append(paths.user(id), date, key, value);
+		append(config.paths.user.data(id), date, key, value);
 	};
 
 	check(now, "name", data.name);
@@ -204,7 +202,7 @@ const writeUser = (id, data) => {
 
 	data.brawlers.forEach((brawlerData) => {
 		const brawlerId = brawlerData.id - 16000000;
-		const append = (...data) => fs.appendFileSync(paths.brawler(id, brawlerId), data.join(separator.data) + separator.entry, fsOptions);
+		const append = (...data) => fs.appendFileSync(config.paths.user.brawler(id, brawlerId), data.join(config.api.separators.data) + config.api.separators.entry, config.fsOptions);
 		const check = (date, key, value) => {
 			if (previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key]) {
 				const values = Object.values(previousData.brawlers[brawlerId][key]);
@@ -228,9 +226,9 @@ const writeUser = (id, data) => {
 			const playersData = battleData.battle.players;
 			const players = [];
 
-			for (const playerData of playersData) players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(separator.player.data));
+			for (const playerData of playersData) players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
 
-			battleData.playersData = players.join(separator.player.team);
+			battleData.playersData = players.join(config.api.separators.player.team);
 		} else {
 			const teamsData = battleData.battle.teams;
 			const teams = [];
@@ -238,19 +236,22 @@ const writeUser = (id, data) => {
 			for (const teamData of teamsData) {
 				const team = [];
 
-				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(separator.player.data));
+				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
 
-				teams.push(team.join(separator.player.team));
+				teams.push(team.join(config.api.separators.player.team));
 			}
 
-			battleData.playersData = teams.join(separator.team);
+			battleData.playersData = teams.join(config.api.separators.team);
 		}
 	});
 
 	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData.battles[previousData.battles.length - 1]?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
 
-	for (const battleData of data.battlelog) append(paths.battlelog(id), battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);
+	for (const battleData of data.battlelog) append(config.paths.user.battlelog(id), battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);
+
+	const writeEndTimestamp = Date.now();
+	log(`Player ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
 };
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
 
