@@ -26,6 +26,16 @@ const separator = {
 	team: "\uF003"
 };
 
+////////// CLUBS //////////////////////////////////
+const readClub = (id) => {
+
+};
+
+const writeClub = (id) => {
+
+};
+////////// CLUBS //////////////////////////////////
+////////// USERS, BATTLELOGS AND BRAWLERS /////////
 const soloModes = [
 	"soloShowdown"
 ];
@@ -50,14 +60,37 @@ const readUser = (id) => {
 
 	if (user) {
 		for (const entry of user.split(separator.entry)) {
-			const entryData = entry.split(separator.data);
-			if (entry.length > 0) data[entryData[1]][entryData[0]] = entryData.slice(2)[0];
+			const entryData = entry.split(separator.data);;
+
+			if (entry.length > 0) {
+				const isNumber = ["icon", "level", "trophies", "trophies.highest"].includes(entryData[1]);
+				data[entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+			}
 		}
 	}
 
 	for (const brawlerFile of brawlers) {
 		if (brawlerFile.endsWith(".bsdata")) {
-			// Add brawler to brawlers list
+			const brawlerId = brawlerFile.slice(0, -7);
+			const brawler = fs.readFileSync(paths.brawler(id, brawlerId), fsOptions);
+
+			if (brawler) {
+				data.brawlers[brawlerId] = {
+					power: {},
+					rank: {},
+					trophies: {},
+					"trophies.highest": {}
+				};
+
+				for (const entry of brawler.split(separator.entry)) {
+					const entryData = entry.split(separator.data);
+
+					if (entry.length > 0) {
+						const isNumber = ["power", "rank", "trophies", "trophies.highest"].includes(entryData[1]);
+						data.brawlers[brawlerId][entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+					}
+				}
+			}
 		}
 	}
 
@@ -68,34 +101,18 @@ const readUser = (id) => {
 			if (entry.length > 0) {
 				const type = entryData[1];
 
-				const format = (value, action, ...extra) => {
-					const next = (v) => extra.length > 0 ? format(v, extra[0], extra.slice(1)) : v;
-
-					switch (action) {
-						case "optional":
-							if (value == "") return undefined;
-							else return next(value);
-							break;
-
-						case "number":
-							return next(Number(value));
-							break;
-					}
-
-					return value;
-				};
-
 				const battle = {
-					date: format(entryData[0], "number"),
-					duration: format(entryData[2], "number"),
-					event: format(entryData[3], "number"),
+					date: Number(entryData[0]),
+					event: Number(entryData[3]),
 					mode: entryData[4],
-					rank: format(entryData[5], "optional", "number"),
-					result: entryData[6],
-					starPlayer: format(entryData[7], "optional"),
-					trophies: format(entryData[8], "optional", "number"),
 					type
 				};
+
+				if (entryData[2].length > 0) battle.duration = Number(entryData[2]);
+				if (entryData[5].length > 0) battle.rank = Number(entryData[5]);
+				if (entryData[6].length > 0) battle.result = entryData[6];
+				if (entryData[7].length > 0) battle.starPlayer = entryData[7];
+				if (entryData[8].length > 0) battle.trophies = Number(entryData[8]);
 
 				if (soloModes.includes(type)) {
 					battle.players = [];
@@ -106,14 +123,14 @@ const readUser = (id) => {
 						const playerData = playerDataString.split(separator.player.data);
 
 						const player = {
-							brawler: format(playerData[2], "number"),
+							brawler: Number(playerData[2]),
 							name: playerData[1],
-							power: format(playerData[3], "number"),
+							power: Number(playerData[3]),
 							tag: playerData[0]
 						};
 
-						if (battle.mode == "soloRanked") player.rank = format(playerData[4], "number");
-						else player.trophies = format(playerData[4], "number");
+						if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
+						else player.trophies = Number(playerData[4]);
 
 						team.push(player);
 					}
@@ -129,14 +146,14 @@ const readUser = (id) => {
 							const playerData = playerDataString.split(separator.player.data);
 
 							const player = {
-								brawler: format(playerData[2], "number"),
+								brawler: Number(playerData[2]),
 								name: playerData[1],
-								power: format(playerData[3], "number"),
+								power: Number(playerData[3]),
 								tag: playerData[0]
 							};
 
-							if (battle.mode == "soloRanked") player.rank = format(playerData[4], "number");
-							else player.trophies = format(playerData[4], "number");
+							if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
+							else player.trophies = Number(playerData[4]);
 
 							team.push(player);
 						}
@@ -185,11 +202,12 @@ const writeUser = (id, data) => {
 	check(now, "club.name", data.club.name);
 	check(now, "club.tag", data.club.tag);
 
-	/* data.brawlers.forEach((brawlerData) => {
-		const append = (...data) => fs.appendFileSync(paths.brawler(id, brawlerData.id - 16000000), data.join(separator.data) + separator.entry, fsOptions);
+	data.brawlers.forEach((brawlerData) => {
+		const brawlerId = brawlerData.id - 16000000;
+		const append = (...data) => fs.appendFileSync(paths.brawler(id, brawlerId), data.join(separator.data) + separator.entry, fsOptions);
 		const check = (date, key, value) => {
-			if (previousData.brawlers?.[key]) {
-				const values = Object.values(previousData.brawlers[key]);
+			if (previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key]) {
+				const values = Object.values(previousData.brawlers[brawlerId][key]);
 				if (values[values.length - 1] == value) return;
 			}
 
@@ -200,7 +218,7 @@ const writeUser = (id, data) => {
 		check(now, "rank", brawlerData.rank);
 		check(now, "trophies", brawlerData.trophies);
 		check(now, "trophies.highest", brawlerData.highestTrophies);
-	}); */
+	});
 
 	data.battlelog.forEach((battleData) => {
 		battleData.date = Math.floor(new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).getTime() / 1000);
@@ -234,8 +252,11 @@ const writeUser = (id, data) => {
 
 	for (const battleData of data.battlelog) append(paths.battlelog(id), battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);
 };
+////////// USERS, BATTLELOGS AND BRAWLERS /////////
 
 module.exports = {
+	readClub,
+	writeClub,
 	readUser,
 	writeUser
 };
