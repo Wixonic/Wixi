@@ -7,6 +7,7 @@ const log = require("./log");
 
 const config = require("./config");
 const request = require("./request");
+const { readPlayer } = require("./converter");
 
 /**
  * @param {import("express").Router} router 
@@ -23,7 +24,9 @@ module.exports = async (router, _) => {
 
 	router.use(`/api/v${config.api.version}`, apiRouter);
 
-	router.use("/api", (_, res) => {
+	router.use("/api", (req, res) => {
+		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 404: ${path.join("/api", req.url)}`)
+
 		res.writeHead(404).write(JSON.stringify({
 			code: 404,
 			error: "Not Found"
@@ -71,8 +74,51 @@ module.exports = async (router, _) => {
 	router.use("/assets/*", (_, res) => res.writeHead(404).end());
 
 
-	router.get("/players/:id", async (req, res) => {
+	router.get(/^\/players\/([\w]+)\/(.*)?$/m, (req, res) => {
+		const id = "#" + req.params[0];
+		const extraPath = req.params[1];
 
+		if (extraPath) {
+			log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${req.path}`)
+
+			const file = path.join(__dirname, "website", "players", ":id", extraPath);
+
+			if (fs.existsSync(file)) {
+				const content = fs.readFileSync(file);
+
+				let type;
+
+				switch (true) {
+					case extraPath.endsWith(".css"):
+						type = "text/css";
+						break;
+
+					case extraPath.endsWith(".js"):
+						type = "text/javascript";
+						break;
+
+					default:
+						type = "text/plain";
+						break;
+				}
+
+				res.writeHead(200, {
+					"content-type": type
+				}).write(content);
+			} else res.writeHead(404);
+		} else if (fs.existsSync(config.paths.player(id))) {
+			const file = path.join(__dirname, "website", "players", ":id", "index.html");
+			const playerData = readPlayer(id);
+			const name = Object.values(playerData.name).at(-1);
+
+			const content = String(fs.readFileSync(file)).split("[[NAME]]").join(name).split("[[POSSESSIVE-NAME]]").join(name + (name.endsWith("s") ? "'" : "'s")).split("[[ID]]").join(id.slice(1));
+
+			res.writeHead(200, {
+				"content-type": "text/html"
+			}).write(content);
+		} else res.writeHead(404);
+
+		res.end();
 	});
 
 	router.use(express.static(path.join(__dirname, "website"), {

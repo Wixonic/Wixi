@@ -1,10 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 
-const { writeClub, writePlayer, readPlayer } = require("./converter");
+const { writeClub, readClub, writePlayer, readPlayer } = require("./converter");
 const log = require("./log");
 const request = require("./request");
-const { wait, toTime } = require("./utils");
+const { toProperCase, toTime, wait } = require("./utils");
 
 const config = require("./config");
 
@@ -73,25 +73,36 @@ const player = async (id) => {
  * @param {import("express").Router} router
  */
 const connect = async (router) => {
+	router.get("/brawlers", (_, res) => {
+		if (fs.existsSync(config.paths.brawlers())) {
+			const brawlers = JSON.parse(fs.readFileSync(config.paths.brawlers(), "utf-8"));
+
+			res.writeHead(200, {
+				"content-type": "application/json"
+			}).write(JSON.stringify({
+				code: 200,
+				items: brawlers
+			}));
+		} else res.writeHead(404).write(JSON.stringify({
+			code: 404,
+			error: "Not Found"
+		}, null, 4));
+
+		res.end();
+	});
+
 	router.get("/players", (_, res) => {
 		const players = [];
 
 		for (const playerId of fs.readdirSync(config.paths.player.list(), "utf-8")) {
-			if (playerId.startsWith("#")) {
-				const playerData = readPlayer(playerId);
+			const playerData = readPlayer(playerId);
 
-				const icons = Object.values(playerData.icon);
-				const names = Object.values(playerData.name);
-				const trophies = Object.values(playerData.trophies);
-
-				if (names.length > 0) {
-					players.push({
-						icon: icons[icons.length - 1],
-						id: playerId,
-						name: names[names.length - 1],
-						trophies: trophies[trophies.length - 1]
-					});
-				}
+			if (playerData) {
+				players.push({
+					icon: Object.values(playerData.icon).at(-1),
+					id: playerId,
+					name: Object.values(playerData.name).at(-1)
+				});
 			}
 		}
 
@@ -107,6 +118,7 @@ const connect = async (router) => {
 			code: players.length > 0 ? 200 : 204,
 			items: players
 		}));
+
 		res.end();
 	});
 
@@ -115,12 +127,17 @@ const connect = async (router) => {
 
 		const playerData = readPlayer("#" + playerId);
 
-		res.writeHead(200, {
-			"content-type": "application/json"
-		}).write(JSON.stringify({
-			code: 200,
-			data: playerData
-		}));
+		if (playerData) {
+			res.writeHead(200, {
+				"content-type": "application/json"
+			}).write(JSON.stringify({
+				code: 200,
+				data: playerData
+			}));
+		} else res.writeHead(404).write(JSON.stringify({
+			code: 404,
+			error: "Not Found"
+		}, null, 4));
 
 		res.end();
 	});
@@ -129,6 +146,19 @@ const connect = async (router) => {
 const cycle = async (time) => {
 	const cycleStartTimestamp = Date.now();
 	log("Refresh cycle started");
+
+	const brawlersData = await api("/brawlers")
+	if (!brawlersData.error) {
+		const brawlers = {};
+
+		for (const brawler of brawlersData.items ?? []) {
+			brawlers[brawler.id - 16000000] = {
+				name: toProperCase(brawler.name)
+			};
+		}
+		if (!fs.existsSync(config.root)) fs.mkdirSync(config.root, { recursive: true });
+		fs.writeFileSync(config.paths.brawlers(), JSON.stringify(brawlers, null, 4), "utf-8");
+	}
 
 	for (const clubId of config.clubs) {
 		const data = await club(clubId);

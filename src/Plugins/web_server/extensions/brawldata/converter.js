@@ -11,15 +11,23 @@ const readClub = (id) => {
 	const readStartTimestamp = Date.now();
 	log(`Reading data of club ${id}`);
 
-	// 
+	let data = null;
+
+	if (fs.existsSync(config.paths.club(id)) && fs.statSync(config.paths.club(id)).isDirectory()) {
+		// 
+	}
 
 	const readEndTimestamp = Date.now();
 	log(`Club ${id} data read in ${toTime(readStartTimestamp, readEndTimestamp)}`);
+
+	return data;
 };
 
 const writeClub = (id) => {
 	const writeStartTimestamp = Date.now();
 	log(`Writing data of club ${id}`);
+
+	const previousData = readClub(id) ?? {};
 
 	// 
 
@@ -36,108 +44,88 @@ const readPlayer = (id) => {
 	const readStartTimestamp = Date.now();
 	log(`Reading data of player ${id}`);
 
-	const data = {
-		battles: [],
-		brawlers: {},
-		"club.name": {},
-		"club.tag": {},
-		color: {},
-		icon: {},
-		level: {},
-		name: {},
-		trophies: {},
-		"trophies.highest": {}
-	};
+	let data = null;
 
-	const player = fs.existsSync(config.paths.player.data(id)) ? fs.readFileSync(config.paths.player.data(id), "utf-8").toString() : null;
-	const brawlers = fs.existsSync(config.paths.player.brawler.list(id)) ? fs.readdirSync(config.paths.player.brawler.list(id), "utf-8") : [];
-	const battlelog = fs.existsSync(config.paths.player.battlelog(id)) ? fs.readFileSync(config.paths.player.battlelog(id), "utf-8").toString() : null;
+	if (fs.existsSync(config.paths.player(id)) && fs.statSync(config.paths.player(id)).isDirectory()) {
+		data = {
+			battles: [],
+			brawlers: {},
+			"club.name": {},
+			"club.tag": {},
+			color: {},
+			icon: {},
+			level: {},
+			name: {},
+			trophies: {},
+			"trophies.highest": {}
+		};
 
-	if (player) {
-		for (const entry of player.split(config.api.separators.entry)) {
-			const entryData = entry.split(config.api.separators.data);
+		const player = fs.existsSync(config.paths.player.data(id)) ? fs.readFileSync(config.paths.player.data(id), "utf-8").toString() : null;
+		const brawlers = fs.existsSync(config.paths.player.brawler.list(id)) ? fs.readdirSync(config.paths.player.brawler.list(id), "utf-8") : [];
+		const battlelog = fs.existsSync(config.paths.player.battlelog(id)) ? fs.readFileSync(config.paths.player.battlelog(id), "utf-8").toString() : null;
 
-			if (entry.length > 0) {
-				const isNumber = ["icon", "level", "trophies", "trophies.highest"].includes(entryData[1]);
-				data[entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+		if (player) {
+			for (const entry of player.split(config.api.separators.entry)) {
+				const entryData = entry.split(config.api.separators.data);
+
+				if (entry.length > 0) {
+					const isNumber = ["icon", "level", "trophies", "trophies.highest"].includes(entryData[1]);
+					data[entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+				}
 			}
 		}
-	}
 
-	for (const brawlerFile of brawlers) {
-		if (brawlerFile.endsWith(".bsdata")) {
-			const brawlerId = brawlerFile.slice(0, -7);
-			const brawler = fs.readFileSync(config.paths.player.brawler(id, brawlerId), "utf-8");
+		for (const brawlerFile of brawlers) {
+			if (brawlerFile.endsWith(".bsdata")) {
+				const brawlerId = brawlerFile.slice(0, -7);
+				const brawler = fs.readFileSync(config.paths.player.brawler(id, brawlerId), "utf-8");
 
-			if (brawler) {
-				data.brawlers[brawlerId] = {
-					power: {},
-					rank: {},
-					trophies: {},
-					"trophies.highest": {}
-				};
+				if (brawler) {
+					data.brawlers[brawlerId] = {
+						power: {},
+						rank: {},
+						trophies: {},
+						"trophies.highest": {}
+					};
 
-				for (const entry of brawler.split(config.api.separators.entry)) {
-					const entryData = entry.split(config.api.separators.data);
+					for (const entry of brawler.split(config.api.separators.entry)) {
+						const entryData = entry.split(config.api.separators.data);
 
-					if (entry.length > 0) {
-						const isNumber = ["power", "rank", "trophies", "trophies.highest"].includes(entryData[1]);
-						data.brawlers[brawlerId][entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+						if (entry.length > 0) {
+							const isNumber = ["power", "rank", "trophies", "trophies.highest"].includes(entryData[1]);
+							data.brawlers[brawlerId][entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+						}
 					}
 				}
 			}
 		}
-	}
 
-	if (battlelog) {
-		for (const entry of battlelog.split(config.api.separators.entry)) {
-			const entryData = entry.split(config.api.separators.data);
+		if (battlelog) {
+			for (const entry of battlelog.split(config.api.separators.entry)) {
+				const entryData = entry.split(config.api.separators.data);
 
-			if (entry.length > 0) {
-				const type = entryData[1];
+				if (entry.length > 0) {
+					const type = entryData[1];
 
-				const battle = {
-					date: Number(entryData[0]),
-					event: Number(entryData[3]),
-					mode: entryData[4],
-					type
-				};
+					const battle = {
+						date: Number(entryData[0]),
+						event: Number(entryData[3]),
+						mode: entryData[4],
+						type
+					};
 
-				if (entryData[2].length > 0) battle.duration = Number(entryData[2]);
-				if (entryData[5].length > 0) battle.rank = Number(entryData[5]);
-				if (entryData[6].length > 0) battle.result = entryData[6];
-				if (entryData[7].length > 0) battle.starPlayer = entryData[7];
-				if (entryData[8].length > 0) battle.trophies = Number(entryData[8]);
+					if (entryData[2].length > 0) battle.duration = Number(entryData[2]);
+					if (entryData[5].length > 0) battle.rank = Number(entryData[5]);
+					if (entryData[6].length > 0) battle.result = entryData[6];
+					if (entryData[7].length > 0) battle.starPlayer = entryData[7];
+					if (entryData[8].length > 0) battle.trophies = Number(entryData[8]);
 
-				if (soloModes.includes(type)) {
-					battle.players = [];
+					if (soloModes.includes(type)) {
+						battle.players = [];
 
-					const playersData = entryData[9].split(config.api.separators.player.team);
+						const playersData = entryData[9].split(config.api.separators.player.team);
 
-					for (const playerDataString of playersData) {
-						const playerData = playerDataString.split(config.api.separators.player.data);
-
-						const player = {
-							brawler: Number(playerData[2]),
-							name: playerData[1],
-							power: Number(playerData[3]),
-							tag: playerData[0]
-						};
-
-						if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
-						else player.trophies = Number(playerData[4]);
-
-						team.push(player);
-					}
-				} else {
-					battle.teams = [];
-
-					const teamsData = entryData[9].split(config.api.separators.team);
-
-					for (const teamDataString of teamsData) {
-						const team = [];
-
-						for (const playerDataString of teamDataString.split(config.api.separators.player.team)) {
+						for (const playerDataString of playersData) {
 							const playerData = playerDataString.split(config.api.separators.player.data);
 
 							const player = {
@@ -152,17 +140,41 @@ const readPlayer = (id) => {
 
 							team.push(player);
 						}
+					} else {
+						battle.teams = [];
 
-						battle.teams.push(team);
+						const teamsData = entryData[9].split(config.api.separators.team);
+
+						for (const teamDataString of teamsData) {
+							const team = [];
+
+							for (const playerDataString of teamDataString.split(config.api.separators.player.team)) {
+								const playerData = playerDataString.split(config.api.separators.player.data);
+
+								const player = {
+									brawler: Number(playerData[2]),
+									name: playerData[1],
+									power: Number(playerData[3]),
+									tag: playerData[0]
+								};
+
+								if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
+								else player.trophies = Number(playerData[4]);
+
+								team.push(player);
+							}
+
+							battle.teams.push(team);
+						}
 					}
-				}
 
-				data.battles.push(battle);
+					data.battles.push(battle);
+				}
 			}
 		}
-	}
 
-	data.battles.sort((battleA, battleB) => battleA.date - battleB.date);
+		data.battles.sort((battleA, battleB) => battleA.date - battleB.date);
+	}
 
 	const readEndTimestamp = Date.now();
 	log(`Player ${id} data read in ${toTime(readStartTimestamp, readEndTimestamp)}`);
@@ -174,7 +186,7 @@ const writePlayer = (id, data) => {
 	const writeStartTimestamp = Date.now();
 	const now = Math.floor(Date.now() / 1000);
 
-	const previousData = readPlayer(id);
+	const previousData = readPlayer(id) ?? {};
 
 	log(`Writing data of player ${id}`);
 
@@ -183,11 +195,7 @@ const writePlayer = (id, data) => {
 
 	const append = (filePath, ...data) => fs.appendFileSync(filePath, data.join(config.api.separators.data) + config.api.separators.entry, "utf-8");
 	const check = (date, key, value) => {
-		if (previousData[key]) {
-			const values = Object.values(previousData[key]);
-			if (values[values.length - 1] == value) return;
-		}
-
+		if (previousData[key] && Object.values(previousData[key]).at(-1) == value) return;
 		append(config.paths.player.data(id), date, key, value);
 	};
 
@@ -204,11 +212,7 @@ const writePlayer = (id, data) => {
 		const brawlerId = brawlerData.id - 16000000;
 		const append = (...data) => fs.appendFileSync(config.paths.player.brawler(id, brawlerId), data.join(config.api.separators.data) + config.api.separators.entry, "utf-8");
 		const check = (date, key, value) => {
-			if (previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key]) {
-				const values = Object.values(previousData.brawlers[brawlerId][key]);
-				if (values[values.length - 1] == value) return;
-			}
-
+			if (previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key] && Object.values(previousData.brawlers[brawlerId][key]).at(-1) == value) return;
 			append(date, key, value);
 		};
 
@@ -226,14 +230,14 @@ const writePlayer = (id, data) => {
 			const playersData = battleData.battle.players;
 			const players = [];
 
-			for (const playerData of playersData) players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
+			for (const playerData of playersData ?? []) players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
 
 			battleData.playersData = players.join(config.api.separators.player.team);
 		} else {
 			const teamsData = battleData.battle.teams;
 			const teams = [];
 
-			for (const teamData of teamsData) {
+			for (const teamData of teamsData ?? []) {
 				const team = [];
 
 				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
@@ -245,7 +249,7 @@ const writePlayer = (id, data) => {
 		}
 	});
 
-	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData.battles[previousData.battles.length - 1]?.date ?? 0) > 0);
+	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData.battles.at(-1)?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
 
 	for (const battleData of data.battlelog) append(config.paths.player.battlelog(id), battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);

@@ -3,10 +3,10 @@ import "https://cdn.plot.ly/plotly-2.30.0.min.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
 	const brawlers = await request("/brawlers");
-	const users = await request("/users");
+	const players = await request("/players");
 
-	const user = await request(`/users/${id}`);
-	const stats = await request(`/users/${id}/stats`);
+	const player = await request(`/players/${id}`);
+	const stats = await request(`/players/${id}/stats`);
 
 	const main = document.querySelector("main");
 
@@ -14,7 +14,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 	const mainSelector = document.querySelector("select#main");
 	const brawlersSelector = document.querySelector("select#brawlers");
 	const compareCheckbox = document.querySelector("input[type=checkbox]#compare");
-	const usersSelector = document.querySelector("select#users");
+	const playersSelector = document.querySelector("select#players");
 
 	for (const id in brawlers) {
 		const option = document.createElement("option");
@@ -23,12 +23,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 		brawlersSelector.append(option);
 	}
 
-	for (const userId in users) {
-		if (userId != id) {
+	for (const playerId in players) {
+		if (playerId != id) {
 			const option = document.createElement("option");
-			option.value = userId;
-			option.innerHTML = users[userId];
-			usersSelector.append(option);
+			option.value = playerId;
+			option.innerHTML = players[playerId];
+			playersSelector.append(option);
 		}
 	}
 
@@ -36,10 +36,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 		main.innerHTML = "";
 
 		brawlersSelector.classList.toggle("hidden", mainSelector.value != "brawlers");
-		usersSelector.classList.toggle("hidden", !compareCheckbox.checked);
+		playersSelector.classList.toggle("hidden", !compareCheckbox.checked);
 
-		const comparedUser = compareCheckbox.checked ? await request(`/users/${usersSelector.value}`) : null;
-		const comparedStats = compareCheckbox.checked ? await request(`/users/${usersSelector.value}/stats`) : null;
+		const comparedPlayer = compareCheckbox.checked ? await request(`/players/${playersSelector.value}`) : null;
+		const comparedStats = compareCheckbox.checked ? await request(`/players/${playersSelector.value}/stats`) : null;
 
 		const data = [];
 		const now = Date.now();
@@ -55,7 +55,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 					},
 					mode: "lines",
 					type: "scatter",
-					name: user.name
+					name: player.name
 				});
 
 				if (compareCheckbox.checked) {
@@ -68,7 +68,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 						},
 						mode: "lines",
 						type: "scatter",
-						name: comparedUser.name
+						name: comparedPlayer.name
 					});
 				}
 				break;
@@ -85,7 +85,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 					},
 					mode: "lines",
 					type: "scatter",
-					name: user.name
+					name: player.name
 				});
 
 				if (compareCheckbox.checked) {
@@ -100,7 +100,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 						},
 						mode: "lines",
 						type: "scatter",
-						name: comparedUser.name
+						name: comparedPlayer.name
 					});
 				}
 				break;
@@ -172,7 +172,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 	rangeSelector.addEventListener("change", views);
 	brawlersSelector.addEventListener("change", views);
 	compareCheckbox.addEventListener("change", views);
-	usersSelector.addEventListener("change", views);
+	playersSelector.addEventListener("change", views);
 
 	views();
 });
