@@ -37,8 +37,6 @@ class Plugin {
     let view: AnyView
     
     #if os(macOS)
-    var output = Pipe()
-    @Published var logs = ""
     var enabled = false;
     #endif
     
@@ -55,13 +53,6 @@ class Plugin {
     func enable() {
         self.enabled = true;
         
-        DispatchQueue.global(qos: .background).async {
-            while (self.enabled) {
-                self.read()
-                usleep(useconds_t(0.5 * 1000 * 1000))
-            }
-        }
-        
         self.onEnabled();
         
         print("\(self.name) enabled")
@@ -72,17 +63,6 @@ class Plugin {
         self.onDisabled();
         
         print("\(self.name) disabled")
-    }
-    
-    private func read() {
-        let outputHandle = self.output.fileHandleForReading
-        let availableData = outputHandle.availableData
-        
-        if !availableData.isEmpty {
-            DispatchQueue.main.async {
-                self.logs += String(data: availableData, encoding: .utf8) ?? ""
-            }
-        }
     }
     #endif
 }

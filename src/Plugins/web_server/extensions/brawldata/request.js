@@ -86,7 +86,7 @@ const request = (options = {}) => {
 									break;
 
 								case "raw":
-									resolve(chunks);
+									resolve(Buffer.concat(chunks));
 									break;
 
 								case "text":

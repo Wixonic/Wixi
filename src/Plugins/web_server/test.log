@@ -1,0 +1,311 @@
+{
+  "tag": "#VPQGPJLR",
+  "name": "clandestinnn",
+  "description": "Club actif, mega pig obligatoire, jouer assez régulièrement sinon 🚪inactif au bout de 7 jours c'est aussi la 🚪",
+  "type": "open",
+  "badgeId": 8000037,
+  "requiredTrophies": 16000,
+  "trophies": 764428,
+  "members": [
+    {
+      "tag": "#8GLQGGYYV",
+      "name": "Melomaniak",
+      "nameColor": "0xff1ba5f5",
+      "role": "president",
+      "trophies": 50337,
+      "icon": {
+        "id": 28000041
+      }
+    },
+    {
+      "tag": "#GJGVLPLY",
+      "name": "Niakou",
+      "nameColor": "0xff1ba5f5",
+      "role": "vicePresident",
+      "trophies": 47683,
+      "icon": {
+        "id": 28000354
+      }
+    },
+    {
+      "tag": "#2V9G8GJR",
+      "name": "DJEIRAN",
+      "nameColor": "0xffff8afb",
+      "role": "vicePresident",
+      "trophies": 36862,
+      "icon": {
+        "id": 28000404
+      }
+    },
+    {
+      "tag": "#GJVJQVJY",
+      "name": "LTR|Mã£øű🥀",
+      "nameColor": "0xff1ba5f5",
+      "role": "vicePresident",
+      "trophies": 36550,
+      "icon": {
+        "id": 28000419
+      }
+    },
+    {
+      "tag": "#9JJPJ0UPY",
+      "name": "🌪️|crazy_Ben|⚡",
+      "nameColor": "0xffff9727",
+      "role": "member",
+      "trophies": 34588,
+      "icon": {
+        "id": 28000103
+      }
+    },
+    {
+      "tag": "#RRR89G0V",
+      "name": "HiKee🤡🥱😪",
+      "nameColor": "0xffa2e3fe",
+      "role": "member",
+      "trophies": 31126,
+      "icon": {
+        "id": 28000229
+      }
+    },
+    {
+      "tag": "#8RCLJVGQQ",
+      "name": "solary kitty",
+      "nameColor": "0xffa2e3fe",
+      "role": "vicePresident",
+      "trophies": 28771,
+      "icon": {
+        "id": 28000404
+      }
+    },
+    {
+      "tag": "#282JQULGP",
+      "name": "yayad’lakasté",
+      "nameColor": "0xffffffff",
+      "role": "vicePresident",
+      "trophies": 28492,
+      "icon": {
+        "id": 28000000
+      }
+    },
+    {
+      "tag": "#Y28QQ0PG8",
+      "name": "bastiendthello",
+      "nameColor": "0xfff05637",
+      "role": "member",
+      "trophies": 28094,
+      "icon": {
+        "id": 28000141
+      }
+    },
+    {
+      "tag": "#PLUQPJGLY",
+      "name": "froog28371",
+      "nameColor": "0xff4ddba2",
+      "role": "senior",
+      "trophies": 27498,
+      "icon": {
+        "id": 28000368
+      }
+    },
+    {
+      "tag": "#9UYYC8P9C",
+      "name": "0nyXx",
+      "nameColor": "0xfff05637",
+      "role": "member",
+      "trophies": 26583,
+      "icon": {
+        "id": 28000284
+      }
+    },
+    {
+      "tag": "#9YR0JCLP8",
+      "name": "ØnyXx",
+      "nameColor": "0xffcb5aff",
+      "role": "vicePresident",
+      "trophies": 25112,
+      "icon": {
+        "id": 28000404
+      }
+    },
+    {
+      "tag": "#8JUCLR802",
+      "name": "Charnorm🔥🔥",
+      "nameColor": "0xffffffff",
+      "role": "senior",
+      "trophies": 24515,
+      "icon": {
+        "id": 28000164
+      }
+    },
+    {
+      "tag": "#GYQ9RY8J",
+      "name": "super jambon",
+      "nameColor": "0xffa2e3fe",
+      "role": "senior",
+      "trophies": 23807,
+      "icon": {
+        "id": 28000016
+      }
+    },
+    {
+      "tag": "#PPVYGL9L0",
+      "name": "BABADOOK",
+      "nameColor": "0xffa8e132",
+      "role": "senior",
+      "trophies": 23770,
+      "icon": {
+        "id": 28000335
+      }
+    },
+    {
+      "tag": "#YCVR90G29",
+      "name": "ツwͥιͣɴͫner🖤|🥀",
+      "nameColor": "0xffffce89",
+      "role": "vicePresident",
+      "trophies": 23287,
+      "icon": {
+        "id": 28000428
+      }
+    },
+    {
+      "tag": "#90UPRLRVJ",
+      "name": "StaFu_",
+      "nameColor": "0xfff05637",
+      "role": "member",
+      "trophies": 22917,
+      "icon": {
+        "id": 28000386
+      }
+    },
+    {
+      "tag": "#8J98RVPJ2",
+      "name": "Jj",
+      "nameColor": "0xff4ddba2",
+      "role": "vicePresident",
+      "trophies": 22045,
+      "icon": {
+        "id": 28000175
+      }
+    },
+    {
+      "tag": "#LJPCLY0QQ",
+      "name": "nana",
+      "nameColor": "0xfff05637",
+      "role": "vicePresident",
+      "trophies": 21977,
+      "icon": {
+        "id": 28000315
+      }
+    },
+    {
+      "tag": "#9GR0UGRGR",
+      "name": "pain d’épice",
+      "nameColor": "0xffa8e132",
+      "role": "vicePresident",
+      "trophies": 21427,
+      "icon": {
+        "id": 28000228
+      }
+    },
+    {
+      "tag": "#Y2CLPYUJR",
+      "name": "Daz",
+      "nameColor": "0xffffffff",
+      "role": "senior",
+      "trophies": 21336,
+      "icon": {
+        "id": 28000292
+      }
+    },
+    {
+      "tag": "#2U8GUPJC",
+      "name": "Mathox",
+      "nameColor": "0xff4ddba2",
+      "role": "senior",
+      "trophies": 20762,
+      "icon": {
+        "id": 28000054
+      }
+    },
+    {
+      "tag": "#2L9YJUCYQ",
+      "name": "Shinohazbi",
+      "nameColor": "0xfff9c908",
+      "role": "member",
+      "trophies": 20278,
+      "icon": {
+        "id": 28000277
+      }
+    },
+    {
+      "tag": "#9QUGUL0GP",
+      "name": "RAYAN 78",
+      "nameColor": "0xff1ba5f5",
+      "role": "vicePresident",
+      "trophies": 19938,
+      "icon": {
+        "id": 28000274
+      }
+    },
+    {
+      "tag": "#9G2VQR802",
+      "name": "💫❄️FreeZ❄️💫",
+      "nameColor": "0xffff9727",
+      "role": "senior",
+      "trophies": 19255,
+      "icon": {
+        "id": 28000112
+      }
+    },
+    {
+      "tag": "#L8P90G89P",
+      "name": "#Darksoul♤",
+      "nameColor": "0xffa2e3fe",
+      "role": "senior",
+      "trophies": 18605,
+      "icon": {
+        "id": 28000262
+      }
+    },
+    {
+      "tag": "#LL2L8VQUQ",
+      "name": "GOD | ℰℰ𝒴𝒴ℰ𝒯",
+      "nameColor": "0xfff05637",
+      "role": "member",
+      "trophies": 18142,
+      "icon": {
+        "id": 28000004
+      }
+    },
+    {
+      "tag": "#LJVC2CU08",
+      "name": "Wixonic",
+      "nameColor": "0xfff9c908",
+      "role": "vicePresident",
+      "trophies": 17785,
+      "icon": {
+        "id": 28000093
+      }
+    },
+    {
+      "tag": "#80JUVU9LG",
+      "name": "Mimas",
+      "nameColor": "0xfff05637",
+      "role": "vicePresident",
+      "trophies": 11500,
+      "icon": {
+        "id": 28000404
+      }
+    },
+    {
+      "tag": "#9QUPPV98L",
+      "name": "Txetxe64",
+      "nameColor": "0xffa8e132",
+      "role": "vicePresident",
+      "trophies": 11386,
+      "icon": {
+        "id": 28000016
+      }
+    }
+  ]
+}

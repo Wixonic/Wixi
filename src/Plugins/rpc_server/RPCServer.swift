@@ -22,9 +22,6 @@ class RPCServer: Plugin {
             self.process.currentDirectoryURL = Bundle.main.url(forResource: "\(self.id)", withExtension: nil, subdirectory: "Plugins")
             self.process.arguments = [Bundle.main.url(forResource: "plugin", withExtension: "js", subdirectory: "Plugins/\(self.id)")!.path(percentEncoded: false)]
             
-            self.process.standardOutput = self.output
-            self.process.standardError = self.output
-            
             do {
                 try self.process.run()
             } catch {

@@ -23,27 +23,6 @@ struct ContentView: View {
                     .scrollContentBackground(.hidden)
                 
                 case 1:
-                    List {
-                        ForEach(Plugin.list, id: \.id) { plugin in
-                            Section {
-                                ScrollView([.horizontal, .vertical]) {
-                                    Text(plugin.logs)
-                                        .fontDesign(.monospaced)
-                                        .lineLimit(nil)
-                                }
-                                .frame(maxHeight: 100)
-                            } header: {
-                                Text(plugin.name)
-                                    .fontWeight(.semibold)
-                                    .font(.headline)
-                            }
-                            .collapsible(false)
-                        }
-                    }
-                    .listStyle(.sidebar)
-                    .scrollContentBackground(.hidden)
-                
-                case 2:
                     Text("Settings")
                 
                 default:
@@ -54,8 +33,7 @@ struct ContentView: View {
             ToolbarItem(placement: .principal) {
                 Picker("", selection: $selectedTab) {
                     Text("Plugins").tag(0)
-                    Text("Logs").tag(1)
-                    Text("Settings").tag(2)
+                    Text("Settings").tag(1)
                 }
                 .pickerStyle(.segmented)
                 .padding(.top, 8)

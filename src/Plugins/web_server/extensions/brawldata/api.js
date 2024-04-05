@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { writeClub, writeUser, readUser } = require("./converter");
+const { writeClub, writePlayer, readPlayer } = require("./converter");
 const log = require("./log");
 const request = require("./request");
 const { wait, toTime } = require("./utils");
@@ -52,7 +52,7 @@ const club = async (id) => {
 /**
  * @param {string} id
  */
-const user = async (id) => {
+const player = async (id) => {
 	const dataStartTimestamp = Date.now();
 	log(`Fetching data of player ${id}`);
 
@@ -73,59 +73,53 @@ const user = async (id) => {
  * @param {import("express").Router} router
  */
 const connect = async (router) => {
-	router.get("/users", (_, res) => {
-		const users = [];
+	router.get("/players", (_, res) => {
+		const players = [];
 
-		for (const userId of fs.readdirSync(config.paths.user.list(), config.fsOptions)) {
-			if (userId.startsWith("#")) {
-				const userData = readUser(userId);
+		for (const playerId of fs.readdirSync(config.paths.player.list(), "utf-8")) {
+			if (playerId.startsWith("#")) {
+				const playerData = readPlayer(playerId);
 
-				const icons = Object.values(userData.icon);
-				const names = Object.values(userData.name);
+				const icons = Object.values(playerData.icon);
+				const names = Object.values(playerData.name);
+				const trophies = Object.values(playerData.trophies);
 
 				if (names.length > 0) {
-					users.push({
+					players.push({
 						icon: icons[icons.length - 1],
-						id: userId,
-						name: names[names.length - 1]
+						id: playerId,
+						name: names[names.length - 1],
+						trophies: trophies[trophies.length - 1]
 					});
 				}
 			}
 		}
 
-		users.sort((userA, userB) => {
-			if (userA.name.toLowerCase() < userB.name.toLowerCase()) return -1;
-			if (userA.name.toLowerCase() > userB.name.toLowerCase()) return 1;
+		players.sort((playerA, playerB) => {
+			if (playerA.name.toLowerCase() < playerB.name.toLowerCase()) return -1;
+			if (playerA.name.toLowerCase() > playerB.name.toLowerCase()) return 1;
 			return 0;
 		});
 
-		res.writeHead(users.length > 0 ? 200 : 204, {
+		res.writeHead(players.length > 0 ? 200 : 204, {
 			"content-type": "application/json"
 		}).write(JSON.stringify({
-			code: users.length > 0 ? 200 : 204,
-			items: users
+			code: players.length > 0 ? 200 : 204,
+			items: players
 		}));
 		res.end();
 	});
 
-	router.get("/users/:id", (req, res) => {
-		const userId = req.params.id;
+	router.get("/players/:id", (req, res) => {
+		const playerId = req.params.id;
 
-		const userData = readUser("#" + userId);
+		const playerData = readPlayer("#" + playerId);
 
-		const icons = Object.values(userData.icon);
-		const names = Object.values(userData.name);
-
-		if (names.length > 0) {
-			res.writeHead(200, {
-				"content-type": "application/json"
-			}).write(JSON.stringify({
-				code: 200,
-				data: userData
-			}));
-		} else res.writeHead(404).write(JSON.stringify({
-			code: 404,
-			error: "Not Found"
+		res.writeHead(200, {
+			"content-type": "application/json"
+		}).write(JSON.stringify({
+			code: 200,
+			data: playerData
 		}));
 
 		res.end();
@@ -141,9 +135,9 @@ const cycle = async (time) => {
 		writeClub(clubId, data);
 	}
 
-	for (const userId of config.users) {
-		const data = await user(userId);
-		writeUser(userId, data);
+	for (const playerId of config.players) {
+		const data = await player(playerId);
+		writePlayer(playerId, data);
 	}
 
 	setTimeout(() => cycle(time), time);
