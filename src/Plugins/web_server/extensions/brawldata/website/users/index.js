@@ -1,25 +1,26 @@
 import { request } from "../main.js";
 
 const display = (filter) => {
-	const main = document.body.querySelector("main");
-	main.innerHTML = "";
+	const mainEl = document.body.querySelector("main");
+	mainEl.innerHTML = "";
 
-	for (const id in window.users) {
-		if (!filter || window.users[id].startsWith(filter)) {
-			const user = document.createElement("a");
-			user.classList.add("button");
-			user.href = `${id}/`;
-			user.innerHTML = window.users[id];
-			main.append(user);
+	for (const userData of window.users) {
+		if (!filter || userData.name.toLowerCase().startsWith(filter) || userData.id.toLowerCase().startsWith(filter) || userData.id.slice(1).toLowerCase().startsWith(filter)) {
+			const userEl = document.createElement("a");
+			userEl.classList.add("user");
+			userEl.href = userData.id.slice(1) + "/";
+			userEl.innerHTML = `<img src="https://cdn-old.brawlify.com/profile/${userData.icon + 28000000}.png" class="icon" alt="Player icon" /><div class="name">${userData.name}</div><div class="id">${userData.id}</div><div class="trophies">${userData.trophies}</div>`;
+			mainEl.append(userEl);
 		}
 	}
 };
 
 window.addEventListener("DOMContentLoaded", async () => {
-	window.users = await request("/users");
+	const usersData = await request("/users");
+	window.users = usersData.code == 200 ? usersData.items : [];
 
 	display();
 
 	const search = document.querySelector("input[type=search]");
-	search.addEventListener("input", () => display(search.value));
+	search.addEventListener("input", () => display(search.value.toLowerCase()));
 });

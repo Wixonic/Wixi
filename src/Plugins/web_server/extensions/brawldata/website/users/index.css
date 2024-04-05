@@ -5,6 +5,10 @@ input[type="search"] {
 
 	color: var(--background);
 	font-size: 0.9rem;
+	text-align: center;
+
+	width: 95%;
+	max-width: 15rem;
 
 	border: none;
 	border-radius: 0.3rem;
@@ -14,4 +18,82 @@ input[type="search"] {
 
 	cursor: text;
 	pointer-events: fill;
+}
+
+main {
+	--height: 3rem;
+
+	display: grid;
+	grid-auto-rows: var(--height);
+	grid-gap: 0.4rem;
+
+	width: max-content;
+	max-width: 30rem;
+
+	margin: auto;
+	padding: 0.5rem;
+}
+
+a.user {
+	display: grid;
+	grid-template-rows: calc(var(--height) * 0.6) calc(var(--height) * 0.4);
+	grid-template-columns: var(--height) 1fr auto;
+	gap: 0.2rem;
+
+	width: 100%;
+	height: var(--height);
+
+	cursor: pointer;
+	pointer-events: fill;
+}
+
+a.user:hover {}
+
+a.user .icon {
+	grid-column: 1;
+	grid-row: 1 / 3;
+
+	width: 100%;
+	height: 100%;
+}
+
+a.user .name {
+	grid-column: 2;
+	grid-row: 1;
+
+	width: fit-content;
+
+	font-size: calc(var(--height) * 0.6 * 0.7);
+	font-weight: 800;
+
+	opacity: 0.8;
+}
+
+a.user .id {
+	grid-column: 2;
+	grid-row: 2;
+
+	width: fit-content;
+
+	font-size: calc(var(--height) * 0.4 * 0.7);
+	font-weight: 600;
+	text-transform: uppercase;
+
+	opacity: 0.3;
+}
+
+a.user .trophies {
+	grid-column: 3;
+	grid-row: 1 / 3;
+
+	width: fit-content;
+	height: fit-content;
+
+	font-size: 1rem;
+	font-weight: 500;
+
+	margin: auto;
+	margin-left: 1rem;
+
+	opacity: 0.5;
 }

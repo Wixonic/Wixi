@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const { writeClub, writeUser } = require("./converter");
+const { writeClub, writeUser, readUser } = require("./converter");
 const log = require("./log");
 const request = require("./request");
 const { wait, toTime } = require("./utils");
@@ -73,12 +73,62 @@ const user = async (id) => {
  * @param {import("express").Router} router
  */
 const connect = async (router) => {
-	router.get("/users", (req, res) => {
-		fs.readdirSync(config.paths.user.list(), config.fsOptions);
+	router.get("/users", (_, res) => {
+		const users = [];
 
-		const users = {
+		for (const userId of fs.readdirSync(config.paths.user.list(), config.fsOptions)) {
+			if (userId.startsWith("#")) {
+				const userData = readUser(userId);
 
-		};
+				const icons = Object.values(userData.icon);
+				const names = Object.values(userData.name);
+
+				if (names.length > 0) {
+					users.push({
+						icon: icons[icons.length - 1],
+						id: userId,
+						name: names[names.length - 1]
+					});
+				}
+			}
+		}
+
+		users.sort((userA, userB) => {
+			if (userA.name.toLowerCase() < userB.name.toLowerCase()) return -1;
+			if (userA.name.toLowerCase() > userB.name.toLowerCase()) return 1;
+			return 0;
+		});
+
+		res.writeHead(users.length > 0 ? 200 : 204, {
+			"content-type": "application/json"
+		}).write(JSON.stringify({
+			code: users.length > 0 ? 200 : 204,
+			items: users
+		}));
+		res.end();
+	});
+
+	router.get("/users/:id", (req, res) => {
+		const userId = req.params.id;
+
+		const userData = readUser("#" + userId);
+
+		const icons = Object.values(userData.icon);
+		const names = Object.values(userData.name);
+
+		if (names.length > 0) {
+			res.writeHead(200, {
+				"content-type": "application/json"
+			}).write(JSON.stringify({
+				code: 200,
+				data: userData
+			}));
+		} else res.writeHead(404).write(JSON.stringify({
+			code: 404,
+			error: "Not Found"
+		}));
+
+		res.end();
 	});
 };
 
@@ -96,7 +146,7 @@ const cycle = async (time) => {
 		writeUser(userId, data);
 	}
 
-	setTimeout(cycle, time);
+	setTimeout(() => cycle(time), time);
 
 	const cycleEndTimestamp = Date.now();
 	log(`Refresh cycle ended - total duration: ${toTime(cycleStartTimestamp, cycleEndTimestamp)}`);

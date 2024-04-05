@@ -47,6 +47,8 @@ module.exports = async (router, _) => {
 		res.end();
 	});
 
+	setInterval(() => console.log(config.cycle), (config.cycle * 60) * 1000)
+
 	await API.connect(apiRouter);
 	await API.cycle((config.cycle * 60) * 1000); // Every 10 minutes
 };

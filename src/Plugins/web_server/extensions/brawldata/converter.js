@@ -193,7 +193,7 @@ const writeUser = (id, data) => {
 
 	check(now, "name", data.name);
 	check(now, "color", data.nameColor);
-	check(now, "icon", data.icon.id - 28000000);
+	check(now, "icon", data.icon.id + 28000000);
 	check(now, "trophies", data.trophies);
 	check(now, "trophies.highest", data.highestTrophies);
 	check(now, "level", data.expLevel);
