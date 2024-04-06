@@ -1,5 +1,5 @@
 module.exports = {
-	toProperCase: (text) => text.replace(/\w\S*/g, (part) => part.charAt(0).toUpperCase() + part.substr(1).toLowerCase()),
+	toProperCase: (text) => text.replace(/\w+/g, (part) => part.charAt(0).toUpperCase() + part.substr(1).toLowerCase()),
 	toTime: (startTimestamp, endTimestamp) => {
 		const duration = endTimestamp - startTimestamp;
 

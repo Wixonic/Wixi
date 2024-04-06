@@ -3,11 +3,12 @@ const fs = require("fs");
 const path = require("path");
 
 const API = require("./api");
+const { readPlayer } = require("./converter");
 const log = require("./log");
+const { toProperCase } = require("./utils");
 
 const config = require("./config");
 const request = require("./request");
-const { readPlayer } = require("./converter");
 
 /**
  * @param {import("express").Router} router 
@@ -50,6 +51,36 @@ module.exports = async (router, _) => {
 			const image = await request({
 				type: "raw",
 				url: `https://cdn-old.brawlify.com/profile/${Number(req.params.id) + 28000000}.png`
+			});
+
+			if (!image.error) {
+				if (!fs.existsSync(directoryPath)) fs.mkdirSync(directoryPath, { recursive: true });
+				fs.writeFileSync(filePath, image);
+				res.writeHead(200, {
+					"content-type": "image/png"
+				});
+
+				res.write(image);
+			} else res.writeHead(404, {
+				"content-type": "image/png"
+			});
+		} else res.writeHead(500, {
+			"content-type": "image/png"
+		});
+
+		res.end();
+	});
+
+	router.get("/assets/icon/brawler/:id.png", async (req, res) => {
+		const directoryPath = path.join(__dirname, "assets", "icon", "brawler");
+		const filePath = path.join(directoryPath, req.params.id + ".png");
+
+		if (!fs.existsSync(filePath)) {
+			const brawlers = JSON.parse(fs.readFileSync(config.paths.brawlers(), "utf-8"));
+
+			const image = await request({
+				type: "raw",
+				url: `https://cdn-old.brawlify.com/brawler-bs/${toProperCase(brawlers[req.params.id].name).split(" ").join("-").split(".").join("")}.png`
 			});
 
 			if (!image.error) {
