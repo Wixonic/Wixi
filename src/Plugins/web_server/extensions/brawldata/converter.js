@@ -114,41 +114,21 @@ const readPlayer = (id) => {
 						type
 					};
 
+					if (entryData[1].length == 0) battle.type = "specialEvent";
 					if (entryData[2].length > 0) battle.duration = Number(entryData[2]);
+					if (entryData[4].length == 0) battle.mode = "unknown";
 					if (entryData[5].length > 0) battle.rank = Number(entryData[5]);
 					if (entryData[6].length > 0) battle.result = entryData[6];
 					if (entryData[7].length > 0) battle.starPlayer = entryData[7];
 					if (entryData[8].length > 0) battle.trophies = Number(entryData[8]);
 
-					if (soloModes.includes(type)) {
-						battle.players = [];
+					try {
+						if (entryData[9].split(config.api.separators.team).length == 1) {
+							battle.players = [];
 
-						const playersData = entryData[9].split(config.api.separators.player.team);
+							const playersData = entryData[9].split(config.api.separators.player.team);
 
-						for (const playerDataString of playersData) {
-							const playerData = playerDataString.split(config.api.separators.player.data);
-
-							const player = {
-								brawler: Number(playerData[2]),
-								name: playerData[1],
-								power: Number(playerData[3]),
-								tag: playerData[0]
-							};
-
-							if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
-							else player.trophies = Number(playerData[4]);
-
-							team.push(player);
-						}
-					} else {
-						battle.teams = [];
-
-						const teamsData = entryData[9].split(config.api.separators.team);
-
-						for (const teamDataString of teamsData) {
-							const team = [];
-
-							for (const playerDataString of teamDataString.split(config.api.separators.player.team)) {
+							for (const playerDataString of playersData) {
 								const playerData = playerDataString.split(config.api.separators.player.data);
 
 								const player = {
@@ -161,11 +141,37 @@ const readPlayer = (id) => {
 								if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
 								else player.trophies = Number(playerData[4]);
 
-								team.push(player);
+								battle.players.push(player);
 							}
+						} else if (entryData[9].split(config.api.separators.team).length > 1) {
+							battle.teams = [];
 
-							battle.teams.push(team);
+							const teamsData = entryData[9].split(config.api.separators.team);
+
+							for (const teamDataString of teamsData) {
+								const team = [];
+
+								for (const playerDataString of teamDataString.split(config.api.separators.player.team)) {
+									const playerData = playerDataString.split(config.api.separators.player.data);
+
+									const player = {
+										brawler: Number(playerData[2]),
+										name: playerData[1],
+										power: Number(playerData[3]),
+										tag: playerData[0]
+									};
+
+									if (battle.mode == "soloRanked") player.rank = Number(playerData[4]);
+									else player.trophies = Number(playerData[4]);
+
+									team.push(player);
+								}
+
+								battle.teams.push(team);
+							}
 						}
+					} catch (e) {
+						log("Failed to read players: " + e);
 					}
 
 					data.battles.push(battle);
@@ -226,14 +232,14 @@ const writePlayer = (id, data) => {
 		battleData.date = Math.floor(new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).getTime() / 1000);
 		battleData.playersData = "";
 
-		if (soloModes.includes(battleData.battle.mode)) {
+		if (battleData.battle.players) {
 			const playersData = battleData.battle.players;
 			const players = [];
 
 			for (const playerData of playersData ?? []) players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
 
 			battleData.playersData = players.join(config.api.separators.player.team);
-		} else {
+		} else if (battleData.battle.teams) {
 			const teamsData = battleData.battle.teams;
 			const teams = [];
 
@@ -246,6 +252,8 @@ const writePlayer = (id, data) => {
 			}
 
 			battleData.playersData = teams.join(config.api.separators.team);
+		} else {
+			battleData.playersData = "";
 		}
 	});
 

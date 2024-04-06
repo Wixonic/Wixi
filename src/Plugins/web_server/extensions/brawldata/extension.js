@@ -17,7 +17,6 @@ module.exports = async (router, _) => {
 	const apiRouter = express.Router();
 
 	router.use("/api", (req, res, next) => {
-		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 		res.setHeader("content-type", "application/json");
 		next();
 	});

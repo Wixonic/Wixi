@@ -42,3 +42,136 @@ input[type="checkbox"] {
 input#compare {
 	margin-left: 0;
 }
+
+.icon {
+	display: inline-block;
+
+	width: 1.2em;
+	height: 1.2em;
+
+	vertical-align: top;
+
+	margin: 0 0.2em;
+}
+
+.icon.trophies {
+	background: url("https://assets.wixonic.fr/file/images/brawldata/icon/trophy.png");
+	background-origin: border-box;
+	background-repeat: no-repeat;
+	background-size: contain;
+
+	transform: rotate(10deg);
+}
+
+card {
+	display: grid;
+	gap: 0.3rem;
+
+	width: fit-content;
+	min-width: min(95%, 10rem);
+
+	background: #8881;
+
+	border: 0.08rem solid #8882;
+	border-radius: 0.4rem;
+
+	margin: auto;
+	padding: 0.3rem;
+}
+
+card .title {
+	display: block;
+
+	font-size: 1.2rem;
+	font-weight: 700;
+
+	opacity: 0.4;
+
+	margin-bottom: 0.2rem;
+}
+
+#battlelog {
+	display: grid;
+	gap: 0.5rem;
+
+	width: 95vw;
+
+	margin: auto;
+}
+
+#battlelog .battle {
+	display: grid;
+
+	max-width: 100%;
+
+	background: #8881;
+
+	margin: auto;
+}
+
+#battlelog .battle .players {
+	grid-row: 2;
+
+	display: grid;
+
+	width: calc(100% - 2rem);
+
+	mask-image: linear-gradient(90deg, transparent 0%, #000 1rem, #000 calc(100% - 1rem), transparent 100%);
+
+	overflow: scroll;
+	pointer-events: fill;
+
+	padding: 0.5rem 1rem;
+}
+
+#battlelog .battle .players .team {
+	display: grid;
+	grid-auto-rows: 11rem;
+	grid-template-columns: 8rem;
+	grid-auto-flow: column;
+
+	gap: 0.2rem;
+
+	max-width: 100%;
+}
+
+#battlelog .battle .players .team .player {
+	display: grid;
+	grid-template-rows: 1.5rem 8rem 1.5rem;
+	grid-template-columns: 6rem 2rem;
+
+	background: #8882;
+}
+
+#battlelog .battle .players .team .player .trophies {
+	grid-row: 1;
+	grid-column: 1;
+}
+
+#battlelog .battle .players .team .player .power {
+	grid-row: 1;
+	grid-column: 2;
+}
+
+#battlelog .battle .players .team .player .name {
+	grid-row: 3;
+	grid-column: 1 / 3;
+
+	display: block;
+
+	width: 100%;
+	height: 100%;
+
+	font-size: 0.8rem;
+	text-overflow: ellipsis;
+	text-wrap: nowrap;
+
+	margin: auto;
+
+	overflow: hidden;
+}
+
+#battlelog .battle .players .team .player .icon {
+	grid-row: 2;
+	grid-column: 1 / 3;
+}

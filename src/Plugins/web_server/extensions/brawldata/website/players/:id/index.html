@@ -107,6 +107,26 @@
 
 	<h1>[[NAME]]</h1>
 
+	<card class="trophies">
+
+		<section>
+
+			<div class="title">Trophies</div>
+
+			<span class="trophies icon"></span><span id="currentTrophies">-----</span>
+
+		</section>
+
+		<section>
+
+			<div class="title">Highest</div>
+
+			<span class="trophies icon"></span><span id="highestTrophies">-----</span>
+
+		</section>
+
+	</card>
+
 	<select id="range">
 
 		<option value="alltime">All time</option>
@@ -138,11 +158,9 @@
 
 	<select id="players" class="hidden"></select>
 
-	<main>
+	<div class="canvas"></div>
 
-		Loading...
-
-	</main>
+	<div id="battlelog"></div>
 
 </body>
 

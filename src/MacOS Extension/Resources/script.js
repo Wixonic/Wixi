@@ -137,7 +137,6 @@
                 if (results?.length > 0) {
                     try {
                         extension.run(...results);
-                        console.log(onUnload);
                     } catch (e) {
                         console.warn(e);
                     }

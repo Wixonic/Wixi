@@ -24,7 +24,7 @@ const POST = async (_, _2, res, keepAlive) => {
 		],
 		metadata: {
 			button_urls: [
-				"https://brawlify.com/stats/profile/LJVC2CU08"
+				"https://server.wixonic.fr/brawldata/players/LJVC2CU08/"
 			]
 		},
 

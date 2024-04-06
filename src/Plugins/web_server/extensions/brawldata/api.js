@@ -73,7 +73,7 @@ const player = async (id) => {
  * @param {import("express").Router} router
  */
 const connect = async (router) => {
-	router.get("/brawlers", (_, res) => {
+	router.get("/brawlers", (req, res) => {
 		if (fs.existsSync(config.paths.brawlers())) {
 			const brawlers = JSON.parse(fs.readFileSync(config.paths.brawlers(), "utf-8"));
 
@@ -89,20 +89,23 @@ const connect = async (router) => {
 		}, null, 4));
 
 		res.end();
+		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 	});
 
-	router.get("/players", (_, res) => {
+	router.get("/players", (req, res) => {
 		const players = [];
 
 		for (const playerId of fs.readdirSync(config.paths.player.list(), "utf-8")) {
-			const playerData = readPlayer(playerId);
+			if (playerId.startsWith("#")) {
+				const playerData = readPlayer(playerId);
 
-			if (playerData) {
-				players.push({
-					icon: Object.values(playerData.icon).at(-1),
-					id: playerId,
-					name: Object.values(playerData.name).at(-1)
-				});
+				if (playerData) {
+					players.push({
+						icon: Object.values(playerData.icon).at(-1),
+						id: playerId,
+						name: Object.values(playerData.name).at(-1)
+					});
+				}
 			}
 		}
 
@@ -120,6 +123,7 @@ const connect = async (router) => {
 		}));
 
 		res.end();
+		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 	});
 
 	router.get("/players/:id", (req, res) => {
@@ -140,6 +144,7 @@ const connect = async (router) => {
 		}, null, 4));
 
 		res.end();
+		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 	});
 };
 
