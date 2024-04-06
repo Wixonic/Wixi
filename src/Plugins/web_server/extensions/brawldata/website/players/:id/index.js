@@ -410,7 +410,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 			for (const team of battle.teams ?? [battle.players ?? []]) {
 				battlePlayersEls += `<div class="team">`;
-				for (const player of team) battlePlayersEls += `<div class="player" rank="${player.rank ?? "none"}"><img src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name}" /><div class="name">${player.name}</div><div class="power">${player.power}</div>${player.trophies ? `<div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>` : ""}</div>`;
+				for (const player of team) battlePlayersEls += `<div class="player" rank="${player.rank ?? "none"}"><img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name}" /><div class="name">${player.name}</div><div class="power">${player.power}</div>${player.trophies ? `<div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>` : ""}</div>`;
 				battlePlayersEls += "</div>";
 			}
 
