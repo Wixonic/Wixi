@@ -118,6 +118,15 @@ card .title {
 	margin: auto;
 }
 
+#battlelog .battle.victory,
+#battlelog .battle.rank-1 {
+	background: #0F02;
+}
+
+#battlelog .battle.defeat {
+	background: #F002;
+}
+
 #battlelog .battle .players {
 	grid-row: 2;
 

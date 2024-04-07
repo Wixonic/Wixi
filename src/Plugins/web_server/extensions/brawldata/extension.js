@@ -101,6 +101,24 @@ module.exports = async (router, _) => {
 		res.end();
 	});
 
+	router.get("/assets/icon/rank/:id.png", async (req, res) => {
+		const fileName = ["bronze", "silver", "gold", "diamond", "mythic", "legendary", "masters"][Math.floor((req.params.id - 1) / 3)];
+		const directoryPath = path.join(__dirname, "assets", "icon", "rank");
+		const filePath = path.join(directoryPath, fileName + ".png");
+
+		if (!fs.existsSync(filePath)) {
+			res.writeHead(200, {
+				"content-type": "image/png"
+			});
+			res.write(fs.readFileSync(filePath));
+
+		} else res.writeHead(404, {
+			"content-type": "image/png"
+		});
+
+		res.end();
+	});
+
 	router.use("/assets/*", (_, res) => res.writeHead(404).end());
 
 

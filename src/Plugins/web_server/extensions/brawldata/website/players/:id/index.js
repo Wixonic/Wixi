@@ -1,4 +1,4 @@
-import { request } from "../../main.js";
+import { formatRank, request, toProperCase } from "../../main.js";
 import "https://cdn.plot.ly/plotly-2.30.0.min.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -411,21 +411,32 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 		for (const battle of player.battles) {
 			const battleEl = document.createElement("div");
-			battleEl.classList.add("battle", battle.mode, battle.type);
+			battleEl.classList.add("battle", battle.mode, battle.type, battle.result ?? `rank-${battle.rank}`);
 			battlelog.append(battleEl);
 
 			let battlePlayersEls = "";
 
 			for (const team of battle.teams ?? [battle.players ?? []]) {
 				battlePlayersEls += `<div class="team">`;
-				for (const player of team) battlePlayersEls += `<div class="player" rank="${player.rank ?? "none"}"><img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name}" /><div class="name">${player.name}</div><div class="power">${player.power}</div>${player.trophies ? `<div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>` : ""}</div>`;
+
+				for (const player of team) {
+					battlePlayersEls += `<div class="player"`;
+
+					if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
+					else if (player.trophies) battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
+					else battlePlayersEls += ">";
+
+					battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div><div class="power">${player.power}</div></div>`;
+				}
+
 				battlePlayersEls += "</div>";
 			}
 
 			if (battle.duration) battleEl.innerHTML += `<div class="duration">${battle.duration}s</div>`;
+			if (battle.result || battle.rank) battleEl.innerHTML += `<div class="result">${battle.result ? toProperCase(battle.result) : formatRank(battle.rank)}</div>`;
 			const date = new Date();
 			date.setTime(battle.date * 1000);
-			const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+			const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
 
 			battleEl.innerHTML += `<div class="date">${formattedDate}</div><div class="mode">${battle.mode}</div><div class="event">Event #${battle.event}</div><div class="players">${battlePlayersEls}</div>`;
 
