@@ -7,9 +7,8 @@ const config = require("../config");
  * @type {import("../extension").ExtensionPOST}
  */
 const POST = async (_, req, res, keepAlive) => {
-	clientManager.addActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`, {
+	clientManager.addActivity(`website-${req.body?.mobile ? "mobile" : "desktop"}`, {
 		name: "my website",
-		details: "Unknown details",
 		state: `Currently on wixonic.fr${req.body?.mobile ? " on iOS" : ""}`,
 
 		assets: {
@@ -28,7 +27,7 @@ const POST = async (_, req, res, keepAlive) => {
 
 		type: 3, // WATCHING
 
-		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`, true), keepAlive)
+		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity(`website-${req.body?.mobile ? "mobile" : "desktop"}`, true), keepAlive)
 	});
 
 	res.status(204).end();
@@ -38,9 +37,9 @@ const POST = async (_, req, res, keepAlive) => {
  * @type {import("../extension").ExtensionDELETE}
  */
 const DELETE = (_, req, res) => {
-	clientManager.removeActivity(`website-safari-${req.body?.mobile ? "mobile" : "desktop"}`);
+	clientManager.removeActivity(`website-${req.body?.mobile ? "mobile" : "desktop"}`);
 
 	res.status(204).end();
 };
 
-module.exports = new Extension("Website", "/safari/website", POST, DELETE);
+module.exports = new Extension("Website", "/website", POST, DELETE);

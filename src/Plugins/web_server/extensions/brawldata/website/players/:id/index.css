@@ -110,9 +110,9 @@ card .title {
 
 #battlelog .battle {
 	display: grid;
-	grid-template-rows: 2.2rem 1fr 1.5rem;
+	grid-template-rows: 2.2rem 1fr 1.3rem;
 
-	background: #8881;
+	background: #000;
 
 	border-radius: 0.2rem;
 
@@ -182,20 +182,32 @@ card .title {
 	font-weight: 700;
 }
 
-#battlelog .battle.victory .trophies {
+#battlelog .battle.victory .container .trophies {
 	color: #0F08;
 }
 
-#battlelog .battle.draw .trophies {
+#battlelog .battle.draw .container .trophies {
 	color: #08F8;
 }
 
-#battlelog .battle.defeat .trophies {
+#battlelog .battle.defeat .container .trophies {
 	color: #F008;
 }
 
 #battlelog .battle .mode {
-	height: 100%;
+	height: calc(100% - 0.4rem);
+}
+
+#battlelog .battle .duration {
+	opacity: 0.3;
+}
+
+#battlelog .battle .event {
+	opacity: 0.5;
+}
+
+#battlelog .battle .date {
+	opacity: 0.3;
 }
 
 #battlelog .battle .players {
@@ -206,13 +218,12 @@ card .title {
 
 	width: calc(100% - 2rem);
 
-	background: var(--background);
-
 	mask-image: linear-gradient(90deg, transparent, #000 1rem, #000 calc(100% - 1rem), transparent);
 
 	overflow: scroll;
 	pointer-events: fill;
 
+	margin: auto;
 	padding: 0.5rem 1rem;
 }
 
@@ -222,12 +233,18 @@ card .title {
 
 #battlelog .battle .players .team {
 	display: grid;
-	grid-auto-rows: 9rem;
-	grid-template-columns: 6rem;
+	grid-auto-columns: 6rem;
+	grid-template-rows: 8.2rem;
 	grid-auto-flow: column;
 	gap: 0.08rem;
 
-	max-width: 100%;
+	width: fit-content;
+
+	background: var(--background);
+
+	border-radius: 0.5rem;
+
+	margin: auto;
 }
 
 #battlelog .battle.soloShowdown .players .team {
@@ -241,10 +258,8 @@ card .title {
 
 #battlelog .battle .players .team .player {
 	display: grid;
-	grid-template-rows: 1.5rem 6rem 1.5rem;
 	grid-template-columns: 4.5rem 1.5rem;
-
-	background: var(--background);
+	grid-template-rows: 1.2rem 6rem 1rem;
 }
 
 #battlelog .battle .players .team .player .trophies,
@@ -268,6 +283,41 @@ card .title {
 #battlelog .battle .players .team .player .power {
 	grid-row: 1;
 	grid-column: 2;
+
+	position: relative;
+	top: -0.3rem;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	width: 1.5rem;
+	height: 1.5rem;
+
+	background: radial-gradient(circle, #8B008B 54%, #FF69B4 55%),
+		radial-gradient(circle at center 100%, #000 59%, transparent 60%);
+
+	font-size: 0.75rem;
+	font-weight: 600;
+
+	border-radius: 50%;
+}
+
+#battlelog .battle .players .team .player .power::before {
+	content: "";
+
+	position: absolute;
+	top: 0.17rem;
+	left: 0.17rem;
+
+	width: 0.20rem;
+	height: 0.25rem;
+
+	background: white;
+
+	border-radius: 50%;
+
+	transform: rotate(45deg);
 }
 
 #battlelog .battle .players .team .player .name {
@@ -276,8 +326,7 @@ card .title {
 
 	display: block;
 
-	width: fit-content;
-	height: fit-content;
+	width: calc(100% - 0.5rem);
 
 	font-size: 0.8rem;
 	text-overflow: ellipsis;

@@ -31,14 +31,24 @@
                     type: "profile"
                 };
             }
+        }, { // https://server.wixonic.fr/brawldata[:anything]
+            matches: [
+                /^https:\/\/server\.wixonic\.fr\/brawldata/m
+            ],
+            run: (_) => {
+                sendStatus("POST", "/brawldata", {});
+
+                onUnload.path = "/brawldata";
+                onUnload.data = {};
+            }
         }, { // https://[*.]wixonic.fr[:anything]
             matches: [
                 /^https:\/\/(?:[\w-]+\.)*wixonic\.fr/m
             ],
             run: (_) => {
-                sendStatus("POST", "/safari/website", {});
+                sendStatus("POST", "/website", {});
 
-                onUnload.path = "/safari/website";
+                onUnload.path = "/website";
                 onUnload.data = {};
             }
         }, { // https://[*.]youtube.com/watch[:anything]
@@ -72,16 +82,6 @@
                 onUnload.data = {
                     type: "video"
                 };
-            }
-        }, { // https://[*.]firebase.google.com[:anything]
-            matches: [
-                /^https:\/\/(?:[\w-]+\.)*firebase\.google\.com/m
-            ],
-            run: (_) => {
-                sendStatus("POST", "/safari/firebase", {});
-
-                onUnload.path = "/safari/firebase";
-                onUnload.data = {};
             }
         }, { // https://developer.apple.com/wwdc24[:anything]
             matches: [
