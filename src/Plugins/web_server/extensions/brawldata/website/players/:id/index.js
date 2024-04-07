@@ -379,75 +379,86 @@ window.addEventListener("DOMContentLoaded", async () => {
 		compareCheckbox.addEventListener("change", views);
 		playersSelector.addEventListener("change", views);
 
-		views();
+		await views();
 
-		player.battles.sort((battleA, battleB) => battleB.date - battleA.date);
+		setTimeout(() => {
+			player.battles.sort((battleA, battleB) => battleB.date - battleA.date);
 
-		const victory = {
-			count: 0,
-			total: 0,
+			const victory = {
+				count: 0,
+				total: 0,
 
-			get percentage() {
-				try {
-					return Number((this.count / this.total * 100).toFixed(2)) + "%";
-				} catch {
-					return "0%";
+				get percentage() {
+					try {
+						return Number((this.count / this.total * 100).toFixed(2)) + "%";
+					} catch {
+						return "0%";
+					}
+				}
+			};
+
+			const showdownVictory = {
+				count: 0,
+				total: 0,
+
+				get percentage() {
+					try {
+						return Number((this.count / this.total * 100).toFixed(2)) + "%";
+					} catch {
+						return "0%";
+					}
+				}
+			};
+
+			for (const battle of player.battles) {
+				const battleEl = document.createElement("div");
+				battleEl.classList.add("battle", battle.mode, battle.type);
+				battlelog.append(battleEl);
+
+				let battleHTML = `<div class="top container"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" />`;
+				let battlePlayersEls = "";
+
+				for (const team of battle.teams ?? [battle.players ?? []]) {
+					battlePlayersEls += `<div class="team">`;
+
+					for (const player of team) {
+						battlePlayersEls += `<div class="player"`;
+
+						if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
+						else if (Number.isInteger(player.trophies)) battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
+						else battlePlayersEls += ">";
+
+						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div><div class="power">${player.power}</div></div>`;
+					}
+
+					battlePlayersEls += "</div>";
+				}
+
+				if (battle.result || Number.isInteger(battle.rank)) {
+					battleEl.classList.add(battle.result ?? (battle.trophies > 0 ? "victory" : (battle.trophies < 0 ? "defeat" : "draw")));
+					battleHTML += `<div class="result">${battle.result ? toProperCase(battle.result) : formatRank(battle.rank)}</div>`;
+				}
+
+				if (Number.isInteger(battle.trophies)) battleHTML += `<div class="trophies">${battle.trophies > 0 ? "+" + battle.trophies : battle.trophies}</div>`;
+
+				battleHTML += `</div><div class="players" event="${battle.event}">${battlePlayersEls}</div><div class="bottom container">`;
+
+				if (Number.isInteger(battle.duration)) battleHTML += `<div class="duration">${battle.duration}s</div>`;
+
+				const date = new Date();
+				date.setTime(battle.date * 1000);
+				const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
+
+				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><div class="event">Event #${battle.event}</div></div>`;
+
+				if (battle.mode.endsWith("Showdown")) {
+					if (battle.rank == 1) showdownVictory.count++;
+					showdownVictory.total++;
+				} else {
+					if (battle.result == "victory") victory.count++;
+					victory.total++;
 				}
 			}
-		};
-
-		const showdownVictory = {
-			count: 0,
-			total: 0,
-
-			get percentage() {
-				try {
-					return Number((this.count / this.total * 100).toFixed(2)) + "%";
-				} catch {
-					return "0%";
-				}
-			}
-		};
-
-		for (const battle of player.battles) {
-			const battleEl = document.createElement("div");
-			battleEl.classList.add("battle", battle.mode, battle.type, battle.result ?? `rank-${battle.rank}`);
-			battlelog.append(battleEl);
-
-			let battlePlayersEls = "";
-
-			for (const team of battle.teams ?? [battle.players ?? []]) {
-				battlePlayersEls += `<div class="team">`;
-
-				for (const player of team) {
-					battlePlayersEls += `<div class="player"`;
-
-					if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
-					else if (player.trophies) battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
-					else battlePlayersEls += ">";
-
-					battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div><div class="power">${player.power}</div></div>`;
-				}
-
-				battlePlayersEls += "</div>";
-			}
-
-			if (battle.duration) battleEl.innerHTML += `<div class="duration">${battle.duration}s</div>`;
-			if (battle.trophies) battleEl.innerHTML += `<div class="trophies">${battle.trophies > 0 ? "+" + battle.trophies : battle.trophies}</div>`;
-			if (battle.result || battle.rank) battleEl.innerHTML += `<div class="result">${battle.result ? toProperCase(battle.result) : formatRank(battle.rank)}</div>`;
-			const date = new Date();
-			date.setTime(battle.date * 1000);
-			const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
-
-			battleEl.innerHTML += `<div class="date">${formattedDate}</div><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="event">Event #${battle.event}</div><div class="players">${battlePlayersEls}</div>`;
-
-			if (battle.mode.endsWith("Showdown")) {
-				if (battle.rank == 1) showdownVictory.count++;
-				showdownVictory.total++;
-			} else {
-				if (battle.result == "victory") victory.count++;
-				victory.total++;
-			}
-		}
+		}, 1000);
 	} else canvas.innerHTML = "An error occured.";
 });

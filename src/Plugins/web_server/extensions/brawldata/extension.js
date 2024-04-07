@@ -17,7 +17,7 @@ const request = require("./request");
 module.exports = async (router, _) => {
 	const apiRouter = express.Router();
 
-	router.use("/api", (req, res, next) => {
+	router.use("/api", (_, res, next) => {
 		res.setHeader("content-type", "application/json");
 		next();
 	});
@@ -37,10 +37,7 @@ module.exports = async (router, _) => {
 
 
 	router.use("/assets", express.static(path.join(__dirname, "assets"), {
-		setHeaders: (res, filePath) => {
-			res.header("Cache-Control", "max-age=604800"); // One week
-			log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /${path.relative(__dirname, filePath)}`);
-		}
+		setHeaders: (res) => res.header("Cache-Control", "max-age=604800") // One week
 	}));
 
 	router.get("/assets/icon/player/:id.png", async (req, res) => {
@@ -127,8 +124,6 @@ module.exports = async (router, _) => {
 		const extraPath = req.params[1];
 
 		if (extraPath) {
-			log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${req.path}`)
-
 			const file = path.join(__dirname, "website", "players", ":id", extraPath);
 
 			if (fs.existsSync(file)) {
@@ -169,9 +164,7 @@ module.exports = async (router, _) => {
 		res.end();
 	});
 
-	router.use(express.static(path.join(__dirname, "website"), {
-		setHeaders: (res, filePath) => log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: /${path.relative(__dirname, filePath)}`)
-	}));
+	router.use(express.static(path.join(__dirname, "website")));
 
 	router.use((req, res) => {
 		const url = new URL("/brawldata", `https://${req.headers.host ?? "server.wixonic.fr"}`);
@@ -186,5 +179,9 @@ module.exports = async (router, _) => {
 	});
 
 	await API.connect(apiRouter);
-	await API.cycle((config.cycle * 60) * 1000); // Every 10 minutes
+
+	const delay = (process.env.BRAWLDATACYCLEDELAY ?? config.cycle) * 60 * 1000;
+	const remaining = Math.ceil(Date.now() / delay) * delay - Date.now();
+	log(`Cycle set to every ${config.cycle} minutes. Next cycle in ${remaining > 60000 ? Math.ceil(remaining / 60000) + " minutes" : Math.ceil(remaining / 1000) + " seconds"}.`);
+	setTimeout(() => API.cycle(delay), remaining);
 };

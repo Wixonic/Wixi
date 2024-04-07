@@ -8,31 +8,25 @@ const config = require("./config");
 
 ////////// CLUBS //////////////////////////////////
 const readClub = (id) => {
-	const readStartTimestamp = Date.now();
-	log(`Reading data of club ${id}`);
-
 	let data = null;
 
 	if (fs.existsSync(config.paths.club(id)) && fs.statSync(config.paths.club(id)).isDirectory()) {
 		// 
 	}
 
-	const readEndTimestamp = Date.now();
-	log(`Club ${id} data read in ${toTime(readStartTimestamp, readEndTimestamp)}`);
-
 	return data;
 };
 
 const writeClub = (id) => {
 	const writeStartTimestamp = Date.now();
-	log(`Writing data of club ${id}`);
+	let modified = false;
 
 	const previousData = readClub(id) ?? {};
 
 	// 
 
 	const writeEndTimestamp = Date.now();
-	log(`Club ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
+	if (modified) log(`Club ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
 };
 ////////// CLUBS //////////////////////////////////
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
@@ -41,9 +35,6 @@ const soloModes = [
 ];
 
 const readPlayer = (id) => {
-	const readStartTimestamp = Date.now();
-	log(`Reading data of player ${id}`);
-
 	let data = null;
 
 	if (fs.existsSync(config.paths.player(id)) && fs.statSync(config.paths.player(id)).isDirectory()) {
@@ -182,19 +173,16 @@ const readPlayer = (id) => {
 		data.battles.sort((battleA, battleB) => battleA.date - battleB.date);
 	}
 
-	const readEndTimestamp = Date.now();
-	log(`Player ${id} data read in ${toTime(readStartTimestamp, readEndTimestamp)}`);
-
 	return data;
 };
 
 const writePlayer = (id, data) => {
 	const writeStartTimestamp = Date.now();
-	const now = Math.floor(Date.now() / 1000);
+	let modified = false;
+
+	const now = Math.floor(writeStartTimestamp / 1000);
 
 	const previousData = readPlayer(id) ?? {};
-
-	log(`Writing data of player ${id}`);
 
 	if (!fs.existsSync(config.paths.player(id))) fs.mkdirSync(config.paths.player(id), { recursive: true });
 	if (!fs.existsSync(config.paths.player.brawler.list(id))) fs.mkdirSync(config.paths.player.brawler.list(id), { recursive: true });
@@ -202,6 +190,7 @@ const writePlayer = (id, data) => {
 	const append = (filePath, ...data) => fs.appendFileSync(filePath, data.join(config.api.separators.data) + config.api.separators.entry, "utf-8");
 	const check = (date, key, value) => {
 		if (previousData[key] && Object.values(previousData[key]).at(-1) == value) return;
+		modified = true;
 		append(config.paths.player.data(id), date, key, value);
 	};
 
@@ -218,7 +207,8 @@ const writePlayer = (id, data) => {
 		const brawlerId = brawlerData.id - 16000000;
 		const append = (...data) => fs.appendFileSync(config.paths.player.brawler(id, brawlerId), data.join(config.api.separators.data) + config.api.separators.entry, "utf-8");
 		const check = (date, key, value) => {
-			if (previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key] && Object.values(previousData.brawlers[brawlerId][key]).at(-1) == value) return;
+			if (previousData.brawlers && previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key] && Object.values(previousData.brawlers[brawlerId][key]).at(-1) == value) return;
+			modified = true;
 			append(date, key, value);
 		};
 
@@ -246,24 +236,22 @@ const writePlayer = (id, data) => {
 			for (const teamData of teamsData ?? []) {
 				const team = [];
 
-				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
+				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, ["championshipChallenge"].includes(battleData.battle.type) ? "" : playerData.brawler.trophies].join(config.api.separators.player.data));
 
 				teams.push(team.join(config.api.separators.player.team));
 			}
 
 			battleData.playersData = teams.join(config.api.separators.team);
-		} else {
-			battleData.playersData = "";
-		}
+		} else battleData.playersData = "";
 	});
 
-	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData.battles.at(-1)?.date ?? 0) > 0);
+	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData?.battles?.at(-1)?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
 
-	for (const battleData of data.battlelog) append(config.paths.player.battlelog(id), battleData.date, battleData.battle.type, battleData.battle.duration ?? "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", battleData.battle.trophyChange ?? "", battleData.playersData);
+	for (const battleData of data.battlelog) append(config.paths.player.battlelog(id), battleData.battle.date ?? "", battleData.battle.type, Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.battle.mode, battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", battleData.playersData);
 
 	const writeEndTimestamp = Date.now();
-	log(`Player ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
+	if (modified) log(`Player ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
 };
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
 

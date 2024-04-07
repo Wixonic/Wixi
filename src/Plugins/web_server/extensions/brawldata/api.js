@@ -33,18 +33,12 @@ const api = async (endpoint = "/", method = "GET") => {
  * @param {string} id
  */
 const club = async (id) => {
-	const dataStartTimestamp = Date.now();
-	log(`Fetching data of club ${id}`);
-
 	const encodedId = encodeURIComponent(id);
 
 	const data = await api(`/clubs/${encodedId}`);
 	const members = await api(`/clubs/${encodedId}/members`);
 
 	data.members = members?.items;
-
-	const dataEndTimestamp = Date.now();
-	log(`Club ${id} data fetched in ${toTime(dataStartTimestamp, dataEndTimestamp)}`);
 
 	return data;
 };
@@ -53,8 +47,6 @@ const club = async (id) => {
  * @param {string} id
  */
 const player = async (id) => {
-	const dataStartTimestamp = Date.now();
-	log(`Fetching data of player ${id}`);
 
 	const encodedId = encodeURIComponent(id);
 
@@ -62,9 +54,6 @@ const player = async (id) => {
 	const battlelog = await api(`/players/${encodedId}/battlelog`);
 
 	data.battlelog = battlelog?.items;
-
-	const dataEndTimestamp = Date.now();
-	log(`Player ${id} data fetched in ${toTime(dataStartTimestamp, dataEndTimestamp)}`);
 
 	return data;
 };
@@ -95,35 +84,44 @@ const connect = async (router) => {
 	router.get("/players", (req, res) => {
 		const players = [];
 
-		for (const playerId of fs.readdirSync(config.paths.player.list(), "utf-8")) {
-			if (playerId.startsWith("#")) {
-				const playerData = readPlayer(playerId);
+		if (fs.existsSync(config.paths.player.list())) {
+			for (const playerId of fs.readdirSync(config.paths.player.list(), "utf-8")) {
+				if (playerId.startsWith("#")) {
+					const playerData = readPlayer(playerId);
 
-				if (playerData) {
-					players.push({
-						icon: Object.values(playerData.icon).at(-1),
-						id: playerId,
-						name: Object.values(playerData.name).at(-1)
-					});
+					if (playerData) {
+						players.push({
+							icon: Object.values(playerData.icon).at(-1),
+							id: playerId,
+							name: Object.values(playerData.name).at(-1)
+						});
+					}
 				}
 			}
+
+			players.sort((playerA, playerB) => {
+				if (playerA.name.toLowerCase() < playerB.name.toLowerCase()) return -1;
+				if (playerA.name.toLowerCase() > playerB.name.toLowerCase()) return 1;
+				return 0;
+			});
+
+			res.writeHead(players.length > 0 ? 200 : 204, {
+				"content-type": "application/json"
+			}).write(JSON.stringify({
+				code: players.length > 0 ? 200 : 204,
+				items: players
+			}));
+		} else {
+			res.writeHead(players.length > 0 ? 200 : 204, {
+				"content-type": "application/json"
+			}).write(JSON.stringify({
+				code: 204,
+				items: players
+			}));
 		}
 
-		players.sort((playerA, playerB) => {
-			if (playerA.name.toLowerCase() < playerB.name.toLowerCase()) return -1;
-			if (playerA.name.toLowerCase() > playerB.name.toLowerCase()) return 1;
-			return 0;
-		});
-
-		res.writeHead(players.length > 0 ? 200 : 204, {
-			"content-type": "application/json"
-		}).write(JSON.stringify({
-			code: players.length > 0 ? 200 : 204,
-			items: players
-		}));
-
-		res.end();
 		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
+		res.end();
 	});
 
 	router.get("/players/:id", (req, res) => {
@@ -141,7 +139,7 @@ const connect = async (router) => {
 		} else res.writeHead(404).write(JSON.stringify({
 			code: 404,
 			error: "Not Found"
-		}, null, 4));
+		}));
 
 		res.end();
 		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
@@ -149,9 +147,6 @@ const connect = async (router) => {
 };
 
 const cycle = async (time) => {
-	const cycleStartTimestamp = Date.now();
-	log("Refresh cycle started");
-
 	const brawlersData = await api("/brawlers")
 	if (!brawlersData.error) {
 		const brawlers = {};
@@ -176,9 +171,6 @@ const cycle = async (time) => {
 	}
 
 	setTimeout(() => cycle(time), time);
-
-	const cycleEndTimestamp = Date.now();
-	log(`Refresh cycle ended - total duration: ${toTime(cycleStartTimestamp, cycleEndTimestamp)}`);
 };
 
 module.exports = {
