@@ -8,20 +8,30 @@ window.addEventListener("DOMContentLoaded", async () => {
 	const compareCheckbox = document.querySelector("input[type=checkbox]#compare");
 	const playersSelector = document.querySelector("select#players");
 
+	const playerIcon = document.querySelector("#playerIcon");
 	const currentTrophies = document.querySelector("#currentTrophies");
 	const highestTrophies = document.querySelector("#highestTrophies");
+
+	const canvas = document.querySelector(".canvas");
+	const battlelog = document.querySelector("#battlelog");
 
 	const brawlersRequest = await request("/brawlers");
 	const playersRequest = await request("/players");
 	const playerRequest = await request(`/players/${id}`);
 
-	const canvas = document.querySelector(".canvas");
-	const battlelog = document.querySelector("#battlelog");
-
 	if (brawlersRequest.code == 200 && playersRequest.code == 200 && playerRequest.code == 200) {
 		const brawlers = brawlersRequest.items;
 		const players = playersRequest.items;
 		const player = playerRequest.data;
+
+		playerIcon.src = `/brawldata/assets/icon/player/${Object.values(player.icon).at(-1)}.png`;
+
+		for (const brawlerId in player.brawlers) {
+			const option = document.createElement("option");
+			option.value = brawlerId;
+			option.innerHTML = brawlers[brawlerId].name;
+			brawlersSelector.append(option);
+		}
 
 		for (const comparedPlayer of players) {
 			if (comparedPlayer.id.slice(1) != id) {
@@ -33,13 +43,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 		}
 
 		const views = async () => {
-			canvas.innerHTML = "";
-
 			brawlersSelector.classList.toggle("hidden", mainSelector.value != "brawlers");
 			playersSelector.classList.toggle("hidden", !compareCheckbox.checked);
 
 			const comparedPlayerRequest = compareCheckbox.checked ? await request(`/players/${playersSelector.value}`) : null;
 			const comparedPlayer = comparedPlayerRequest?.code == 200 ? comparedPlayerRequest.data : null;
+
+			canvas.innerHTML = "";
 
 			const data = [];
 			const shapes = [];
@@ -168,14 +178,14 @@ window.addEventListener("DOMContentLoaded", async () => {
 					break;
 
 				case "brawlers":
+					const brawler = player.brawlers[brawlersSelector.value];
 
-
-					currentTrophies.innerHTML = Object.values(player.trophies).at(-1);
-					highestTrophies.innerHTML = Object.values(player["trophies.highest"]).at(-1);
+					currentTrophies.innerHTML = Object.values(brawler.trophies).at(-1);
+					highestTrophies.innerHTML = Object.values(brawler["trophies.highest"]).at(-1);
 
 					data.push({
-						x: [],
-						y: [],
+						x: Object.keys(brawler.trophies),
+						y: Object.values(brawler.trophies),
 
 						line: {
 							color: "#555",
@@ -205,72 +215,74 @@ window.addEventListener("DOMContentLoaded", async () => {
 						xref: "paper",
 						x0: 0,
 						x1: 1,
-						y0: Object.values(player["trophies.highest"]).at(-1),
-						y1: Object.values(player["trophies.highest"]).at(-1),
+						y0: Object.values(brawler["trophies.highest"]).at(-1),
+						y1: Object.values(brawler["trophies.highest"]).at(-1),
 						line: {
 							color: "#888",
 							dash: "dot",
 							width: 1
 						},
 						label: {
-							text: `Highest trophies with [[BRAWLER.NAME]]`,
+							text: `Highest with ${brawlers[brawlersSelector.value].name}`,
 							yanchor: "top",
 						}
 					});
 
 					if (compareCheckbox.checked) {
+						const comparedBrawler = comparedPlayer.brawlers[brawlersSelector.value];
 
+						if (comparedBrawler) {
+							currentTrophies.innerHTML += `<span style="color: #555;">/</span><span style="color: #0CC;">${Object.values(comparedBrawler.trophies).at(-1)}</span>`;
+							highestTrophies.innerHTML += `<span style="color: #555;">/</span><span style="color: #0CC;">${Object.values(comparedBrawler["trophies.highest"]).at(-1)}</span>`;
 
-						currentTrophies.innerHTML += `<span style="color: #555;">/</span><span style="color: #0CC;">${Object.values(comparedPlayer.trophies).at(-1)}</span>`;
-						highestTrophies.innerHTML += `<span style="color: #555;">/</span><span style="color: #0CC;">${Object.values(comparedPlayer["trophies.highest"]).at(-1)}</span>`;
+							data.push({
+								x: Object.keys(comparedBrawler.trophies),
+								y: Object.values(comparedBrawler.trophies),
 
-						data.push({
-							x: [],
-							y: [],
-
-							line: {
-								color: "#055",
-								width: 1.5
-							},
-							marker: {
-								color: "#0CC",
-								size: 3
-							},
-							mode: "lines+markers",
-							type: "scatter",
-
-							hovertemplate: "%{y:d} trophies<extra></extra>",
-							hoverlabel: {
-								bgcolor: "#055",
-								bordercolor: "transparent",
-								font: {
-									color: "#0CC"
-								}
-							},
-
-							name: Object.values(comparedPlayer.name).at(-1)
-						});
-
-						shapes.push({
-							type: "line",
-							xref: "paper",
-							x0: 0,
-							x1: 1,
-							y0: Object.values(comparedPlayer["trophies.highest"]).at(-1),
-							y1: Object.values(comparedPlayer["trophies.highest"]).at(-1),
-							line: {
-								color: "#066",
-								dash: "dot",
-								width: 1
-							},
-							label: {
-								font: {
-									color: "#066"
+								line: {
+									color: "#055",
+									width: 1.5
 								},
-								text: "Highest",
-								yanchor: "top",
-							}
-						});
+								marker: {
+									color: "#0CC",
+									size: 3
+								},
+								mode: "lines+markers",
+								type: "scatter",
+
+								hovertemplate: "%{y:d} trophies<extra></extra>",
+								hoverlabel: {
+									bgcolor: "#055",
+									bordercolor: "transparent",
+									font: {
+										color: "#0CC"
+									}
+								},
+
+								name: Object.values(comparedPlayer.name).at(-1)
+							});
+
+							shapes.push({
+								type: "line",
+								xref: "paper",
+								x0: 0,
+								x1: 1,
+								y0: Object.values(comparedBrawler["trophies.highest"]).at(-1),
+								y1: Object.values(comparedBrawler["trophies.highest"]).at(-1),
+								line: {
+									color: "#066",
+									dash: "dot",
+									width: 1
+								},
+								label: {
+									font: {
+										color: "#066"
+									},
+									text: `Highest with ${brawlers[brawlersSelector.value].name}`,
+									yanchor: "top",
+								}
+							});
+						}
 					}
 					break;
 			}
@@ -284,9 +296,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 				"week": 7 * 24 * 60 * 60,
 				"3days": 3 * 24 * 60 * 60,
 				"day": 24 * 60 * 60,
-				"6hours": 6 * 60 * 60,
-				"3hours": 3 * 60 * 60,
-				"hour": 60 * 60
+				"6hours": 6 * 60 * 60
 			};
 
 			const start = new Date();
@@ -405,8 +415,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 			battlelog.append(battleEl);
 
 			let battlePlayersEls = "";
-
-			console.log(battle);
 
 			for (const team of battle.teams ?? [battle.players ?? []]) {
 				battlePlayersEls += `<div class="team">`;
