@@ -433,12 +433,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 			}
 
 			if (battle.duration) battleEl.innerHTML += `<div class="duration">${battle.duration}s</div>`;
+			if (battle.trophies) battleEl.innerHTML += `<div class="trophies">${battle.trophies > 0 ? "+" + battle.trophies : battle.trophies}</div>`;
 			if (battle.result || battle.rank) battleEl.innerHTML += `<div class="result">${battle.result ? toProperCase(battle.result) : formatRank(battle.rank)}</div>`;
 			const date = new Date();
 			date.setTime(battle.date * 1000);
 			const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
 
-			battleEl.innerHTML += `<div class="date">${formattedDate}</div><div class="mode">${battle.mode}</div><div class="event">Event #${battle.event}</div><div class="players">${battlePlayersEls}</div>`;
+			battleEl.innerHTML += `<div class="date">${formattedDate}</div><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="event">Event #${battle.event}</div><div class="players">${battlePlayersEls}</div>`;
 
 			if (battle.mode.endsWith("Showdown")) {
 				if (battle.rank == 1) showdownVictory.count++;

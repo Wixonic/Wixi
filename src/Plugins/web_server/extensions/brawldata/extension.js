@@ -106,12 +106,12 @@ module.exports = async (router, _) => {
 		const directoryPath = path.join(__dirname, "assets", "icon", "rank");
 		const filePath = path.join(directoryPath, fileName + ".png");
 
-		if (!fs.existsSync(filePath)) {
+		if (fs.existsSync(filePath)) {
 			res.writeHead(200, {
 				"content-type": "image/png"
 			});
-			res.write(fs.readFileSync(filePath));
 
+			res.write(fs.readFileSync(filePath));
 		} else res.writeHead(404, {
 			"content-type": "image/png"
 		});
