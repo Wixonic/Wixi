@@ -6,6 +6,7 @@ const { guild } = require("./client");
 const log = require("./log");
 
 const settings = require("./settings");
+const config = require("./config");
 
 const request = (token, endpoint = "/users/@me", method = "GET", params) => new Promise(async (resolve, reject) => {
 	if (token && token.available && token.expiresAt > Date.now()) {
@@ -90,7 +91,7 @@ class User {
 		} else return userId;
 	};
 
-	static folder = (userId) => `${__dirname}/database/users/${userId}/`;
+	static folder = (userId) => path.join(config.root, `/users/${userId}/`);
 
 	static async fromAccessTokenExchange(accessTokenExchange) {
 		const token = Token.fromAccessTokenExchange(accessTokenExchange);
