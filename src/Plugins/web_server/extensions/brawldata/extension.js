@@ -22,7 +22,7 @@ module.exports = async (router, _) => {
 		next();
 	});
 
-	router.use(`/api/v${config.api.version}`, apiRouter);
+	router.use("/api", apiRouter);
 
 	router.use("/api", (req, res) => {
 		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 404: ${path.join("/api", req.url)}`)

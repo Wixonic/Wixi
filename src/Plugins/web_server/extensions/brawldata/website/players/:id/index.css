@@ -247,7 +247,8 @@ card .title {
 	margin: auto;
 }
 
-#battlelog .battle.soloShowdown .players .team {
+#battlelog .battle.soloShowdown .players .team,
+#battlelog .battle.trophyEscape .players .team {
 	grid-template-columns: repeat(5, auto);
 	grid-auto-flow: row;
 }
