@@ -7,7 +7,7 @@
   "main": "plugin.js",
   "scripts": {
     "start": "clear; node .",
-    "test": "clear; HTTPPORT=2001 HTTPSPORT=2000 WSSPORT=3000 BRAWLDATACYCLEDELAY=2 node .",
+    "test": "clear; HTTPPORT=2001 HTTPSPORT=2000 WSSPORT=3000 BRAWLDATACYCLEDELAY=2 BRAWLDATACYCLESYNC=false node .",
     "deploy": "clear; node ./extensions/discord/deploy.js"
   },
   "engines": {

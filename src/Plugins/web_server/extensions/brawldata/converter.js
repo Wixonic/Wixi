@@ -200,8 +200,8 @@ const writePlayer = (id, data) => {
 	check(now, "trophies", data.trophies);
 	check(now, "trophies.highest", data.highestTrophies);
 	check(now, "level", data.expLevel);
-	check(now, "club.name", data.club.name);
-	check(now, "club.tag", data.club.tag);
+	check(now, "club.name", data.club.name ?? "");
+	check(now, "club.tag", data.club.tag ?? "");
 
 	data.brawlers.forEach((brawlerData) => {
 		const brawlerId = brawlerData.id - 16000000;
