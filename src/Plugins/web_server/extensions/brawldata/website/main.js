@@ -4,7 +4,7 @@ const request = (path) => new Promise((resolve) => {
 	const xhr = new XMLHttpRequest();
 	xhr.responseType = "json";
 
-	xhr.open("GET", `/brawldata/api/v2${path}`, true);
+	xhr.open("GET", `/brawldata/api/v3${path}`, true);
 
 	xhr.addEventListener("error", () => resolve({}));
 	xhr.addEventListener("load", () => {
