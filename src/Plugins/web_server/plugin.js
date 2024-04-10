@@ -72,21 +72,21 @@ fs.readdirSync(path.join(__dirname, "extensions"), {
             if (fileName == "extension.js") {
                 const file = path.join(process.cwd(), "extensions", folderName, fileName);
 
-                // try {
-                const router = express.Router();
-                httpsApp.use(`/${folderName}`, router);
+                try {
+                    const router = express.Router();
+                    httpsApp.use(`/${folderName}`, router);
 
-                await require(file)(router, ws);
+                    await require(file)(router, ws);
 
-                log(`Extension at /${path.relative(path.join(__dirname, "extensions"), file)} loaded`);
-                /* } catch (e) {
+                    log(`Extension at /${path.relative(path.join(__dirname, "extensions"), file)} loaded`);
+                } catch (e) {
                     log(`Extension at /${path.relative(path.join(__dirname, "extensions"), file)} failed to load: ${e}`);
-                } */
+                }
             }
         });
     }
 });
 
-httpServer.listen(process.env["HTTPPORT"] ?? config.http, () => log(`HTTP | Running on port :${process.env["HTTPPORT"] ?? config.http}`));
-httpsServer.listen(process.env["HTTPSPORT"] ?? config.https, () => log(`HTTPS | Running on port :${process.env["HTTPSPORT"] ?? config.https}`));
-wssServer.listen(process.env["WSSPORT"] ?? config.wss, () => log(`WSS | Running on port :${process.env["WSSPORT"] ?? config.wss}`));
+httpServer.listen(config.http, () => log(`HTTP | Running on port :${config.http}`));
+httpsServer.listen(config.https, () => log(`HTTPS | Running on port :${config.https}`));
+wssServer.listen(config.wss, () => log(`WSS | Running on port :${config.wss}`));

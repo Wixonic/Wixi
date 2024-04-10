@@ -180,10 +180,10 @@ module.exports = async (router, _) => {
 
 	await API.connect(apiRouter);
 
-	const delay = (process.env.BRAWLDATACYCLEDELAY ?? config.cycle) * 60 * 1000;
+	const delay = (process.env.DEV == "true" ? 1 : config.cycle) * 60 * 1000;
 	const remaining = Math.ceil(Date.now() / delay) * delay - Date.now();
 
-	if (process.env.BRAWLDATACYCLESYNC == "false") {
+	if (process.env.DEV == "true") {
 		API.cycle(delay);
 		log(`Cycle set to every ${config.cycle} minutes.`);
 	} else {
