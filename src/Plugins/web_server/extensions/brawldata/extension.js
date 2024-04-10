@@ -182,6 +182,7 @@ module.exports = async (router, _) => {
 
 	const delay = (process.env.BRAWLDATACYCLEDELAY ?? config.cycle) * 60 * 1000;
 	const remaining = Math.ceil(Date.now() / delay) * delay - Date.now();
+
 	if (process.env.BRAWLDATACYCLESYNC == "false") {
 		API.cycle(delay);
 		log(`Cycle set to every ${config.cycle} minutes.`);

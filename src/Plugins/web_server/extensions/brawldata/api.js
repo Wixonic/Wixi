@@ -171,7 +171,7 @@ const connect = async (router) => {
 	});
 };
 
-const cycle = async (time) => {
+const cycle = async (delay) => {
 	const brawlersData = await api("/brawlers")
 	if (!brawlersData.error) {
 		const brawlers = {};
@@ -195,7 +195,8 @@ const cycle = async (time) => {
 		writePlayer(playerId, data);
 	}
 
-	setTimeout(() => cycle(time), time);
+	const remaining = Math.ceil(Date.now() / delay) * delay - Date.now();
+	setTimeout(() => cycle(delay), remaining);
 };
 
 module.exports = {
