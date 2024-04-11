@@ -1,340 +1,340 @@
 {
 	"maps": [
 		{
-			"icon": "mine",
+			"environment": "mine",
 			"id": [
 				7
 			],
 			"name": "Hard Rock Mine"
 		},
 		{
-			"icon": "mine",
+			"environment": "mine",
 			"id": [
 				11
 			],
 			"name": "Undermine"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [
 				48
 			],
 			"name": "Flooded Mine"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [],
 			"name": "Double Swoosh"
 		},
 		{
-			"icon": "mine",
+			"environment": "mine",
 			"id": [],
 			"name": "Minecart Madness"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Acute Angle"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Rustic Arcade"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Open Space"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [
 				641
 			],
 			"name": "Arctic extraction"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Snowman stormValley"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Cold pond quarry"
 		},
 		{
-			"icon": "winter", // Map picture missing
+			"environment": "winter",
 			"id": [],
-			"name": "Snowflakes"
+			"name": "Snowflakes" // Map picture missing
 		},
 		{
-			"icon": "stormValley",
+			"environment": "stormValley",
 			"id": [],
 			"name": "Skull Creek"
 		},
 		{
-			"icon": "stormValley",
+			"environment": "stormValley",
 			"id": [],
 			"name": "Scorched Stone"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Feast or Famine"
 		},
 		{
-			"icon": "stormValley",
+			"environment": "stormValley",
 			"id": [],
 			"name": "Double Trouble"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [
 				45
 			],
 			"name": "Island Invasion"
 		},
 		{
-			"icon": "stormValley",
+			"environment": "stormValley",
 			"id": [],
 			"name": "Stormy Plains"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Safety Center"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Breakwater Port"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Bounce Bazaar"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Circling Sands"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Safe Zone"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [
 				23
 			],
 			"name": "G.G. Mortuary"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [],
 			"name": "Bridge Too Far"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Pit Stop"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [],
 			"name": "Shooting Star"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Hideout"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Excel"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Layer Cake"
 		},
 		{
-			"icon": "canyon",
+			"environment": "grassfield",
 			"id": [],
 			"name": "Pinball Dreams"
 		},
 		{
-			"icon": "stadium",
+			"environment": "brawlBallArena",
 			"id": [],
 			"name": "Center Stage"
 		},
 		{
-			"icon": "beach",
+			"environment": "beach",
 			"id": [],
 			"name": "Beach Ball"
 		},
 		{
-			"icon": "stadium",
+			"environment": "brawlBallArena",
 			"id": [
 				252
 			],
 			"name": "Galaxy Arena"
 		},
 		{
-			"icon": "canyon",
+			"environment": "grassfield",
 			"id": [],
 			"name": "Encirclement"
 		},
 		{
-			"icon": "canyon",
+			"environment": "grassfield",
 			"id": [],
 			"name": "Retina"
 		},
 		{
-			"icon": "stadium",
+			"environment": "brawlBallArena",
 			"id": [],
 			"name": "Off the Line"
 		},
 		{
-			"icon": "beach",
+			"environment": "beach",
 			"id": [],
 			"name": "Goalkeeper's Dream"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Freezing ripples"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Great waves"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Cool shapes"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Split"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Ring of Fire"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Dueling Beetles"
 		},
 		{
-			"icon": "farwest",
+			"environment": "canyon",
 			"id": [],
 			"name": "Goldarm Gluch"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Belle's Rock"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [],
 			"name": "Deep End"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [
 				440
 			],
 			"name": "Flaring Phoenix"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Flowing Springs"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Out in the Open"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Healthy Middle Ground"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [],
-			"name": "New Horizons"
+			"name": "New Horizons" // Map picture missing
 		},
 		{
-			"icon": "basketbrawl",
+			"environment": "rooftop",
 			"id": [],
 			"name": "Green Meadows"
 		},
 		{
-			"icon": "basketbrawl",
+			"environment": "rooftop",
 			"id": [
 				598
 			],
 			"name": "Pick and Roll"
 		},
 		{
-			"icon": "basketbrawl",
+			"environment": "rooftop",
 			"id": [],
 			"name": "Basket Fort"
 		},
 		{
-			"icon": "basketbrawl",
+			"environment": "rooftop",
 			"id": [],
 			"name": "Dancing Roof"
 		},
 		{
-			"icon": "arcade",
+			"environment": "arcade",
 			"id": [],
 			"name": "Infinite Doom"
 		},
 		{
-			"icon": "starrToons",
+			"environment": "starrToons",
 			"id": [],
 			"name": "Slayer's Paradise"
 		},
 		{
-			"icon": "swampOfLove",
+			"environment": "swampOfLove",
 			"id": [],
 			"name": "Shooting Star"
 		},
 		{
-			"icon": "bazaar",
+			"environment": "bazaar",
 			"id": [],
 			"name": "Snake Prairie"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Slippery road"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Icy ice park"
 		},
 		{
-			"icon": "winter",
+			"environment": "winter",
 			"id": [],
 			"name": "Frosty tracks"
 		},
 		{
-			"icon": "canyon",
+			"environment": "grassfield",
 			"id": [
 				67
 			],
@@ -342,14 +342,16 @@
 		}
 	],
 	"default": {
-		"gemgrab": "mine",
-		"showdown": "stormValley",
-		"trophyescape": "bazaar",
-		"bounty": "farwest",
-		"brawlball": "stadium",
-		"knockout": "farwest",
-		"basketbrawl": "basketbrawl",
-		"bossfight": "canyon",
-		"other": "arcade"
+		"environment": {
+			"gemgrab": "mine",
+			"showdown": "stormValley",
+			"trophyescape": "bazaar",
+			"bounty": "canyon",
+			"brawlball": "brawlBallArena",
+			"knockout": "canyon",
+			"rooftop": "rooftop",
+			"bossfight": "canyon",
+			"other": "arcade"
+		}
 	}
 }
