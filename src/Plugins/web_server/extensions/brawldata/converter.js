@@ -5,6 +5,7 @@ const log = require("./log");
 const { toTime } = require("./utils");
 
 const config = require("./config");
+const maps = require("./maps");
 
 ////////// CLUBS //////////////////////////////////
 const readClub = (id) => {
@@ -100,9 +101,16 @@ const readPlayer = (id) => {
 
 					const battle = {
 						date: Number(entryData[0]),
+						type,
+						duration: null,
 						event: Number(entryData[3]),
 						mode: entryData[4],
-						type
+						rank: null,
+						result: null,
+						starPlayer: null,
+						trophies: null,
+						players: null,
+						teams: null
 					};
 
 					if (entryData[1].length == 0) battle.type = "specialEvent";
@@ -112,12 +120,13 @@ const readPlayer = (id) => {
 					if (entryData[6].length > 0) battle.result = entryData[6];
 					if (entryData[7].length > 0) battle.starPlayer = entryData[7];
 					if (entryData[8].length > 0) battle.trophies = Number(entryData[8]);
+					if (entryData[9].length > 0) battle.map = maps.list.find((map) => map.id == entryData[9] || map.name == entryData[9]);
 
 					try {
-						if (entryData[9].split(config.api.separators.team).length == 1) {
+						if (entryData[10].split(config.api.separators.team).length == 1) {
 							battle.players = [];
 
-							const playersData = entryData[9].split(config.api.separators.player.team);
+							const playersData = entryData[10].split(config.api.separators.player.team);
 
 							for (const playerDataString of playersData) {
 								const playerData = playerDataString.split(config.api.separators.player.data);
@@ -134,10 +143,10 @@ const readPlayer = (id) => {
 
 								battle.players.push(player);
 							}
-						} else if (entryData[9].split(config.api.separators.team).length > 1) {
+						} else if (entryData[10].split(config.api.separators.team).length > 1) {
 							battle.teams = [];
 
-							const teamsData = entryData[9].split(config.api.separators.team);
+							const teamsData = entryData[10].split(config.api.separators.team);
 
 							for (const teamDataString of teamsData) {
 								const team = [];
@@ -242,7 +251,7 @@ const writePlayer = (id, data) => {
 
 	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData?.battles?.at(-1)?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
-	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.battle.type ?? "", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", battleData.playersData));
+	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.battle.type ?? "", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", maps.list.find((map) => battleData.event.map == map.name)?.id ?? battleData.event.map ?? "", battleData.playersData));
 };
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
 

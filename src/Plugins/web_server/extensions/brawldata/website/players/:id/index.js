@@ -404,7 +404,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 			for (const battle of battles) {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
-				battleEl.style.backgroundImage = `url("/brawldata/assets/icon/map/${battle.event}.png")`;
 
 				let battleHTML = `<div class="top container">`;
 				let battlePlayersEls = "";
@@ -435,7 +434,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 				battleHTML += `</div>
 <div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="name">${toProperCase(battle.mode)}</div></div>
-<div class="players" event="${battle.event}">${battlePlayersEls}</div><div class="bottom container">`;
+<div class="players" event="${battle.event}" style="background-image: url('/brawldata/assets/maps/${battle.map.environment}.jpg')">${battlePlayersEls}</div><div class="bottom container">`;
 
 				if (Number.isInteger(battle.duration)) battleHTML += `<div class="duration">${battle.duration}s</div>`;
 
@@ -443,7 +442,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 				date.setTime(battle.date * 1000);
 				const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
 
-				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><div class="map">${battle.map}</div></div>`;
+				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><a class="link map" href="/brawldata/maps/${battle.map.id}">${battle.map.name}</a></div>`;
 
 				if (battle.mode.endsWith("Showdown")) {
 					if (battle.rank == 1) showdownVictories.count++;
