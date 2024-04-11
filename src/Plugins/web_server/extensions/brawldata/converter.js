@@ -61,7 +61,7 @@ const readPlayer = (id) => {
 
 				if (entry.length > 0) {
 					const isNumber = ["icon", "level", "trophies", "trophies.highest"].includes(entryData[1]);
-					data[entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+					data[entryData[1]][Number(entryData[0]) * (config.cycle * 60)] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
 				}
 			}
 		}
@@ -84,7 +84,7 @@ const readPlayer = (id) => {
 
 						if (entry.length > 0) {
 							const isNumber = ["power", "rank", "trophies", "trophies.highest"].includes(entryData[1]);
-							data.brawlers[brawlerId][entryData[1]][entryData[0]] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
+							data.brawlers[brawlerId][entryData[1]][Number(entryData[0]) * (config.cycle * 60)] = isNumber ? Number(entryData.slice(2)[0]) : entryData.slice(2)[0];
 						}
 					}
 				}
@@ -177,10 +177,7 @@ const readPlayer = (id) => {
 };
 
 const writePlayer = (id, data) => {
-	const writeStartTimestamp = Date.now();
-	let modified = false;
-
-	const now = Math.floor(writeStartTimestamp / 1000);
+	const now = Math.floor(Date.now() / (config.cycle * 60 * 1000));
 
 	const previousData = readPlayer(id) ?? {};
 
@@ -188,37 +185,35 @@ const writePlayer = (id, data) => {
 	if (!fs.existsSync(config.paths.player.brawler.list(id))) fs.mkdirSync(config.paths.player.brawler.list(id), { recursive: true });
 
 	const append = (filePath, ...data) => fs.appendFileSync(filePath, data.join(config.api.separators.data) + config.api.separators.entry, "utf-8");
-	const check = (date, key, value) => {
+	const check = (key, value) => {
 		if (previousData[key] && Object.values(previousData[key]).at(-1) == value) return;
-		modified = true;
-		append(config.paths.player.data(id), date, key, value);
+		append(config.paths.player.data(id), now, key, value);
 	};
 
-	check(now, "name", data.name);
-	check(now, "color", data.nameColor);
-	check(now, "icon", data.icon.id - 28000000);
-	check(now, "trophies", data.trophies);
-	check(now, "trophies.highest", data.highestTrophies);
-	check(now, "level", data.expLevel);
-	check(now, "club.name", data.club.name ?? "");
-	check(now, "club.tag", data.club.tag ?? "");
+	check("name", data.name);
+	check("color", data.nameColor);
+	check("icon", data.icon.id - 28000000);
+	check("trophies", data.trophies);
+	check("trophies.highest", data.highestTrophies);
+	check("level", data.expLevel);
+	check("club.name", data.club.name ?? "");
+	check("club.tag", data.club.tag ?? "");
 
-	data.brawlers.forEach((brawlerData) => {
+	data.brawlers.forEach(async (brawlerData) => {
 		const brawlerId = brawlerData.id - 16000000;
 		const append = (...data) => fs.appendFileSync(config.paths.player.brawler(id, brawlerId), data.join(config.api.separators.data) + config.api.separators.entry, "utf-8");
-		const check = (date, key, value) => {
+		const check = (key, value) => {
 			if (previousData.brawlers && previousData.brawlers[brawlerId] && previousData.brawlers[brawlerId][key] && Object.values(previousData.brawlers[brawlerId][key]).at(-1) == value) return;
-			modified = true;
-			append(date, key, value);
+			append(now, key, value);
 		};
 
-		check(now, "power", brawlerData.power);
-		check(now, "rank", brawlerData.rank);
-		check(now, "trophies", brawlerData.trophies);
-		check(now, "trophies.highest", brawlerData.highestTrophies);
+		check("power", brawlerData.power);
+		check("rank", brawlerData.rank);
+		check("trophies", brawlerData.trophies);
+		check("trophies.highest", brawlerData.highestTrophies);
 	});
 
-	data.battlelog.forEach((battleData) => {
+	data.battlelog.forEach(async (battleData) => {
 		battleData.date = Math.floor(new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).getTime() / 1000);
 		battleData.playersData = "";
 
@@ -247,11 +242,7 @@ const writePlayer = (id, data) => {
 
 	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData?.battles?.at(-1)?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
-
-	for (const battleData of data.battlelog) append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.battle.type ?? "", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", battleData.playersData);
-
-	const writeEndTimestamp = Date.now();
-	if (modified) log(`Player ${id} data written in ${toTime(writeStartTimestamp, writeEndTimestamp)}`);
+	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.battle.type ?? "", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", battleData.playersData));
 };
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
 

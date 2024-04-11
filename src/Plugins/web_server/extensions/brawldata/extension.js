@@ -180,14 +180,7 @@ module.exports = async (router, _) => {
 
 	await API.connect(apiRouter);
 
-	const delay = (process.env.DEV == "true" ? 1 : config.cycle) * 60 * 1000;
-	const remaining = Math.ceil(Date.now() / delay) * delay - Date.now();
-
-	if (process.env.DEV == "true") {
-		API.cycle(delay);
-		log(`Cycle set to every ${config.cycle} minutes.`);
-	} else {
-		setTimeout(() => API.cycle(delay), remaining);
-		log(`Cycle set to every ${config.cycle} minutes. Next cycle in ${remaining > 60000 ? Math.ceil(remaining / 60000) + " minutes" : Math.ceil(remaining / 1000) + " seconds"}.`);
-	}
+	const remaining = Math.ceil(Date.now() / (config.cycle * 60 * 1000)) * (config.cycle * 60 * 1000) - Date.now();
+	setTimeout(() => API.cycle(), remaining);
+	log(`Cycle set to every ${config.cycle} minutes. Next cycle in ${remaining > 60000 ? Math.ceil(remaining / 60000) + " minutes" : Math.ceil(remaining / 1000) + " seconds"}.`);
 };
