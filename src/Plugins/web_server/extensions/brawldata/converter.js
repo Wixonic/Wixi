@@ -120,7 +120,11 @@ const readPlayer = (id) => {
 					if (entryData[6].length > 0) battle.result = entryData[6];
 					if (entryData[7].length > 0) battle.starPlayer = entryData[7];
 					if (entryData[8].length > 0) battle.trophies = Number(entryData[8]);
-					if (entryData[9].length > 0) battle.map = maps.list.find((map) => map.id == entryData[9] || map.name == entryData[9]);
+					if (entryData[9].length > 0) battle.map = maps.list.find((map) => map.id == entryData[9] || map.name == entryData[9]) ?? {
+						environment: maps.default.environment[battle.mode.toLowerCase()] ?? maps.default.environment.other,
+						id: entryData[9],
+						name: entryData[9]
+					};
 
 					try {
 						if (entryData[10].split(config.api.separators.team).length == 1) {
@@ -225,12 +229,16 @@ const writePlayer = (id, data) => {
 	data.battlelog.forEach(async (battleData) => {
 		battleData.date = Math.floor(new Date(`${battleData.battleTime.slice(0, 4)}-${battleData.battleTime.slice(4, 6)}-${battleData.battleTime.slice(6, 8)}T${battleData.battleTime.slice(9, 11)}:${battleData.battleTime.slice(11, 13)}:${battleData.battleTime.slice(13)}`).getTime() / 1000);
 		battleData.playersData = "";
+		battleData.isFriendly = false;
 
 		if (battleData.battle.players) {
 			const playersData = battleData.battle.players;
 			const players = [];
 
-			for (const playerData of playersData ?? []) players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
+			for (const playerData of playersData ?? []) {
+				if (playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
+				players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
+			}
 
 			battleData.playersData = players.join(config.api.separators.player.team);
 		} else if (battleData.battle.teams) {
@@ -240,7 +248,10 @@ const writePlayer = (id, data) => {
 			for (const teamData of teamsData ?? []) {
 				const team = [];
 
-				for (const playerData of teamData) team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, ["championshipChallenge"].includes(battleData.battle.type) ? "" : playerData.brawler.trophies].join(config.api.separators.player.data));
+				for (const playerData of teamData) {
+					if (playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
+					team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, ["championshipChallenge"].includes(battleData.battle.type) ? "" : playerData.brawler.trophies].join(config.api.separators.player.data));
+				}
 
 				teams.push(team.join(config.api.separators.player.team));
 			}
@@ -251,7 +262,7 @@ const writePlayer = (id, data) => {
 
 	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData?.battles?.at(-1)?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
-	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.battle.type ?? "", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", maps.list.find((map) => battleData.event.map == map.name)?.id ?? battleData.event.map ?? "", battleData.playersData));
+	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.isFriendly ? battleData.battle.type ?? "" : "friendly", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", maps.list.find((map) => battleData.event.map == map.name)?.id ?? battleData.event.map ?? "", battleData.playersData));
 };
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
 

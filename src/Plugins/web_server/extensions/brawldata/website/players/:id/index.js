@@ -416,7 +416,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 						if (battle.starPlayer == player.tag) battlePlayersEls += ` star="true"`;
 						if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
-						else if (Number.isInteger(player.trophies)) battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
+						else if (Number.isInteger(player.trophies) && battle.type != "friendly") battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
 						else battlePlayersEls += ">";
 
 						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div><div class="power">${player.power}</div></div>`;
@@ -444,15 +444,17 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><a class="link map" href="/brawldata/maps/${battle.map.id}">${battle.map.name}</a></div>`;
 
-				if (battle.mode.endsWith("Showdown")) {
-					if (battle.rank == 1) showdownVictories.count++;
-					showdownVictories.total++;
-				} else {
-					if (battle.result == "victory") victories.count++;
-					victories.total++;
+				if (battle.type != "friendly") {
+					if (battle.mode.endsWith("Showdown")) {
+						if (battle.rank == 1) showdownVictories.count++;
+						showdownVictories.total++;
+					} else {
+						if (battle.result == "victory") victories.count++;
+						victories.total++;
 
-					if (battle.starPlayer == "#" + id) starPlayer.count++;
-					starPlayer.total++;
+						if (battle.starPlayer == "#" + id) starPlayer.count++;
+						starPlayer.total++;
+					}
 				}
 
 				battlelog.append(battleEl);
