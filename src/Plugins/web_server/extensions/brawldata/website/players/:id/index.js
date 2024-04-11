@@ -381,54 +381,32 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 		await views();
 
-		setTimeout(() => {
-			player.battles.sort((battleA, battleB) => battleB.date - battleA.date);
-
-			const victory = {
-				count: 0,
-				total: 0,
-
-				get percentage() {
-					try {
-						return Number((this.count / this.total * 100).toFixed(2)) + "%";
-					} catch {
-						return "0%";
-					}
-				}
+		class Statistic {
+			constructor() {
+				this.count = 0;
+				this.total = 0;
 			};
 
-			const showdownVictory = {
-				count: 0,
-				total: 0,
-
-				get percentage() {
-					try {
-						return Number((this.count / this.total * 100).toFixed(2)) + "%";
-					} catch {
-						return "0%";
-					}
+			get percentage() {
+				try {
+					return (this.count / this.total * 100).toFixed(1).padStart(2, "0") + "%";
+				} catch {
+					return "0%";
 				}
 			};
+		};
 
-			const starPlayer = {
-				count: 0,
-				total: 0,
+		const victories = new Statistic();
+		const showdownVictories = new Statistic();
+		const starPlayer = new Statistic();
 
-				get percentage() {
-					try {
-						return Number((this.count / this.total * 100).toFixed(2)) + "%";
-					} catch {
-						return "0%";
-					}
-				}
-			};
-
-			for (const battle of player.battles) {
+		const displayBattles = (battles) => {
+			for (const battle of battles) {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
-				battlelog.append(battleEl);
+				battleEl.style.backgroundImage = `url("/brawldata/assets/icon/map/${battle.event}.png")`;
 
-				let battleHTML = `<div class="top container"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" />`;
+				let battleHTML = `<div class="top container">`;
 				let battlePlayersEls = "";
 
 				for (const team of battle.teams ?? [battle.players ?? []]) {
@@ -455,7 +433,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 				if (Number.isInteger(battle.trophies)) battleHTML += `<div class="trophies">${battle.trophies > 0 ? "+" + battle.trophies : battle.trophies}</div>`;
 
-				battleHTML += `</div><div class="players" event="${battle.event}">${battlePlayersEls}</div><div class="bottom container">`;
+				battleHTML += `</div>
+<div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="name">${toProperCase(battle.mode)}</div></div>
+<div class="players" event="${battle.event}">${battlePlayersEls}</div><div class="bottom container">`;
 
 				if (Number.isInteger(battle.duration)) battleHTML += `<div class="duration">${battle.duration}s</div>`;
 
@@ -463,19 +443,59 @@ window.addEventListener("DOMContentLoaded", async () => {
 				date.setTime(battle.date * 1000);
 				const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
 
-				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><div class="event">Event #${battle.event}</div></div>`;
+				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><div class="map">${battle.map}</div></div>`;
 
 				if (battle.mode.endsWith("Showdown")) {
-					if (battle.rank == 1) showdownVictory.count++;
-					showdownVictory.total++;
+					if (battle.rank == 1) showdownVictories.count++;
+					showdownVictories.total++;
 				} else {
-					if (battle.result == "victory") victory.count++;
-					victory.total++;
+					if (battle.result == "victory") victories.count++;
+					victories.total++;
 
-					if (battle.starPlayer == player.tag) starPlayer.count++;
+					if (battle.starPlayer == "#" + id) starPlayer.count++;
 					starPlayer.total++;
 				}
+
+				battlelog.append(battleEl);
+
+				const battles = battlelog.querySelectorAll(".battle");
+				document.querySelector("#battlecount").innerHTML = battles.length;
+				if (victories.total > 0) document.querySelector("#victories").innerHTML = victories.percentage;
+				if (starPlayer.total > 0) document.querySelector("#starPlayer").innerHTML = starPlayer.percentage;
+				if (showdownVictories.total > 0) document.querySelector("#showdownVictories").innerHTML = showdownVictories.percentage;
 			}
-		}, 1000);
+		};
+
+		const loadButton = document.querySelector("#load");
+
+		let downloading = false;
+		let page = 0;
+		const next = async () => {
+			if (!downloading) {
+				downloading = true;
+				loadButton.setAttribute("disabled", true);
+
+				const data = await request(`/players/${id}/battlelog/${page}`);
+				if (data.items) displayBattles(data.items);
+
+				if (data.code != 204 && data.items.length == 50) {
+					downloading = false;
+					loadButton.removeAttribute("disabled");
+					loadButton.classList.remove("hidden");
+				} else loadButton.remove();
+
+				page++;
+			}
+		};
+
+		await next();
+		loadButton.addEventListener("click", next);
+
+		window.addEventListener("scroll", () => {
+			const battles = battlelog.querySelectorAll(".battle");
+			const lastBattle = battles[battles.length - 1];
+			const rect = lastBattle.getBoundingClientRect();
+			if (rect.top >= 0 && rect.left >= 0 && rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && rect.right <= (window.innerWidth || document.documentElement.clientWidth)) next();
+		});
 	} else canvas.innerHTML = "An error occured.";
 });

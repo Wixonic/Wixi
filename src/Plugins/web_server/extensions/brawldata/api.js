@@ -105,14 +105,14 @@ const connect = async (router) => {
 				return 0;
 			});
 
-			res.writeHead(players.length > 0 ? 200 : 204, {
+			res.writeHead(200, {
 				"content-type": "application/json"
 			}).write(JSON.stringify({
 				code: players.length > 0 ? 200 : 204,
 				items: players
 			}));
 		} else {
-			res.writeHead(players.length > 0 ? 200 : 204, {
+			res.writeHead(200, {
 				"content-type": "application/json"
 			}).write(JSON.stringify({
 				code: 204,
@@ -130,7 +130,7 @@ const connect = async (router) => {
 		const playerData = readPlayer("#" + playerId);
 
 		if (playerData) {
-			playerData.battles = playerData.battles.slice(-25);
+			delete playerData.battles;
 
 			res.writeHead(200, {
 				"content-type": "application/json"
@@ -147,19 +147,42 @@ const connect = async (router) => {
 		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 	});
 
+	router.get("/players/:id/battlelog", (req, res) => {
+		const playerId = req.params.id;
+
+		const playerData = readPlayer("#" + playerId);
+
+		if (playerData) {
+			const battles = playerData.battles.slice(-50);
+
+			res.writeHead(200, {
+				"content-type": "application/json"
+			}).write(JSON.stringify({
+				code: battles.length > 0 ? 200 : 204,
+				items: battles
+			}));
+		} else res.writeHead(404).write(JSON.stringify({
+			code: 404,
+			error: "Not Found"
+		}));
+
+		res.end();
+		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
+	});
+
 	router.get("/players/:id/battlelog/:page", (req, res) => {
 		const playerId = req.params.id;
 
 		const playerData = readPlayer("#" + playerId);
 
 		if (playerData) {
-			playerData.battles = playerData.battles.slice(-(25 * req.params.page), -(25 * (req.params.page - 1)));
+			const battles = playerData.battles.slice((50 * req.params.page), (50 * (req.params.page + 1)));
 
 			res.writeHead(200, {
 				"content-type": "application/json"
 			}).write(JSON.stringify({
-				code: 200,
-				data: playerData.battles
+				code: battles.length > 0 ? 200 : 204,
+				items: battles
 			}));
 		} else res.writeHead(404).write(JSON.stringify({
 			code: 404,

@@ -109,7 +109,7 @@
 
 	<h1>[[NAME]]</h1>
 
-	<card class="trophies">
+	<card>
 
 		<section>
 
@@ -159,6 +159,45 @@
 	<select id="players" class="hidden"></select>
 
 	<div class="canvas"></div>
+
+	<h2>Last <span id="battlecount">--</span> battles</h2>
+
+	<note>Scrolling triggers battle loading, which consumes significant bandwidth.<br />
+		Stats are contingent on the number of loaded battles, and there may be a 40-minute delay between the battle date
+		and its display.</note>
+
+	<button id="load" class="button hidden" disabled>Load more battles</button>
+
+	<card>
+
+		<section>
+
+			<div class="title">Victories</div>
+
+			<span id="victories">--.-%</span>
+
+		</section>
+
+		<section>
+
+			<div class="title">Star Player</div>
+
+			<span id="starPlayer">--.-%</span>
+
+		</section>
+
+		<section>
+
+			<div class="title">Showdown Victories</div>
+
+			<span id="showdownVictories">--.-%</span>
+
+		</section>
+
+	</card>
+
+
+	<h3 style="margin-top: 1rem; margin-bottom: 0.5rem;">Battlelog</h3>
 
 	<div id="battlelog"></div>
 

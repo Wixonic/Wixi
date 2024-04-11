@@ -6,7 +6,6 @@ const request = (path) => new Promise((resolve) => {
 
 	xhr.open("GET", `/brawldata/api${path}`, true);
 
-	xhr.addEventListener("error", () => resolve({}));
 	xhr.addEventListener("load", () => {
 		if (xhr.response) resolve(xhr.response);
 		else resolve({});
