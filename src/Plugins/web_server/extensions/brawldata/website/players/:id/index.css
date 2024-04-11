@@ -64,7 +64,7 @@ input#compare {
 }
 
 .icon.trophies {
-	background: url("https://assets.wixonic.fr/file/images/brawldata/icon/trophy.png");
+	background: url("/brawldata/assets/icon/trophy.png");
 	background-origin: border-box;
 	background-repeat: no-repeat;
 	background-size: contain;
