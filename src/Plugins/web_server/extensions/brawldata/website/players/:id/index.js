@@ -410,6 +410,19 @@ window.addEventListener("DOMContentLoaded", async () => {
 				}
 			};
 
+			const starPlayer = {
+				count: 0,
+				total: 0,
+
+				get percentage() {
+					try {
+						return Number((this.count / this.total * 100).toFixed(2)) + "%";
+					} catch {
+						return "0%";
+					}
+				}
+			};
+
 			for (const battle of player.battles) {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
@@ -424,6 +437,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 					for (const player of team) {
 						battlePlayersEls += `<div class="player"`;
 
+						if (battle.starPlayer == player.tag) battlePlayersEls += ` star="true"`;
 						if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
 						else if (Number.isInteger(player.trophies)) battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
 						else battlePlayersEls += ">";
@@ -457,6 +471,9 @@ window.addEventListener("DOMContentLoaded", async () => {
 				} else {
 					if (battle.result == "victory") victory.count++;
 					victory.total++;
+
+					if (battle.starPlayer == player.tag) starPlayer.count++;
+					starPlayer.total++;
 				}
 			}
 		}, 1000);

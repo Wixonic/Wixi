@@ -185,15 +185,15 @@ const cycle = async () => {
 		fs.writeFileSync(config.paths.brawlers(), JSON.stringify(brawlers, null, 4), "utf-8");
 	}
 
-	for (const clubId of config.clubs) {
+	config.clubs.forEach(async (clubId) => {
 		const data = await club(clubId);
 		writeClub(clubId, data);
-	}
+	});
 
-	for (const playerId of config.players) {
+	config.players.forEach(async (playerId) => {
 		const data = await player(playerId);
 		writePlayer(playerId, data);
-	}
+	});
 
 	const remaining = Math.ceil(Date.now() / (config.cycle * 60 * 1000)) * (config.cycle * 60 * 1000) - Date.now();
 	setTimeout(() => cycle(), remaining);
