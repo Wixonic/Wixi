@@ -262,7 +262,7 @@ const writePlayer = (id, data) => {
 
 	data.battlelog = data.battlelog.filter((battle) => battle.date - (previousData?.battles?.at(-1)?.date ?? 0) > 0);
 	data.battlelog.sort((battleA, battleB) => battleA.date - battleB.date);
-	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.isFriendly ? battleData.battle.type ?? "" : "friendly", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", maps.list.find((map) => battleData.event.map == map.name)?.id ?? battleData.event.map ?? "", battleData.playersData));
+	data.battlelog.forEach(async (battleData) => append(config.paths.player.battlelog(id), battleData.date ?? "", battleData.isFriendly ? "friendly" : battleData.battle.type ?? "", Number.isInteger(battleData.battle.duration) ? battleData.battle.duration : "", battleData.event.id == 0 ? 0 : battleData.event.id - 15000000 + 1, battleData.event.mode ?? battleData.battle.mode ?? "", battleData.battle.rank ?? "", battleData.battle.result ?? "", battleData.battle.starPlayer?.tag ?? "", Number.isInteger(battleData.battle.trophyChange) ? battleData.battle.trophyChange : "", maps.list.find((map) => battleData.event.map == map.name)?.id ?? battleData.event.map ?? "", battleData.playersData));
 };
 ////////// USERS, BATTLELOGS AND BRAWLERS /////////
 

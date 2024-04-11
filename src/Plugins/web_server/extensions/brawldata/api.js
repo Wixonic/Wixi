@@ -153,7 +153,7 @@ const connect = async (router) => {
 		const playerData = readPlayer("#" + playerId);
 
 		if (playerData) {
-			const battles = playerData.battles.slice(-50);
+			const battles = playerData.battles.slice(-30);
 
 			res.writeHead(200, {
 				"content-type": "application/json"
@@ -176,7 +176,7 @@ const connect = async (router) => {
 		const playerData = readPlayer("#" + playerId);
 
 		if (playerData) {
-			const battles = playerData.battles.slice((50 * req.params.page), (50 * (req.params.page + 1)));
+			const battles = playerData.battles.slice((30 * req.params.page), (30 * (req.params.page + 1)));
 
 			res.writeHead(200, {
 				"content-type": "application/json"

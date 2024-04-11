@@ -419,7 +419,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 						else if (Number.isInteger(player.trophies) && battle.type != "friendly") battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
 						else battlePlayersEls += ">";
 
-						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div><div class="power">${player.power}</div></div>`;
+						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div>${battle.type != "friendly" ? `<div class="power">${player.power}</div>` : ""}</div>`;
 					}
 
 					battlePlayersEls += "</div>";
@@ -432,9 +432,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 				if (Number.isInteger(battle.trophies)) battleHTML += `<div class="trophies">${battle.trophies > 0 ? "+" + battle.trophies : battle.trophies}</div>`;
 
-				battleHTML += `</div>
-<div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="name">${toProperCase(battle.mode)}</div></div>
-<div class="players" event="${battle.event}" style="background-image: url('/brawldata/assets/maps/${battle.map.environment}.jpg')">${battlePlayersEls}</div><div class="bottom container">`;
+				battleHTML += `</div><div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="name">${{
+					"soloShowdown": "Solo Showdown",
+					"duoShowdown": "Duo Showdown",
+					"gemGrab": "Gem Grab",
+					"brawlBall": "Brawl Ball",
+					"basketBrawl": "Basket Brawl",
+					"hotZone": "Hot Zone",
+					"bossFight": "Boss Fight"
+				}[battle.mode] ?? toProperCase(String(battle.mode))}</div></div><div class="players" event="${battle.event}" style="background-image: url('/brawldata/assets/maps/${battle.map.environment}.jpg')">${battlePlayersEls}</div><div class="bottom container">`;
 
 				if (Number.isInteger(battle.duration)) battleHTML += `<div class="duration">${battle.duration}s</div>`;
 
@@ -479,7 +485,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 				const data = await request(`/players/${id}/battlelog/${page}`);
 				if (data.items) displayBattles(data.items);
 
-				if (data.code != 204 && data.items.length == 50) {
+				if (data.code != 204 && data.items.length == 30) {
 					downloading = false;
 					loadButton.removeAttribute("disabled");
 					loadButton.classList.remove("hidden");

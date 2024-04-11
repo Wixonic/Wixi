@@ -46,8 +46,6 @@ a.player {
 	pointer-events: fill;
 }
 
-a.player:hover {}
-
 a.player .icon {
 	grid-column: 1;
 	grid-row: 1 / 3;

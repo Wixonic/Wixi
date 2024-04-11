@@ -137,7 +137,23 @@ note {
 #battlelog .battle .event {
 	grid-row: 2;
 
+	width: 100%;
+
 	margin: auto;
+}
+
+#battlelog .battle .event .mode {
+	width: 3rem;
+	height: 3rem;
+}
+
+#battlelog .battle .event .name {
+	width: calc(100% - 3rem);
+
+	font-size: 1.5rem;
+	font-weight: 800;
+
+	padding-left: 0.3rem;
 }
 
 #battlelog .battle .container {
@@ -156,7 +172,7 @@ note {
 }
 
 #battlelog .battle.draw .container {
-	background: #08F;
+	background: #04C;
 }
 
 #battlelog .battle.defeat .container {
@@ -228,8 +244,6 @@ note {
 	background-repeat: no-repeat;
 	background-size: cover;
 
-	mask-image: linear-gradient(90deg, transparent, #000 0.5rem, #000 calc(100% - 0.5rem), transparent);
-
 	overflow: scroll;
 	pointer-events: fill;
 
@@ -247,8 +261,6 @@ note {
 	grid-template-rows: 8.2rem;
 	grid-auto-flow: column;
 
-	gap: 0.08rem;
-
 	width: fit-content;
 
 	background: #000A;
@@ -258,6 +270,8 @@ note {
 	border-radius: 0.3rem;
 
 	margin: auto;
+
+	overflow: hidden;
 }
 
 #battlelog .battle.soloShowdown .players .team,
@@ -273,9 +287,28 @@ note {
 #battlelog .battle .players .team .player {
 	display: grid;
 	grid-template-columns: 4.5rem 1.5rem;
-	grid-template-rows: 1.2rem 6rem 1rem;
+	grid-template-rows: 1.2rem 6rem;
 
 	position: relative;
+
+	border-left: 0.08rem solid #000;
+}
+
+#battlelog .battle.soloShowdown .players .team .player,
+#battlelog .battle.trophyEscape .players .team .player,
+#battlelog .battle.duoShowdown .players .team .player {
+	border-top: 0.08rem solid #000;
+	border-left: none;
+}
+
+#battlelog .battle.soloShowdown .players .team .player:first-child,
+#battlelog .battle.trophyEscape .players .team .player:first-child,
+#battlelog .battle.duoShowdown .players .team .player:first-child {
+	border-top: none;
+}
+
+#battlelog .battle .players .team .player:first-child {
+	border-left: none;
 }
 
 #battlelog .battle .players .team .player[star="true"]::after {
@@ -360,25 +393,6 @@ note {
 	transform: rotate(45deg);
 }
 
-#battlelog .battle .players .team .player .name {
-	grid-row: 3;
-	grid-column: 1 / 3;
-
-	display: block;
-
-	width: calc(100% - 0.5rem);
-
-	font-size: 0.8rem;
-	text-overflow: ellipsis;
-	text-wrap: nowrap;
-
-	opacity: 0.7;
-
-	margin: auto;
-
-	overflow: hidden;
-}
-
 #battlelog .battle .players .team .player .brawler {
 	grid-row: 2;
 	grid-column: 1 / 3;
@@ -409,4 +423,23 @@ note {
 #battlelog .battle .players .team .player:last-child .brawler {
 	mask-image: linear-gradient(0deg, transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent),
 		linear-gradient(90deg, #000 calc(100% - var(--fade)), transparent);
+}
+
+#battlelog .battle .players .team .player .name {
+	grid-row: 3;
+	grid-column: 1 / 3;
+
+	display: block;
+
+	width: calc(100% - 0.5rem);
+
+	font-size: 0.8rem;
+	text-overflow: ellipsis;
+	text-wrap: nowrap;
+
+	opacity: 0.7;
+
+	margin: auto;
+
+	overflow: hidden;
 }
