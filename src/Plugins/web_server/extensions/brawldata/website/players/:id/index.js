@@ -405,7 +405,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
 
-				battleEl.innerHTML += `<div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><a class="name link" href="/brawldata/mode/${battle.mode}/">${{
+				battleEl.innerHTML = `<div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><a class="name link" href="/brawldata/mode/${battle.mode}/">${{
 					"soloShowdown": "Solo Showdown",
 					"duoShowdown": "Duo Showdown",
 					"gemGrab": "Gem Grab",
@@ -415,6 +415,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 					"roboRumble": "Robo Rumble",
 					"bossFight": "Boss Fight"
 				}[battle.mode] ?? toProperCase(String(battle.mode))}</a><a class="map link" href="/brawldata/map/${battle.map.id}/">${battle.map.name}</a><div class="result">${battle.level && battle.result == "victory" ? `Level ${toProperCase(battle.level)} cleared` : (battle.result ? toProperCase(battle.result) : (battle.rank ? `Rank ${battle.rank}` : ""))}</div></div>`;
+
+
 
 				battlelog.append(battleEl);
 
