@@ -147,39 +147,22 @@ const connect = async (router) => {
 		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
 	});
 
-	router.get("/players/:id/battlelog", (req, res) => {
-		const playerId = req.params.id;
-
-		const playerData = readPlayer("#" + playerId);
-
-		if (playerData) {
-			const battles = playerData.battles.slice(-30);
-
-			res.writeHead(200, {
-				"content-type": "application/json"
-			}).write(JSON.stringify({
-				code: battles.length > 0 ? 200 : 204,
-				items: battles
-			}));
-		} else res.writeHead(404).write(JSON.stringify({
-			code: 404,
-			error: "Not Found"
-		}));
-
-		res.end();
-		log(`${res.socket?.remoteAddress ?? "Unknow IP"} - 2xx: ${path.join("/api", req.url)}`)
-	});
-
 	router.get("/players/:id/battlelog/:page", (req, res) => {
 		const playerId = req.params.id;
 
 		const playerData = readPlayer("#" + playerId);
 
 		if (playerData) {
-			const battles = playerData.battles.slice((30 * req.params.page), (30 * (req.params.page + 1)));
+			const battles = [];
+
+			if (playerData.battles.length > 15 * req.params.page) {
+				playerData.battles.sort((battleA, battleB) => battleB.date - battleA.date);
+				battles.push(...playerData.battles.slice(15 * req.params.page, 15 * (req.params.page + 1)));
+			}
 
 			res.writeHead(200, {
-				"content-type": "application/json"
+				"content-type": "application/json",
+				"count": playerData.battles.length
 			}).write(JSON.stringify({
 				code: battles.length > 0 ? 200 : 204,
 				items: battles

@@ -1,4 +1,4 @@
-import { formatRank, request, toProperCase } from "../../main.js";
+import { request, toProperCase } from "../../main.js";
 import "https://cdn.plot.ly/plotly-2.30.0.min.js";
 
 window.addEventListener("DOMContentLoaded", async () => {
@@ -405,56 +405,24 @@ window.addEventListener("DOMContentLoaded", async () => {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
 
-				let battleHTML = `<div class="top container">`;
-				let battlePlayersEls = "";
-
-				for (const team of battle.teams ?? [battle.players ?? []]) {
-					battlePlayersEls += `<div class="team">`;
-
-					for (const player of team) {
-						battlePlayersEls += `<div class="player"`;
-
-						if (battle.starPlayer == player.tag) battlePlayersEls += ` star="true"`;
-						if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
-						else if (Number.isInteger(player.trophies) && battle.type != "friendly") battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
-						else battlePlayersEls += ">";
-
-						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div>${battle.type != "friendly" ? `<div class="power">${player.power}</div>` : ""}</div>`;
-					}
-
-					battlePlayersEls += "</div>";
-				}
-
-				if (battle.result || Number.isInteger(battle.rank)) {
-					battleEl.classList.add(battle.result ?? (battle.trophies > 0 ? "victory" : (battle.trophies < 0 ? "defeat" : "draw")));
-					battleHTML += `<div class="result">${battle.result ? toProperCase(battle.result) : formatRank(battle.rank)}</div>`;
-				}
-
-				if (Number.isInteger(battle.trophies)) battleHTML += `<div class="trophies">${battle.trophies > 0 ? "+" + battle.trophies : battle.trophies}</div>`;
-
-				battleHTML += `</div><div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><div class="name">${{
+				battleEl.innerHTML += `<div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><a class="name link" href="/brawldata/mode/${battle.mode}/">${{
 					"soloShowdown": "Solo Showdown",
 					"duoShowdown": "Duo Showdown",
 					"gemGrab": "Gem Grab",
 					"brawlBall": "Brawl Ball",
 					"basketBrawl": "Basket Brawl",
 					"hotZone": "Hot Zone",
+					"roboRumble": "Robo Rumble",
 					"bossFight": "Boss Fight"
-				}[battle.mode] ?? toProperCase(String(battle.mode))}</div></div><div class="players" event="${battle.event}" style="background-image: url('/brawldata/assets/maps/${battle.map.environment}.jpg')">${battlePlayersEls}</div><div class="bottom container">`;
+				}[battle.mode] ?? toProperCase(String(battle.mode))}</a><a class="map link" href="/brawldata/map/${battle.map.id}/">${battle.map.name}</a><div class="result">${battle.level && battle.result == "victory" ? `Level ${toProperCase(battle.level)} cleared` : (battle.result ? toProperCase(battle.result) : (battle.rank ? `Rank ${battle.rank}` : ""))}</div></div>`;
 
-				if (Number.isInteger(battle.duration)) battleHTML += `<div class="duration">${battle.duration}s</div>`;
-
-				const date = new Date();
-				date.setTime(battle.date * 1000);
-				const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")} `;
-
-				battleEl.innerHTML = `${battleHTML}<div class="date">${formattedDate}</div><a class="link map" href="/brawldata/maps/${battle.map.id}">${battle.map.name}</a></div>`;
+				battlelog.append(battleEl);
 
 				if (battle.type != "friendly") {
-					if (battle.mode.endsWith("Showdown")) {
+					if (typeof battle.rank == "number") {
 						if (battle.rank == 1) showdownVictories.count++;
 						showdownVictories.total++;
-					} else {
+					} else if (typeof battle.result == "string") {
 						if (battle.result == "victory") victories.count++;
 						victories.total++;
 
@@ -462,15 +430,13 @@ window.addEventListener("DOMContentLoaded", async () => {
 						starPlayer.total++;
 					}
 				}
-
-				battlelog.append(battleEl);
-
-				const battles = battlelog.querySelectorAll(".battle");
-				document.querySelector("#battlecount").innerHTML = battles.length;
-				if (victories.total > 0) document.querySelector("#victories").innerHTML = victories.percentage;
-				if (starPlayer.total > 0) document.querySelector("#starPlayer").innerHTML = starPlayer.percentage;
-				if (showdownVictories.total > 0) document.querySelector("#showdownVictories").innerHTML = showdownVictories.percentage;
 			}
+
+			const battleEls = battlelog.querySelectorAll(".battle");
+			document.querySelector("#battlecount").innerHTML = battleEls.length;
+			if (victories.total > 0) document.querySelector("#victories").innerHTML = victories.percentage;
+			if (starPlayer.total > 0) document.querySelector("#starPlayer").innerHTML = starPlayer.percentage;
+			if (showdownVictories.total > 0) document.querySelector("#showdownVictories").innerHTML = showdownVictories.percentage;
 		};
 
 		const loadButton = document.querySelector("#load");
@@ -483,9 +449,12 @@ window.addEventListener("DOMContentLoaded", async () => {
 				loadButton.setAttribute("disabled", true);
 
 				const data = await request(`/players/${id}/battlelog/${page}`);
-				if (data.items) displayBattles(data.items);
 
-				if (data.code != 204 && data.items.length == 30) {
+				console.log(data.items.length);
+
+				if (data.code != 204 && data.items) {
+					displayBattles(data.items);
+
 					downloading = false;
 					loadButton.removeAttribute("disabled");
 					loadButton.classList.remove("hidden");

@@ -1,5 +1,3 @@
-const formatRank = (rank) => ["1st", "2nd", "3rd"][rank - 1] ?? `${rank}th`;
-
 const request = (path) => new Promise((resolve) => {
 	const xhr = new XMLHttpRequest();
 	xhr.responseType = "json";
@@ -18,7 +16,6 @@ const request = (path) => new Promise((resolve) => {
 const toProperCase = (text) => text.replace(/\w+/g, (part) => part.charAt(0).toUpperCase() + part.substr(1).toLowerCase());
 
 export {
-	formatRank,
 	request,
 	toProperCase
 };
