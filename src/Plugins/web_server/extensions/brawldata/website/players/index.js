@@ -17,7 +17,7 @@ const display = (filter) => {
 
 window.addEventListener("DOMContentLoaded", async () => {
 	const playersData = await request("/players");
-	window.players = playersData.code == 200 ? playersData.items : [];
+	window.players = playersData.response.code == 200 ? playersData.response.items : [];
 
 	display();
 

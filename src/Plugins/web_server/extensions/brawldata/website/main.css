@@ -27,7 +27,6 @@ button,
 .button,
 .link {
 	cursor: pointer;
-	pointer-events: fill;
 }
 
 .button {

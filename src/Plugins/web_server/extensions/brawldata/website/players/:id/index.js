@@ -19,10 +19,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 	const playersRequest = await request("/players");
 	const playerRequest = await request(`/players/${id}`);
 
-	if (brawlersRequest.code == 200 && playersRequest.code == 200 && playerRequest.code == 200) {
-		const brawlers = brawlersRequest.items;
-		const players = playersRequest.items;
-		const player = playerRequest.data;
+	if (brawlersRequest.response.code == 200 && playersRequest.response.code == 200 && playerRequest.response.code == 200) {
+		const brawlers = brawlersRequest.response.items;
+		const players = playersRequest.response.items;
+		const player = playerRequest.response.data;
 
 		playerIcon.src = `/brawldata/assets/icon/player/${Object.values(player.icon).at(-1)}.png`;
 
@@ -404,20 +404,127 @@ window.addEventListener("DOMContentLoaded", async () => {
 			for (const battle of battles) {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
+				battleEl.style.backgroundImage = `url("/brawldata/assets/maps/${battle.map.environment}.jpg")`;
 
-				battleEl.innerHTML = `<div class="event"><img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" /><a class="name link" href="/brawldata/mode/${battle.mode}/">${{
-					"soloShowdown": "Solo Showdown",
-					"duoShowdown": "Duo Showdown",
-					"gemGrab": "Gem Grab",
-					"brawlBall": "Brawl Ball",
-					"basketBrawl": "Basket Brawl",
-					"hotZone": "Hot Zone",
-					"roboRumble": "Robo Rumble",
-					"bossFight": "Boss Fight"
-				}[battle.mode] ?? toProperCase(String(battle.mode))}</a><a class="map link" href="/brawldata/map/${battle.map.id}/">${battle.map.name}</a><div class="result">${battle.level && battle.result == "victory" ? `Level ${toProperCase(battle.level)} cleared` : (battle.result ? toProperCase(battle.result) : (battle.rank ? `Rank ${battle.rank}` : ""))}</div></div>`;
+				const playersEl = document.createElement("div");
+				playersEl.classList.add("players");
 
+				/* for (const team of battle.teams ?? [battle.players ?? []]) {
+					battlePlayersEls += `<div class="team">`;
 
+					for (const player of team) {
+						battlePlayersEls += `<div class="player"`;
 
+						if (battle.starPlayer == player.tag) battlePlayersEls += ` star="true"`;
+						if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
+						else if (Number.isInteger(player.trophies) && battle.type != "friendly") battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
+						else battlePlayersEls += ">";
+
+						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div>${battle.type != "friendly" ? `<div class="power">${player.power}</div>` : ""}</div>`;
+					}
+
+					battlePlayersEls += "</div>";
+				} */
+
+				const displayPlayer = (player, teamEl) => {
+					const playerEl = document.createElement("div");
+					playerEl.classList.add("player");
+
+					if (battle.starPlayer == player.tag) playerEl.classList.add("star");
+
+					const display = (type) => {
+						let HTML = "";
+
+						switch (type) {
+							case "rank":
+								HTML += `<img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
+								break;
+
+							case "trophies":
+								if (typeof player.trophies == "number") HTML += `<div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
+								break;
+
+							case "power":
+								if (typeof player.power == "number") HTML += `<div class="power">${player.power}</div>`;
+								break;
+
+							case "brawler":
+								if (typeof player.brawler == "number") HTML += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name}" />`;
+								break;
+
+							case "name":
+								if (typeof player.name == "string") HTML += `<div class="name">${player.name}</div>`;
+								break;
+						}
+
+						playerEl.innerHTML += HTML;
+					};
+
+					switch (battle.type) {
+						case "soloRanked":
+							display("rank");
+							display("power");
+							display("brawler");
+							display("name");
+							break;
+
+						case "ranked":
+							display("trophies");
+							display("power");
+							display("brawler");
+							display("name");
+							break;
+
+						case "specialEvent":
+							display("power");
+							display("brawler");
+							display("name");
+							break;
+
+						default:
+							display("brawler");
+							display("name");
+							break;
+					}
+
+					teamEl.append(playerEl);
+				};
+
+				if (battle.teams) {
+					for (const team of battle.teams) {
+						const teamEl = document.createElement("div");
+						teamEl.classList.add("team");
+						for (const player of team) displayPlayer(player, teamEl);
+						playersEl.append(teamEl);
+					}
+				} else if (battle.players) {
+					const teamEl = document.createElement("div");
+					teamEl.classList.add("team");
+					for (const player of battle.players) displayPlayer(player, teamEl);
+					playersEl.append(teamEl);
+				}
+
+				const date = new Date();
+				date.setTime(typeof battle.date == "number" ? battle.date * 1000 : Date.now());
+				const formattedDate = (date.getTime() < Date.now() - (24 * 60 * 60 * 1000) ? `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()} ` : "") + `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+
+				battleEl.innerHTML = `<div class="event">
+	<img class="mode" src="/brawldata/assets/icon/mode/${battle.mode}.png" />
+	<a class="name link" href="/brawldata/mode/${battle.mode}/">${{
+						"soloShowdown": "Solo Showdown",
+						"duoShowdown": "Duo Showdown",
+						"gemGrab": "Gem Grab",
+						"brawlBall": "Brawl Ball",
+						"basketBrawl": "Basket Brawl",
+						"hotZone": "Hot Zone",
+						"roboRumble": "Robo Rumble",
+						"bossFight": "Boss Fight"
+					}[battle.mode] ?? toProperCase(String(battle.mode))}</a>
+	<a class="map link" href="/brawldata/map/${battle.map.id}/">${battle.map.name}</a>
+	<div class="result">${typeof battle.level == "string" && battle.result == "victory" ? `Challenge ${battle.level} cleared` : (typeof battle.result == "string" ? toProperCase(battle.result) : (typeof battle.rank == "number" ? `Rank ${battle.rank}` : ""))}</div>
+	<div class="date">${formattedDate}</div>
+</div>`;
+				battleEl.append(playersEl);
 				battlelog.append(battleEl);
 
 				if (battle.type != "friendly") {
@@ -443,6 +550,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 		const loadButton = document.querySelector("#load");
 
+		let count = 0;
 		let downloading = false;
 		let page = 0;
 		const next = async () => {
@@ -450,14 +558,17 @@ window.addEventListener("DOMContentLoaded", async () => {
 				downloading = true;
 				loadButton.setAttribute("disabled", true);
 
-				const data = await request(`/players/${id}/battlelog/${page}`);
+				const response = await request(`/players/${id}/battlelog/${page}`);
 
-				if (data.code != 204 && data.items) {
-					displayBattles(data.items);
+				if (response.response.code != 204) {
+					displayBattles(response.response.items);
+					count += response.response.items.length;
 
 					downloading = false;
 					loadButton.removeAttribute("disabled");
 					loadButton.classList.remove("hidden");
+
+					if (count >= Number(response.headers["count"])) loadButton.remove();
 				} else loadButton.remove();
 
 				page++;

@@ -16,7 +16,6 @@ input[type="search"] {
 	padding: 0.2rem 0.5rem;
 
 	cursor: text;
-	pointer-events: fill;
 }
 
 main {
@@ -43,7 +42,6 @@ a.player {
 	height: var(--height);
 
 	cursor: pointer;
-	pointer-events: fill;
 }
 
 a.player .icon {

@@ -5,8 +5,23 @@ const request = (path) => new Promise((resolve) => {
 	xhr.open("GET", `/brawldata/api${path}`, true);
 
 	xhr.addEventListener("load", () => {
-		if (xhr.response) resolve(xhr.response);
-		else resolve({});
+		let headers = {};
+		for (const headerData of xhr.getAllResponseHeaders().split("\n")) {
+			const headerArray = headerData.split(":");
+
+			if (headerArray.length >= 2) headers[headerArray[0].trim().toLowerCase()] = headerArray[1].trim();
+		}
+
+		console.log(headers);
+
+		if (xhr.response) resolve({
+			headers,
+			response: xhr.response
+		});
+		else resolve({
+			headers,
+			response: {}
+		});
 	});
 	xhr.addEventListener("timeout", () => resolve({}));
 

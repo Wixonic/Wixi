@@ -149,15 +149,16 @@ const connect = async (router) => {
 
 	router.get("/players/:id/battlelog/:page", (req, res) => {
 		const playerId = req.params.id;
+		const page = Number(req.params.page);
 
 		const playerData = readPlayer("#" + playerId);
 
 		if (playerData) {
 			const battles = [];
 
-			if (playerData.battles.length > 15 * req.params.page) {
+			if (playerData.battles.length > 15 * page) {
 				playerData.battles.sort((battleA, battleB) => battleB.date - battleA.date);
-				battles.push(...playerData.battles.slice(15 * req.params.page, 15 * (req.params.page + 1)));
+				battles.push(...playerData.battles.slice(15 * page, 15 * (page + 1)));
 			}
 
 			res.writeHead(200, {
