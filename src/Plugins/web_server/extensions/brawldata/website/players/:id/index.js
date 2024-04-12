@@ -450,8 +450,6 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 				const data = await request(`/players/${id}/battlelog/${page}`);
 
-				console.log(data.items.length);
-
 				if (data.code != 204 && data.items) {
 					displayBattles(data.items);
 
