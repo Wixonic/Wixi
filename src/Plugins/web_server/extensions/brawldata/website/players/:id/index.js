@@ -431,6 +431,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 					playerEl.classList.add("player");
 
 					if (battle.starPlayer == player.tag) playerEl.classList.add("star");
+					if ("#" + id == player.tag) playerEl.classList.add("self");
 
 					const display = (type) => {
 						let HTML = "";

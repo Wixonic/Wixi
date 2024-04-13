@@ -295,7 +295,7 @@ note {
 #battlelog .battle .players .team {
 	display: grid;
 	grid-auto-flow: column;
-	gap: 0.2rem;
+	gap: 0.5rem;
 
 	width: fit-content;
 	height: fit-content;
@@ -372,7 +372,8 @@ note {
 	align-items: center;
 
 	position: relative;
-	top: -0.2rem;
+	top: -0.12rem;
+	right: 0.12rem;
 
 	width: 1.2rem;
 	height: 1.2rem;
@@ -380,7 +381,7 @@ note {
 	background: radial-gradient(circle, #8B008B 54%, #FF69B4 55%),
 		radial-gradient(circle at center 100%, #000 59%, transparent 60%);
 
-	font-size: 0.6rem;
+	font-size: 0.65rem;
 	font-weight: 600;
 
 	border: 0.06rem solid #000;
@@ -417,7 +418,14 @@ note {
 
 	border-radius: 0.2rem;
 
-	opacity: 0.8;
+	filter: grayscale(0.5);
+	opacity: 0.7;
+}
+
+#battlelog .battle .players .team .player.self .brawler {
+	filter: none;
+
+	opacity: 1;
 }
 
 #battlelog .battle .players .team .player .name {
