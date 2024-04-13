@@ -404,27 +404,10 @@ window.addEventListener("DOMContentLoaded", async () => {
 			for (const battle of battles) {
 				const battleEl = document.createElement("div");
 				battleEl.classList.add("battle", battle.mode, battle.type);
-				battleEl.style.backgroundImage = `url("/brawldata/assets/maps/${battle.map.environment}.jpg")`;
+				if (typeof battle.map?.environment == "string") battleEl.style.backgroundImage = `url("/brawldata/assets/maps/${battle.map.environment}.jpg")`;
 
 				const playersEl = document.createElement("div");
 				playersEl.classList.add("players");
-
-				/* for (const team of battle.teams ?? [battle.players ?? []]) {
-					battlePlayersEls += `<div class="team">`;
-
-					for (const player of team) {
-						battlePlayersEls += `<div class="player"`;
-
-						if (battle.starPlayer == player.tag) battlePlayersEls += ` star="true"`;
-						if (battle.type == "soloRanked" && player.trophies < 20) battlePlayersEls += `rank="${player.trophies}"><img class="rank" src="/brawldata/assets/icon/rank/${player.trophies}.png" />`;
-						else if (Number.isInteger(player.trophies) && battle.type != "friendly") battlePlayersEls += `><div class="trophies"><span class="trophies icon"></span>${player.trophies}</div>`;
-						else battlePlayersEls += ">";
-
-						battlePlayersEls += `<img class="brawler" src="/brawldata/assets/icon/brawler/${player.brawler}.png" alt="${brawlers[player.brawler].name} " /><div class="name">${player.name}</div>${battle.type != "friendly" ? `<div class="power">${player.power}</div>` : ""}</div>`;
-					}
-
-					battlePlayersEls += "</div>";
-				} */
 
 				const displayPlayer = (player, teamEl) => {
 					const playerEl = document.createElement("div");
@@ -521,7 +504,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 						"roboRumble": "Robo Rumble",
 						"bossFight": "Boss Fight"
 					}[battle.mode] ?? toProperCase(String(battle.mode))}</a>
-	<a class="map link" href="/brawldata/map/${battle.map.id}/">${battle.map.name}</a>
+	<a class="map link" href="/brawldata/maps/${battle.map?.id ?? ""}/">${battle.map?.name ?? "Unknown map"}</a>
 	<div class="result">${typeof battle.level == "string" && battle.result == "victory" ? `Challenge ${battle.level} cleared` : (typeof battle.result == "string" ? toProperCase(battle.result) : (typeof battle.rank == "number" ? `Rank ${battle.rank}` : ""))}</div>
 	<div class="date">${formattedDate}</div>
 </div>`;
@@ -559,17 +542,17 @@ window.addEventListener("DOMContentLoaded", async () => {
 				downloading = true;
 				loadButton.setAttribute("disabled", true);
 
-				const response = await request(`/players/${id}/battlelog/${page}`);
+				const req = await request(`/players/${id}/battlelog/${page}`);
 
-				if (response.response.code != 204) {
-					displayBattles(response.response.items);
-					count += response.response.items.length;
+				if (req.response.code != 204) {
+					displayBattles(req.response.items);
+					count += req.response.items.length;
 
 					downloading = false;
 					loadButton.removeAttribute("disabled");
 					loadButton.classList.remove("hidden");
 
-					if (count >= Number(response.headers["count"])) loadButton.remove();
+					if (count >= Number(req.headers["count"])) loadButton.remove();
 				} else loadButton.remove();
 
 				page++;
