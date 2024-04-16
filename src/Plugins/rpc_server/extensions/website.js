@@ -12,7 +12,7 @@ const POST = async (_, req, res, keepAlive) => {
 		state: `Currently on wixonic.fr${req.body?.mobile ? " on iOS" : ""}`,
 
 		assets: {
-			small_image: config.assets.logo_with_character,
+			small_image: config.assets.logo_website,
 			small_text: `Wixonic's Website on Safari${req.body?.mobile ? " for iOS" : ""}`
 		},
 
