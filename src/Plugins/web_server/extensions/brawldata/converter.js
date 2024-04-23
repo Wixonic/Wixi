@@ -242,7 +242,7 @@ const writePlayer = (id, data) => {
 			const players = [];
 
 			for (const playerData of playersData ?? []) {
-				if (playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
+				if (playerData.brawler?.power && playerData.brawler?.trophies && playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
 				players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
 			}
 
