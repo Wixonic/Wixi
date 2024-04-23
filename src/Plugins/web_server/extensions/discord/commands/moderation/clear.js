@@ -3,12 +3,13 @@ const { SlashCommandBuilder } = require("discord.js");
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("clear")
-		.setDescription("Clear messages in chat")
+		.setDescription("Clear messages in chat newer than two weeks")
 		.addIntegerOption((option) =>
 			option
 				.setName("count")
-				.setDescription("Number of messages to delete, leave empty for all")
+				.setDescription("Number of messages to delete, default to maximum")
 				.setMinValue(1)
+				.setMaxValue(95)
 		),
 
 	/**
@@ -16,20 +17,17 @@ module.exports = {
 	 */
 
 	async execute(interaction) {
-		const count = interaction.options.getInteger("count") ?? 1;
+		const count = interaction.options.getInteger("count") ?? 95;
 
 		const channel = await interaction.channel.fetch(true);
 
-		const messages = await channel.messages.fetch({
+		const messages = (await channel.messages.fetch({
 			deletable: true,
 			limit: count
-		});
+		})).filter((message) => message.createdAt.getTime() + 14 * 24 * 60 * 60 * 1000 > Date.now());
 
-		await new Promise((resolve) => {
-			messages.each(async (message) => await message.delete());
-			resolve();
-		});
+		await channel.bulkDelete(messages);
 
-		await interaction.reply(`${count} message${count > 1 ? "s" : ""} deleted`);
+		await interaction.reply(`${messages.size} message${messages.size > 1 ? "s" : ""} deleted`);
 	}
 };
