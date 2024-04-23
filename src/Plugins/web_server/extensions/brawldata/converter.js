@@ -209,7 +209,7 @@ const writePlayer = (id, data) => {
 
 	check("name", data.name);
 	check("color", data.nameColor);
-	check("icon", data.icon.id - 28000000);
+	check("icon", data.icon?.id ? data.icon.id - 28000000 : 0);
 	check("trophies", data.trophies);
 	check("trophies.highest", data.highestTrophies);
 	check("level", data.expLevel);
