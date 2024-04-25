@@ -213,8 +213,8 @@ const writePlayer = (id, data) => {
 	check("trophies", data.trophies);
 	check("trophies.highest", data.highestTrophies);
 	check("level", data.expLevel);
-	check("club.name", data.club.name ?? "");
-	check("club.tag", data.club.tag ?? "");
+	check("club.name", data.club?.name ?? "");
+	check("club.tag", data.club?.tag ?? "");
 
 
 	data.brawlers.forEach(async (brawlerData) => {
@@ -242,8 +242,10 @@ const writePlayer = (id, data) => {
 			const players = [];
 
 			for (const playerData of playersData ?? []) {
-				if (playerData.brawler?.power && playerData.brawler?.trophies && playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
-				players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
+				if (playerData.brawler) {
+					if (playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
+					players.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, playerData.brawler.trophies].join(config.api.separators.player.data));
+				}
 			}
 
 			battleData.playersData = players.join(config.api.separators.player.team);
@@ -255,8 +257,10 @@ const writePlayer = (id, data) => {
 				const team = [];
 
 				for (const playerData of teamData) {
-					if (playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
-					team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, ["championshipChallenge"].includes(battleData.battle.type) ? "" : playerData.brawler.trophies].join(config.api.separators.player.data));
+					if (playerData.brawler) {
+						if (playerData.brawler.power == -1 && playerData.brawler.trophies == -1) battleData.isFriendly = true;
+						team.push([playerData.tag, playerData.name, playerData.brawler.id - 16000000, playerData.brawler.power, ["championshipChallenge"].includes(battleData.battle.type) ? "" : playerData.brawler.trophies].join(config.api.separators.player.data));
+					}
 				}
 
 				teams.push(team.join(config.api.separators.player.team));
