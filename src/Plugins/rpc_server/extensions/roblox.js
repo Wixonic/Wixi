@@ -36,10 +36,6 @@ const cycle = async () => {
 					small_text: "Roblox"
 				},
 
-				timestamps: {
-					start: new Date(presence.lastOnline).getTime()
-				},
-
 				buttons: [
 					"Play",
 					"Open my profile"
@@ -63,10 +59,6 @@ const cycle = async () => {
 				assets: {
 					small_image: config.assets.logo_roblox_studio,
 					small_text: "Roblox Studio"
-				},
-
-				timestamps: {
-					start: new Date(presence.lastOnline).getTime()
 				},
 
 				buttons: [
