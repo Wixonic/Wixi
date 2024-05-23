@@ -17,7 +17,6 @@ extension utsname {
 class Plugin {
     static var list: [Plugin] = {
         return [
-            RPCServer(),
             WebServer()
         ]
     }()
