@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en_US" lang="en_US">
+
+<head>
+
+	<title>[[NAME]] | BrawlData</title>
+	<meta property="og:title" content="[[NAME]] | BrawlData" />
+
+	<meta charset="utf-8" />
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover" />
+
+	<meta name="author" content="Wixonic, contact@wixonic.fr" />
+	<meta property="og:email" content="contact@wixonic.fr" />
+
+	<meta name="description" content="See [[POSSESSIVE-NAME]] stats." />
+	<meta property="og:description" content="See [[POSSESSIVE-NAME]] stats." />
+
+	<meta name="robots" content="index, follow" />
+
+	<meta property="og:locale" content="en_US" />
+	<meta property="og:type" content="website" />
+
+	<meta rel="canonical" href="https://server.wixonic.fr/brawldata/players/[[ID]]" />
+	<meta property="og:url" content="https://server.wixonic.fr/brawldata/players/[[ID]]" />
+
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+
+	<link rel="apple-touch-icon" sizes="180x180" href="https://assets.wixonic.fr/file/images/brawldata/icon/180.png" />
+	<link rel="apple-touch-icon" sizes="152x152" href="https://assets.wixonic.fr/file/images/brawldata/icon/152.png" />
+	<link rel="apple-touch-icon" sizes="144x144" href="https://assets.wixonic.fr/file/images/brawldata/icon/144.png" />
+	<link rel="apple-touch-icon" sizes="120x120" href="https://assets.wixonic.fr/file/images/brawldata/icon/120.png" />
+	<link rel="apple-touch-icon" sizes="114x114" href="https://assets.wixonic.fr/file/images/brawldata/icon/114.png" />
+	<link rel="apple-touch-icon" sizes="76x76" href="https://assets.wixonic.fr/file/images/brawldata/icon/76.png" />
+	<link rel="apple-touch-icon" sizes="72x72" href="https://assets.wixonic.fr/file/images/brawldata/icon/72.png" />
+	<link rel="apple-touch-icon" sizes="60x60" href="https://assets.wixonic.fr/file/images/brawldata/icon/60.png" />
+	<link rel="apple-touch-icon" sizes="57x57" href="https://assets.wixonic.fr/file/images/brawldata/icon/57.png" />
+
+	<meta name="msapplication-square310x310logo"
+		content="https://assets.wixonic.fr/file/images/brawldata/icon/310.png" />
+	<meta name="msapplication-square150x150logo"
+		content="https://assets.wixonic.fr/file/images/brawldata/icon/150.png" />
+	<meta name="msapplication-square70x70logo" content="https://assets.wixonic.fr/file/images/brawldata/icon/70.png" />
+
+	<link rel="icon" type="image/png" sizes="1024x1024"
+		href="https://assets.wixonic.fr/file/images/brawldata/icon/1024.png" />
+
+	<meta name="og:image" content="https://assets.wixonic.fr/file/images/brawldata/icon/1024.png" />
+	<meta property="og:image:type" content="image/png" />
+	<meta property="og:image:width" content="1024" />
+	<meta property="og:image:height" content="1024" />
+
+	<meta name="theme-color" content="#1B1212" />
+
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+	<!-- Splash Screen -->
+	<style>
+		:root {
+			--background: #1B1212;
+
+			--text-color: #FFF;
+			--font-family: Arial;
+		}
+
+		:root,
+		:root * {
+			user-select: inherit;
+			-moz-user-select: inherit;
+			-webkit-user-select: inherit;
+
+			font-family: var(--font-family);
+
+			cursor: inherit;
+			pointer-events: inherit;
+		}
+
+		:root {
+			user-select: none;
+			-moz-user-select: none;
+			-webkit-user-select: none;
+
+			background: var(--background);
+			color: var(--text-color);
+
+			cursor: default;
+			pointer-events: fill;
+		}
+	</style>
+
+	<link defer rel="stylesheet" href="index.css" />
+
+	<script>
+		window.id = "[[ID]]";
+	</script>
+
+	<script defer type="module" src="index.js"></script>
+
+</head>
+
+<body id="[[ID]]">
+
+	<a class="back button" href="../">Back</a>
+
+	<img id="playerIcon" src="" alt="[[POSSESSIVE-NAME]] profile icon" />
+
+	<h1>[[NAME]]</h1>
+
+	<card>
+
+		<section>
+
+			<div class="title">Trophies</div>
+
+			<span class="trophies icon"></span><span id="currentTrophies">-----</span>
+
+		</section>
+
+		<section>
+
+			<div class="title">Highest</div>
+
+			<span class="trophies icon"></span><span id="highestTrophies">-----</span>
+
+		</section>
+
+	</card>
+
+	<select id="range">
+
+		<option value="alltime">All time</option>
+		<option value="year">One year</option>
+		<option value="6months">Six months</option>
+		<option value="3months">Three months</option>
+		<option value="month">One month</option>
+		<option value="2weeks">Two weeks</option>
+		<option value="week" selected>One week</option>
+		<option value="3days">Three days</option>
+		<option value="day">One day</option>
+		<option value="6hours">Six hours</option>
+
+	</select>
+
+	<select id="main">
+
+		<option value="trophies" selected>Trophies</option>
+		<option value="brawlers">Brawlers</option>
+
+	</select>
+
+	<select id="brawlers" class="hidden"></select>
+
+	<label id="toCompare" for="compare">Compare:</label>
+	<input id="compare" type="checkbox" />
+
+	<select id="players" class="hidden"></select>
+
+	<div class="canvas"></div>
+
+	<h2>Last <span id="battlecount">--</span> battles</h2>
+
+	<note>Scrolling triggers battle loading, which consumes significant bandwidth.<br />
+		Stats are contingent on the number of loaded battles, and there may be a 40-minute delay between the battle date
+		and its display.</note>
+
+	<button id="load" class="button hidden" disabled>Load more battles</button>
+
+	<card>
+
+		<section>
+
+			<div class="title">Victories</div>
+
+			<span id="victories">--.-%</span>
+
+		</section>
+
+		<section>
+
+			<div class="title">Star Player</div>
+
+			<span id="starPlayer">--.-%</span>
+
+		</section>
+
+		<section>
+
+			<div class="title">Showdown Victories</div>
+
+			<span id="showdownVictories">--.-%</span>
+
+		</section>
+
+	</card>
+
+
+	<h3 style="margin-top: 1rem; margin-bottom: 0.5rem;">Battlelog</h3>
+
+	<div id="battlelog"></div>
+
+</body>
+
+</html>

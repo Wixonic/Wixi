@@ -19,6 +19,15 @@ const POST = async (_, _2, res, keepAlive) => {
 			start: Date.now()
 		},
 
+		buttons: [
+			"See my stats"
+		],
+		metadata: {
+			button_urls: [
+				"https://server.wixonic.fr/brawldata/players/LJVC2CU08/"
+			]
+		},
+
 		type: 0, // PLAYING
 
 		keepAliveId: keepAlive == null ? null : setTimeout(() => clientManager.removeActivity("brawlstars", true), keepAlive)

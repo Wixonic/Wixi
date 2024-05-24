@@ -1,0 +1,78 @@
+@import url("../main.css");
+
+input[type="search"] {
+	background: var(--text-color);
+
+	color: var(--background);
+	font-size: 0.9rem;
+
+	width: 95%;
+	max-width: 12rem;
+
+	border: none;
+	border-radius: 0.3rem;
+
+	margin: 0.5rem;
+	padding: 0.2rem 0.5rem;
+
+	cursor: text;
+}
+
+main {
+	--height: 3rem;
+
+	display: grid;
+	grid-auto-rows: var(--height);
+	grid-gap: 0.4rem;
+
+	width: max-content;
+	max-width: 30rem;
+
+	margin: auto;
+	padding: 0.5rem;
+}
+
+a.player {
+	display: grid;
+	grid-template-rows: calc(var(--height) * 0.6) calc(var(--height) * 0.4);
+	grid-template-columns: var(--height) 1fr;
+	gap: 0.2rem;
+
+	width: 100%;
+	height: var(--height);
+
+	cursor: pointer;
+}
+
+a.player .icon {
+	grid-column: 1;
+	grid-row: 1 / 3;
+
+	width: 100%;
+	height: 100%;
+}
+
+a.player .name {
+	grid-column: 2;
+	grid-row: 1;
+
+	width: fit-content;
+
+	font-size: calc(var(--height) * 0.6 * 0.8);
+	font-weight: 800;
+
+	opacity: 0.8;
+}
+
+a.player .id {
+	grid-column: 2;
+	grid-row: 2;
+
+	width: fit-content;
+
+	font-size: calc(var(--height) * 0.4 * 0.8);
+	font-weight: 600;
+	text-transform: uppercase;
+
+	opacity: 0.3;
+}
