@@ -1,0 +1,22 @@
+{
+	"name": "rpc_server",
+	"displayName": "RPC Server",
+	"description": "Complex RPC Server for Discord",
+	"author": "Wixonic <contact@wixonic.fr> (https://wixonic.fr)",
+	"version": "2.0.0",
+	"main": "plugin.js",
+	"scripts": {
+		"start": "clear; node ."
+	},
+	"engines": {
+		"node": ">=v21.6.2",
+		"npm": ">=10.2.4"
+	},
+	"dependencies": {
+		"discord.js-selfbot-v13": "^3.1.4",
+		"express": "^4.19.2"
+	},
+	"devDependencies": {
+		"@types/node": "^20.12.2"
+	}
+}
